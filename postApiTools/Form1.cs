@@ -209,5 +209,27 @@ namespace postApiTools
             Support support = new Support();
             support.ShowDialog();
         }
+        /// <summary>
+        /// 操作单元格 删除
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dataGridView_http_data_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewColumn column = dataGridView_http_data.Columns[e.ColumnIndex];
+                if (column is DataGridViewButtonColumn)
+                {
+                    if (dataGridView_http_data.Rows[e.RowIndex].Cells[0].Value == null)
+                    {
+                        return;
+
+                    }
+                    dataGridView_http_data.Rows.Remove(dataGridView_http_data.Rows[e.RowIndex]);//删除单元格
+                }
+            }
+        }
     }
 }

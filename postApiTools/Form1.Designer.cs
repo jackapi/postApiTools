@@ -36,9 +36,6 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.dataGridView_http_data = new System.Windows.Forms.DataGridView();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.comboBox_html_show_type = new System.Windows.Forms.ComboBox();
@@ -78,6 +75,10 @@
             this.label6 = new System.Windows.Forms.Label();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.label7 = new System.Windows.Forms.Label();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column12 = new System.Windows.Forms.DataGridViewButtonColumn();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_http_data)).BeginInit();
@@ -161,30 +162,14 @@
             this.dataGridView_http_data.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1,
             this.Column2,
-            this.Column3});
+            this.Column3,
+            this.Column12});
             this.dataGridView_http_data.Location = new System.Drawing.Point(10, 3);
             this.dataGridView_http_data.Name = "dataGridView_http_data";
             this.dataGridView_http_data.RowTemplate.Height = 23;
             this.dataGridView_http_data.Size = new System.Drawing.Size(888, 120);
             this.dataGridView_http_data.TabIndex = 8;
-            // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "键";
-            this.Column1.Name = "Column1";
-            this.Column1.Width = 200;
-            // 
-            // Column2
-            // 
-            this.Column2.HeaderText = "值";
-            this.Column2.Name = "Column2";
-            this.Column2.Width = 200;
-            // 
-            // Column3
-            // 
-            this.Column3.HeaderText = "说明";
-            this.Column3.Name = "Column3";
-            this.Column3.Width = 200;
+            this.dataGridView_http_data.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_http_data_CellContentClick);
             // 
             // tabControl2
             // 
@@ -564,6 +549,32 @@
             this.label7.Text = "赞助支持";
             this.label7.Click += new System.EventHandler(this.label7_Click);
             // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "键";
+            this.Column1.Name = "Column1";
+            this.Column1.Width = 200;
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "值";
+            this.Column2.Name = "Column2";
+            this.Column2.Width = 200;
+            // 
+            // Column3
+            // 
+            this.Column3.HeaderText = "说明";
+            this.Column3.Name = "Column3";
+            this.Column3.Width = 200;
+            // 
+            // Column12
+            // 
+            this.Column12.HeaderText = "删除";
+            this.Column12.Name = "Column12";
+            this.Column12.Text = "删除";
+            this.Column12.ToolTipText = "删除";
+            this.Column12.UseColumnTextForButtonValue = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -643,9 +654,6 @@
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.TabPage tabPage5;
         private System.Windows.Forms.ComboBox comboBox_html_show_type;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.DataGridView dataGridView3;
         private System.Windows.Forms.DataGridView dataGridView_Response;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
@@ -668,6 +676,10 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
+        private System.Windows.Forms.DataGridViewButtonColumn Column12;
     }
 }
 

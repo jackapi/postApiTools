@@ -109,7 +109,7 @@ namespace postApiTools.lib
                 byte[] byteArray = Encoding.Default.GetBytes(paramData); //转化
                 HttpWebRequest webReq = (HttpWebRequest)WebRequest.Create(new Uri(postUrl));
                 webReq.Method = "POST";
-                webReq.ContentType = "application/x-www-form-urlencoded";
+                webReq.ContentType = "application/x-www-form-urlencoded;charset=utf8";
                 webReq.ContentLength = byteArray.Length;
                 Stream newStream = webReq.GetRequestStream();
                 newStream.Write(byteArray, 0, byteArray.Length);//写入参数
