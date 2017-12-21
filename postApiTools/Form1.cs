@@ -29,6 +29,7 @@ namespace postApiTools
             pform1.textBoxUrlRead(textBox_url);
             pform1.httpHtmlTypeDataRead(comboBox_html_show_type);
             pform1.httpTypeWriteRead(comboBox_url_type);
+            pform1.dataviewUrlDataRead(dataGridView_http_data);
         }
 
         Thread testTh = null;
@@ -58,9 +59,15 @@ namespace postApiTools
         /// </summary>
         public void testButton()
         {
+            string encoding = comboBox_bm.Text;
+            if (encoding == "")
+            {
+                encoding = "utf-8";
+            }
             textBox_html.Text = "";
             pform1.httpHtmlTypeDataWrite(comboBox_html_show_type);//写入HTML类型
             pform1.httpTypeWrite(comboBox_url_type);
+            pform1.dataviewUrlDataWrite(dataGridView_http_data);//写入dataurl配置
             string url = textBox_url.Text;
             if (url == "")
             {
@@ -72,11 +79,11 @@ namespace postApiTools
             string urldata = pform1.objectArrayToUrlData(pform1.dataViewToObjectArray(dataGridView_http_data));
             if (comboBox_url_type.Text == "GET")
             {
-                html = lib.phttp.HttpGetCustom(url, urldata);//get请求获取
+                html = lib.phttp.HttpGetCustom(url, urldata, encoding);//get请求获取
             }
             else if (comboBox_url_type.Text == "POST")
             {
-                html = lib.phttp.HttpPostCustom(url, urldata);//get请求获取
+                html = lib.phttp.PostWebRequestCustom(url, urldata, encoding);//get请求获取
             }
             pform1.dataViewResponseShow(dataGridView_Response);//显示返回报文头
             pform1.webViewShow(webBrowser1, html);//浏览器显示
@@ -173,6 +180,34 @@ namespace postApiTools
                 ((TextBox)sender).SelectAll();
                 e.Handled = true;
             }
+        }
+        /// <summary>
+        /// 测试文档
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button_test_creation_doc_Click(object sender, EventArgs e)
+        {
+        }
+        /// <summary>
+        /// 默认浏览器打开
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("http://www.apizl.com");
+        }
+
+        /// <summary>
+        /// 赞助支持
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void label7_Click(object sender, EventArgs e)
+        {
+            Support support = new Support();
+            support.ShowDialog();
         }
     }
 }

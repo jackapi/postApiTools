@@ -91,6 +91,51 @@ namespace postApiTools.lib
                 return "";
             }
         }
+
+        /// <summary>
+        /// Post提交数据
+        /// </summary>
+        /// <param name="postUrl">URL</param>
+        /// <param name="paramData">参数</param>
+        /// <returns></returns>
+        public static string PostWebRequestCustom(string postUrl, string paramData, string encodingString = "utf-8")
+        {
+            try
+            {
+                string ret = string.Empty;
+                if (!postUrl.StartsWith("http://"))
+                    return "";
+
+                byte[] byteArray = Encoding.Default.GetBytes(paramData); //转化
+                HttpWebRequest webReq = (HttpWebRequest)WebRequest.Create(new Uri(postUrl));
+                webReq.Method = "POST";
+                webReq.ContentType = "application/x-www-form-urlencoded";
+                webReq.ContentLength = byteArray.Length;
+                Stream newStream = webReq.GetRequestStream();
+                newStream.Write(byteArray, 0, byteArray.Length);//写入参数
+                newStream.Close();
+                HttpWebResponse response = (HttpWebResponse)webReq.GetResponse();
+                HttpCustom_Response_Headers_Object = response.Headers;//写入数据到WebHeaderCollection
+                HttpCustom_code = response.StatusCode.ToString();//状态
+                StreamReader sr = new StreamReader(response.GetResponseStream(), Encoding.GetEncoding(encodingString));
+                ret = sr.ReadToEnd();
+                sr.Close();
+                response.Close();
+                newStream.Close();
+                return ret;
+            }
+            catch (WebException ex)
+            {
+                HttpWebResponse response = (HttpWebResponse)ex.Response;
+                HttpCustom_Response_Headers_Object = response.Headers;//写入数据到WebHeaderCollection
+                int code = Convert.ToInt32(Enum.Parse(typeof(pHttpCode.HttpStatusCode), response.StatusCode.ToString()));//获取异常状态码
+                HttpCustom_code = code.ToString();//赋值状态码
+                StreamReader sr = new StreamReader(response.GetResponseStream(), Encoding.GetEncoding(encodingString));//读取流
+                pLogs.logs(ex.ToString());//写入日志
+                return sr.ReadToEnd();
+            }
+        }
+
         /// <summary>
         /// http请求返回状态
         /// </summary>
@@ -127,6 +172,9 @@ namespace postApiTools.lib
             return HttpCustom_Response_Headers;
         }
 
+
+
+
         /// <summary>
         /// 前台GET自定义测试请求
         /// </summary>
@@ -157,11 +205,21 @@ namespace postApiTools.lib
                 HttpCustom_html = retString;
                 return retString;
             }
-            catch (Exception ex)
+            catch (WebException ex)
             {
-                return ex.ToString();
+                HttpWebResponse response = (HttpWebResponse)ex.Response;
+                HttpCustom_Response_Headers_Object = response.Headers;//写入数据到WebHeaderCollection
+                int code = Convert.ToInt32(Enum.Parse(typeof(pHttpCode.HttpStatusCode), response.StatusCode.ToString()));//获取异常状态码
+                HttpCustom_code = code.ToString();//赋值状态码
+                StreamReader sr = new StreamReader(response.GetResponseStream(), Encoding.GetEncoding(encodingString));//读取流
+                pLogs.logs(ex.ToString());//写入日志
+                return sr.ReadToEnd();
             }
         }
+
+
+
+
 
         /// <summary>
         /// 后台发送GET请求

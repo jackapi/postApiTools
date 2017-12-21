@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 namespace postApiTools
 {
+    using System.Threading;
     public class pform1
     {
         //------------------------ini-------------------------------------------------
@@ -262,6 +263,27 @@ namespace postApiTools
             lib.pFile.Write(pathHtml, html);
             w.ScriptErrorsSuppressed = true;
             w.Url = new Uri(pathHtml);
+            Thread th = new Thread(new ParameterizedThreadStart(webViewShowFileDelete));
+            th.Start(pathHtml);
+        }
+        /// <summary>
+        /// 开启线程删除文件
+        /// </summary>
+        /// <param name="pathHtml"></param>
+        public static void webViewShowFileDelete(object pathHtml)
+        {
+
+            while (true)
+            {
+                try
+                {
+                    File.Delete((string)pathHtml);
+                    return;
+                }
+                catch
+                {//出错继续循环
+                }
+            }
         }
         //---------------------------------------------------------------------------------------------------------------
         //public static string HtmlToFormat()
@@ -304,7 +326,7 @@ namespace postApiTools
             string urldataStr = "";
             for (int i = 0; i < urldata.GetLength(0); i++)
             {
-                urldataStr += "|" + urldata[i, 0] + "|" + "是 |" + "" + urldata[i, 1] + "" + "|" + urldata[i, 2] + "|";
+                urldataStr += "|" + urldata[i, 0] + "|" + "是 |" + "" + urldata[i, 1] + "" + "|" + urldata[i, 2] + "|" + "\r\n";
             }
             string template = lib.pFile.Read(path);
             template = template.Replace("{$name}", name);
@@ -315,5 +337,51 @@ namespace postApiTools
             return template;
         }
         //----------------------------------------------------template---------------------------------------------------
+
+
+
+
+
+        //----------------------------------------------------dataurlview-start----------------------------------------------
+        /// <summary>
+        /// 配置中读取dataurl显示到dataview
+        /// </summary>
+        /// <param name="dd"></param>
+        public static void dataviewUrlDataRead(DataGridView dd)
+        {
+            lib.pIni ini = new lib.pIni(Config.configIni);
+            string str = ini.IniReadValue("form1", "dataviewUrlDataWrite");
+            str = lib.pBase64.base64ToString(str);
+            object[,] obj = pJson.jsonStrToObjectArray(str, 3);
+            dd.Invalidate();
+            dd.Rows.Clear();//清理行数
+            dd.Rows.Add(obj.GetLength(0));
+            for (int i = 0; i < obj.GetLength(0); i++)
+            {
+                dd.Rows[i].Cells[0].Value = obj[i, 0];
+                dd.Rows[i].Cells[1].Value = obj[i, 1];
+                dd.Rows[i].Cells[2].Value = obj[i, 2];
+            }
+        }
+        /// <summary>
+        /// dataurl写入历史配置
+        /// </summary>
+        /// <param name="dd"></param>
+        public static void dataviewUrlDataWrite(DataGridView dd)
+        {
+            string[,] array = dataViewUrlDataToObjectArray(dd);
+            string str = pJson.objectToJsonStr(array);
+            str = lib.pBase64.stringToBase64(str);
+            lib.pIni ini = new lib.pIni(Config.configIni);
+            ini.IniWriteValue("form1", "dataviewUrlDataWrite", str);
+        }
+        //----------------------------------------------------dataurlview-end---------------------------------------------------
+
+
+        //---------------------------------------------------历史--------------------------------------------------
+        public static void history(TextBox textUrl)
+        {
+        }
+        //---------------------------------------------------历史--------------------------------------------------
     }
 }
