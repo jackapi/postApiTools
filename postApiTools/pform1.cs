@@ -11,6 +11,41 @@ namespace postApiTools
     using System.Threading;
     public class pform1
     {
+
+        /// <summary>
+        /// 写入窗体改变大小
+        /// </summary>
+        /// <param name="w"></param>
+        /// <param name="h"></param>
+        public static void formSizeWrite(int w, int h)
+        {
+            lib.pIni ini = new lib.pIni(Config.configIni);
+            ini.IniWriteValue("form1", "formSizeWrite-W", w.ToString());
+            ini.IniWriteValue("form1", "formSizeWrite-H", h.ToString());
+        }
+
+        /// <summary>
+        /// 更改窗体大小
+        /// </summary>
+        /// <param name="w"></param>
+        /// <param name="h"></param>
+        public static int[] formSizeRead()
+        {
+            lib.pIni ini = new lib.pIni(Config.configIni);
+            int[] array = new int[2];
+            try
+            {
+                array[0] = Int32.Parse(ini.IniReadValue("form1", "formSizeWrite-W"));
+                array[1] = Int32.Parse(ini.IniReadValue("form1", "formSizeWrite-H"));
+            }
+            catch
+            {
+                array[0] = 1138;
+                array[1] = 722;
+            }
+            return array;
+        }
+
         //------------------------ini-------------------------------------------------
         /// <summary>
         /// http类型写入

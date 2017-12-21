@@ -19,6 +19,7 @@ namespace postApiTools
             System.Windows.Forms.Control.CheckForIllegalCrossThreadCalls = false;
         }
 
+        Thread formLoadTh = null;
         /// <summary>
         /// 界面启动时运行
         /// </summary>
@@ -26,6 +27,20 @@ namespace postApiTools
         /// <param name="e"></param>
         private void Form1_Load(object sender, EventArgs e)
         {
+            formLoadTh = new Thread(formLoadFun);
+            formLoadTh.Start();
+        }
+        /// <summary>
+        /// 使用线程加载
+        /// </summary>
+        private void formLoadFun()
+        {
+            //窗口自动调整
+            int[] size = pform1.formSizeRead();
+            this.Width = size[0];
+            this.Height = size[1];
+            //this.StartPosition = FormStartPosition.WindowsDefaultLocation;
+
             pform1.textBoxUrlRead(textBox_url);
             pform1.httpHtmlTypeDataRead(comboBox_html_show_type);
             pform1.httpTypeWriteRead(comboBox_url_type);
@@ -230,6 +245,18 @@ namespace postApiTools
                     dataGridView_http_data.Rows.Remove(dataGridView_http_data.Rows[e.RowIndex]);//删除单元格
                 }
             }
+        }
+
+        /// <summary>
+        /// 记录窗口大小变化
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            int h = this.Height;
+            int w = this.Width;
+            pform1.formSizeWrite(w, h);
         }
     }
 }
