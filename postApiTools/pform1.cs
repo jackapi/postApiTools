@@ -246,7 +246,7 @@ namespace postApiTools
                 dd.Rows[i].Cells[2].Value = "";
             }
         }
-
+        private static Thread webViewShowTh = null;
         /// <summary>
         /// 浏览器显示本地HTML
         /// </summary>
@@ -263,8 +263,8 @@ namespace postApiTools
             lib.pFile.Write(pathHtml, html);
             w.ScriptErrorsSuppressed = true;
             w.Url = new Uri(pathHtml);
-            Thread th = new Thread(new ParameterizedThreadStart(webViewShowFileDelete));
-            th.Start(pathHtml);
+            webViewShowTh = new Thread(new ParameterizedThreadStart(webViewShowFileDelete));
+            webViewShowTh.Start(pathHtml);
         }
         /// <summary>
         /// 开启线程删除文件
@@ -272,12 +272,13 @@ namespace postApiTools
         /// <param name="pathHtml"></param>
         public static void webViewShowFileDelete(object pathHtml)
         {
-
+            Thread.Sleep(10000);
             while (true)
             {
                 try
                 {
                     File.Delete((string)pathHtml);
+                    webViewShowTh = null;
                     return;
                 }
                 catch

@@ -593,7 +593,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "ApiPostTools(测试接口、生成文档) 作者:apiziliao@gmail.com  qq群:616318658";
+            this.Text = "PostApiTools(测试接口、生成文档) 作者:apiziliao@gmail.com  qq群:616318658";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tabControl1.ResumeLayout(false);
