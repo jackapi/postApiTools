@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 /// <summary>
 /// sqlite 类
+/// by:(chenran)apiziliao@gmail.com
 /// </summary>
 namespace postApiTools.lib
 {

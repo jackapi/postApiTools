@@ -9,6 +9,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+/// <summary>
+/// by:(chenran)apiziliao@gmail.com
+/// </summary>
 namespace postApiTools
 {
     public partial class Form1 : Form
@@ -260,16 +263,16 @@ namespace postApiTools
         {
             int w = this.Width;
             int h = this.Height;
-            if (w < 1138)
-            {
-                this.Size = new Size(1138, this.Size.Height);
-                return;
-            }
-            if (h < 732)
-            {
-                this.Size = new Size(this.Size.Width, 732);
-                return;
-            }
+            //if (w < 1138)
+            //{
+            //    this.Size = new Size(1138, this.Size.Height);
+            //    return;
+            //}
+            //if (h < 732)
+            //{
+            //    this.Size = new Size(this.Size.Width, 732);
+            //    return;
+            //}
             pform1.formSizeWrite(w, h);
         }
 
@@ -296,7 +299,7 @@ namespace postApiTools
             if (e.RowIndex >= 0)
             {
                 string hash = dataGridView_history.Rows[e.RowIndex].Cells[0].ToolTipText;
-                pHistory.fillData(dataGridView_http_data, hash, comboBox_url_type, textBox_url,textBox_html);//填充数据
+                pHistory.fillData(dataGridView_http_data, hash, comboBox_url_type, textBox_url, textBox_html);//填充数据
             }
         }
         /// <summary>
