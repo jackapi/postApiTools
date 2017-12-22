@@ -54,5 +54,25 @@ namespace postApiTools
             }
             return obj;
         }
+        /// <summary>
+         /// 字符串转object数组
+         /// </summary>
+         /// <param name="str"></param>
+         /// <param name="line"></param>
+         /// <returns></returns>
+        public static string[,] jsonStrToObjectArrayString(string str, int line = 3)
+        {
+            string[,] obj = null;
+            JArray jarray = (JArray)JsonConvert.DeserializeObject(str);
+            obj = new string[jarray.Count, line];
+            for (int i = 0; i < jarray.Count; i++)
+            {
+                for (int q = 0; q < line; q++)
+                {
+                    obj[i, q] = jarray[i][q].ToString();
+                }
+            }
+            return obj;
+        }
     }
 }

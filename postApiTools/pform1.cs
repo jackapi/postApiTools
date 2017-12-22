@@ -391,12 +391,15 @@ namespace postApiTools
             object[,] obj = pJson.jsonStrToObjectArray(str, 3);
             dd.Invalidate();
             dd.Rows.Clear();//清理行数
-            dd.Rows.Add(obj.GetLength(0));
-            for (int i = 0; i < obj.GetLength(0); i++)
+            if (obj.GetLength(0)>0)
             {
-                dd.Rows[i].Cells[0].Value = obj[i, 0];
-                dd.Rows[i].Cells[1].Value = obj[i, 1];
-                dd.Rows[i].Cells[2].Value = obj[i, 2];
+                dd.Rows.Add(obj.GetLength(0));
+                for (int i = 0; i < obj.GetLength(0); i++)
+                {
+                    dd.Rows[i].Cells[0].Value = obj[i, 0];
+                    dd.Rows[i].Cells[1].Value = obj[i, 1];
+                    dd.Rows[i].Cells[2].Value = obj[i, 2];
+                }
             }
         }
         /// <summary>

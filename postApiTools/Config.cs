@@ -24,8 +24,8 @@ namespace postApiTools
         public static string downloadImagePath = exePath + "/image/";
 
         /// <summary>
-        /// 网页db存储
+        /// history存储
         /// </summary>
-        public static string webDataDb = exePath + "/web.db";
+        public static string historyDataDb = exePath + "/data/database.db";
     }
 }

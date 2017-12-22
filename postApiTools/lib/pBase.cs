@@ -10,6 +10,17 @@ namespace postApiTools.lib
     public class pBase
     {
         /// <summary>
+        /// 枚举获取值
+        /// Convert.ToInt32(Enum.Parse(typeof(pHttpCode.HttpStatusCode), response.StatusCode.ToString()));
+        /// </summary>
+        /// <param name="t"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public static int enumToValueInt(Type t,string key) {
+            int code = Convert.ToInt32(Enum.Parse(t, key));//获取异常状态码
+            return code;
+        }
+        /// <summary>
         /// 字符串转md5
         /// </summary>
         /// <param name="input"></param>

@@ -35,6 +35,7 @@ namespace postApiTools
         /// </summary>
         private void formLoadFun()
         {
+            Thread.Sleep(500);
             //窗口自动调整
             int[] size = pform1.formSizeRead();
             this.Width = size[0];
@@ -45,6 +46,7 @@ namespace postApiTools
             pform1.httpHtmlTypeDataRead(comboBox_html_show_type);
             pform1.httpTypeWriteRead(comboBox_url_type);
             pform1.dataviewUrlDataRead(dataGridView_http_data);
+            pHistory.dataViewRefresh(dataGridView_history);//刷新历史记录
         }
 
         Thread testTh = null;
@@ -79,7 +81,10 @@ namespace postApiTools
             {
                 encoding = "utf-8";
             }
-            textBox_html.Text = "";
+            textBox_html.Text = "";//html
+            label_code.Text = "";//httpcode
+            label_runtime.Text = "";//ms
+            pHistory.dataViewShow(dataGridView_history, dataGridView_http_data, textBox_url.Text, comboBox_url_type.Text);//刷新历史数据
             pform1.httpHtmlTypeDataWrite(comboBox_html_show_type);//写入HTML类型
             pform1.httpTypeWrite(comboBox_url_type);
             pform1.dataviewUrlDataWrite(dataGridView_http_data);//写入dataurl配置
@@ -240,7 +245,6 @@ namespace postApiTools
                     if (dataGridView_http_data.Rows[e.RowIndex].Cells[0].Value == null)
                     {
                         return;
-
                     }
                     dataGridView_http_data.Rows.Remove(dataGridView_http_data.Rows[e.RowIndex]);//删除单元格
                 }
@@ -254,9 +258,55 @@ namespace postApiTools
         /// <param name="e"></param>
         private void Form1_Resize(object sender, EventArgs e)
         {
-            int h = this.Height;
             int w = this.Width;
+            int h = this.Height;
+            if (w < 1138)
+            {
+                this.Size = new Size(1138, this.Size.Height);
+                return;
+            }
+            if (h < 732)
+            {
+                this.Size = new Size(this.Size.Width, 732);
+                return;
+            }
             pform1.formSizeWrite(w, h);
+        }
+
+        /// <summary>
+        /// 回车键事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void textBox_url_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)//判断回车键  
+            {
+                button_test_Click(null, null);//回车事件
+            }
+        }
+
+        /// <summary>
+        /// 历史记录单元格单击事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dataGridView_history_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                string hash = dataGridView_history.Rows[e.RowIndex].Cells[0].ToolTipText;
+                pHistory.fillData(dataGridView_http_data, hash, comboBox_url_type, textBox_url,textBox_html);//填充数据
+            }
+        }
+        /// <summary>
+        /// api接口保存
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button_save_api_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

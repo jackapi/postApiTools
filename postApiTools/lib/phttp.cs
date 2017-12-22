@@ -108,6 +108,7 @@ namespace postApiTools.lib
 
                 byte[] byteArray = Encoding.Default.GetBytes(paramData); //转化
                 HttpWebRequest webReq = (HttpWebRequest)WebRequest.Create(new Uri(postUrl));
+                webReq.KeepAlive = false;  //设置不建立持久性连接连接
                 webReq.Method = "POST";
                 webReq.ContentType = "application/x-www-form-urlencoded;charset=utf8";
                 webReq.ContentLength = byteArray.Length;
@@ -116,7 +117,7 @@ namespace postApiTools.lib
                 newStream.Close();
                 HttpWebResponse response = (HttpWebResponse)webReq.GetResponse();
                 HttpCustom_Response_Headers_Object = response.Headers;//写入数据到WebHeaderCollection
-                HttpCustom_code = response.StatusCode.ToString();//状态
+                HttpCustom_code = lib.pBase.enumToValueInt(typeof(pHttpCode.HttpStatusCode), response.StatusCode.ToString()).ToString();//赋值状态码
                 StreamReader sr = new StreamReader(response.GetResponseStream(), Encoding.GetEncoding(encodingString));
                 ret = sr.ReadToEnd();
                 sr.Close();
@@ -127,12 +128,18 @@ namespace postApiTools.lib
             catch (WebException ex)
             {
                 HttpWebResponse response = (HttpWebResponse)ex.Response;
+                if (response == null)
+                {
+                    return "连接被终止...";
+                }
                 HttpCustom_Response_Headers_Object = response.Headers;//写入数据到WebHeaderCollection
-                int code = Convert.ToInt32(Enum.Parse(typeof(pHttpCode.HttpStatusCode), response.StatusCode.ToString()));//获取异常状态码
-                HttpCustom_code = code.ToString();//赋值状态码
+                HttpCustom_code = lib.pBase.enumToValueInt(typeof(pHttpCode.HttpStatusCode), response.StatusCode.ToString()).ToString();//赋值状态码
                 StreamReader sr = new StreamReader(response.GetResponseStream(), Encoding.GetEncoding(encodingString));//读取流
                 pLogs.logs(ex.ToString());//写入日志
-                return sr.ReadToEnd();
+                string str = sr.ReadToEnd();
+                response.Close();
+                sr.Close();
+                return str;
             }
         }
 
@@ -195,7 +202,7 @@ namespace postApiTools.lib
                 //接受返回来的数据
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                 HttpCustom_Response_Headers_Object = response.Headers;//写入数据到WebHeaderCollection
-                HttpCustom_code = response.StatusCode.ToString();
+                HttpCustom_code = lib.pBase.enumToValueInt(typeof(pHttpCode.HttpStatusCode), response.StatusCode.ToString()).ToString();//赋值状态码
                 Stream stream = response.GetResponseStream();
                 StreamReader streamReader = new StreamReader(stream, Encoding.GetEncoding(encodingString));
                 string retString = streamReader.ReadToEnd();
@@ -208,9 +215,12 @@ namespace postApiTools.lib
             catch (WebException ex)
             {
                 HttpWebResponse response = (HttpWebResponse)ex.Response;
+                if (response == null)
+                {
+                    return "连接被终止...";
+                }
                 HttpCustom_Response_Headers_Object = response.Headers;//写入数据到WebHeaderCollection
-                int code = Convert.ToInt32(Enum.Parse(typeof(pHttpCode.HttpStatusCode), response.StatusCode.ToString()));//获取异常状态码
-                HttpCustom_code = code.ToString();//赋值状态码
+                HttpCustom_code = lib.pBase.enumToValueInt(typeof(pHttpCode.HttpStatusCode), response.StatusCode.ToString()).ToString();//赋值状态码
                 StreamReader sr = new StreamReader(response.GetResponseStream(), Encoding.GetEncoding(encodingString));//读取流
                 pLogs.logs(ex.ToString());//写入日志
                 return sr.ReadToEnd();
