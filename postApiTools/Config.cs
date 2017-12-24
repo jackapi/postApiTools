@@ -27,5 +27,15 @@ namespace postApiTools
         /// history存储
         /// </summary>
         public static string historyDataDb = exePath + "/data/database.db";
+
+        /// <summary>
+        /// 默认模板
+        /// </summary>
+        public static string templateTxt = exePath + "/data/template.txt";
+
+        /// <summary>
+        /// 模板目录
+        /// </summary>
+        public static string templatePath = exePath + "/data/template_";
     }
 }

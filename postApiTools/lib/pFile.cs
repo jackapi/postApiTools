@@ -32,7 +32,13 @@ namespace postApiTools.lib
         /// <returns></returns>
         public static string Read(string path, string encoding = "utf-8")
         {
-            return File.ReadAllText(path, Encoding.GetEncoding(encoding));
+            try
+            {
+                return File.ReadAllText(path, Encoding.GetEncoding(encoding));
+            }
+            catch (Exception ex) {
+                return ex.ToString();
+            }
 
         }
     }

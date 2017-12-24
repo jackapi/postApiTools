@@ -10,13 +10,32 @@ namespace postApiTools.lib
     public class pBase
     {
         /// <summary>
+        /// 判断判断是否为字符串
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static bool isNumber(object obj)
+        {
+            try
+            {
+                int number = Int32.Parse(obj.ToString());
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+
+        }
+        /// <summary>
         /// 枚举获取值
         /// Convert.ToInt32(Enum.Parse(typeof(pHttpCode.HttpStatusCode), response.StatusCode.ToString()));
         /// </summary>
         /// <param name="t"></param>
         /// <param name="key"></param>
         /// <returns></returns>
-        public static int enumToValueInt(Type t,string key) {
+        public static int enumToValueInt(Type t, string key)
+        {
             int code = Convert.ToInt32(Enum.Parse(t, key));//获取异常状态码
             return code;
         }

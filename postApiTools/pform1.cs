@@ -344,12 +344,12 @@ namespace postApiTools
         public static void createTemplateString(TextBox textHtml, TextBox textDoc, ComboBox combobox, string name, string method, string[,] urldata, string html, string url)
         {
 
-            switch (combobox.Text)
+            if (combobox.Text == "默认模板")
             {
-                case "默认模板":
-                    textDoc.Text = templateString(Config.exePath + "/data/template.txt", name, method, urldata, html, url);
-                    break;
+                textDoc.Text = templateString(Config.templateTxt, name, method, urldata, html, url);
+                return;
             }
+            textDoc.Text = templateString(Config.templatePath + combobox.Text + pSetting.fx, name, method, urldata, html, url);
         }
         /// <summary>
         /// 返回生成文档内容
@@ -365,7 +365,7 @@ namespace postApiTools
             string urldataStr = "";
             for (int i = 0; i < urldata.GetLength(0); i++)
             {
-                urldataStr += "|" + urldata[i, 0] + "|" + "是 |" + "" + urldata[i, 1] + "" + "|" + urldata[i, 2] + "|" + "\r\n";
+                urldataStr += "|" + urldata[i, 0] + "|" + "是 |" + "" + dataToTypeName(urldata[i, 1]) + "" + "|" + "" + urldata[i, 2] + " 测试数据：" + urldata[i, 1] + "" + "|" + "\r\n";
             }
             string template = lib.pFile.Read(path);
             template = template.Replace("{$name}", name);
@@ -374,6 +374,26 @@ namespace postApiTools
             template = template.Replace("{$url}", url);
             template = template.Replace("{$html}", html);
             return template;
+        }
+        /// <summary>
+        /// 获取生成类型
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string dataToTypeName(string str)
+        {
+            if (lib.pBase.isNumber(str))
+            {
+                return "int";
+            }
+            else
+            {
+                if (File.Exists(str))
+                {
+                    return "filename";
+                }
+                return "string";
+            }
         }
         //----------------------------------------------------template---------------------------------------------------
 
@@ -394,7 +414,7 @@ namespace postApiTools
             object[,] obj = pJson.jsonStrToObjectArray(str, 3);
             dd.Invalidate();
             dd.Rows.Clear();//清理行数
-            if (obj.GetLength(0)>0)
+            if (obj.GetLength(0) > 0)
             {
                 dd.Rows.Add(obj.GetLength(0));
                 for (int i = 0; i < obj.GetLength(0); i++)

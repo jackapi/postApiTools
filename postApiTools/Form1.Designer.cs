@@ -39,6 +39,7 @@
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column13 = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.Column12 = new System.Windows.Forms.DataGridViewButtonColumn();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage4 = new System.Windows.Forms.TabPage();
@@ -59,6 +60,8 @@
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.textBox_doc = new System.Windows.Forms.TextBox();
             this.dataGridView_history = new System.Windows.Forms.DataGridView();
+            this.Column10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.button_creation_doc = new System.Windows.Forms.Button();
             this.button_test_creation_doc = new System.Windows.Forms.Button();
             this.comboBox_template = new System.Windows.Forms.ComboBox();
@@ -77,8 +80,6 @@
             this.label6 = new System.Windows.Forms.Label();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.label7 = new System.Windows.Forms.Label();
-            this.Column10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.button_save_api = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -118,9 +119,8 @@
             // textBox_url
             // 
             this.textBox_url.Location = new System.Drawing.Point(187, 9);
-            this.textBox_url.Multiline = true;
             this.textBox_url.Name = "textBox_url";
-            this.textBox_url.Size = new System.Drawing.Size(571, 20);
+            this.textBox_url.Size = new System.Drawing.Size(571, 21);
             this.textBox_url.TabIndex = 2;
             this.textBox_url.WordWrap = false;
             this.textBox_url.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox_url_KeyDown);
@@ -173,6 +173,7 @@
             this.Column1,
             this.Column2,
             this.Column3,
+            this.Column13,
             this.Column12});
             this.dataGridView_http_data.Location = new System.Drawing.Point(0, 0);
             this.dataGridView_http_data.Name = "dataGridView_http_data";
@@ -199,6 +200,14 @@
             this.Column3.HeaderText = "说明";
             this.Column3.Name = "Column3";
             this.Column3.Width = 200;
+            // 
+            // Column13
+            // 
+            this.Column13.HeaderText = "类型";
+            this.Column13.Items.AddRange(new object[] {
+            "字符串",
+            "文件"});
+            this.Column13.Name = "Column13";
             // 
             // Column12
             // 
@@ -270,7 +279,7 @@
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(891, 393);
+            this.tabPage5.Size = new System.Drawing.Size(891, 376);
             this.tabPage5.TabIndex = 1;
             this.tabPage5.Text = "浏览器";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -283,7 +292,7 @@
             this.webBrowser1.Location = new System.Drawing.Point(3, 0);
             this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(885, 390);
+            this.webBrowser1.Size = new System.Drawing.Size(885, 373);
             this.webBrowser1.TabIndex = 0;
             // 
             // tabPage2
@@ -397,6 +406,7 @@
             this.textBox_doc.Location = new System.Drawing.Point(6, 0);
             this.textBox_doc.Multiline = true;
             this.textBox_doc.Name = "textBox_doc";
+            this.textBox_doc.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.textBox_doc.Size = new System.Drawing.Size(902, 562);
             this.textBox_doc.TabIndex = 0;
             this.textBox_doc.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_doc_KeyPress);
@@ -417,6 +427,20 @@
             this.dataGridView_history.Size = new System.Drawing.Size(173, 589);
             this.dataGridView_history.TabIndex = 0;
             this.dataGridView_history.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_history_CellClick);
+            // 
+            // Column10
+            // 
+            this.Column10.HeaderText = "类型";
+            this.Column10.Name = "Column10";
+            this.Column10.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Column10.Width = 55;
+            // 
+            // Column11
+            // 
+            this.Column11.HeaderText = "URL";
+            this.Column11.Name = "Column11";
+            this.Column11.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Column11.Width = 90;
             // 
             // button_creation_doc
             // 
@@ -440,12 +464,12 @@
             // 
             // comboBox_template
             // 
+            this.comboBox_template.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox_template.FormattingEnabled = true;
             this.comboBox_template.Location = new System.Drawing.Point(463, 39);
             this.comboBox_template.Name = "comboBox_template";
             this.comboBox_template.Size = new System.Drawing.Size(79, 20);
             this.comboBox_template.TabIndex = 6;
-            this.comboBox_template.Text = "默认模板";
             // 
             // button_setting
             // 
@@ -459,6 +483,7 @@
             // 
             // comboBox_bm
             // 
+            this.comboBox_bm.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox_bm.FormattingEnabled = true;
             this.comboBox_bm.Items.AddRange(new object[] {
             "UTF-8",
@@ -470,7 +495,6 @@
             this.comboBox_bm.Name = "comboBox_bm";
             this.comboBox_bm.Size = new System.Drawing.Size(92, 20);
             this.comboBox_bm.TabIndex = 8;
-            this.comboBox_bm.Text = "UTF-8";
             // 
             // label2
             // 
@@ -605,20 +629,6 @@
             this.label7.Text = "赞助支持";
             this.label7.Click += new System.EventHandler(this.label7_Click);
             // 
-            // Column10
-            // 
-            this.Column10.HeaderText = "类型";
-            this.Column10.Name = "Column10";
-            this.Column10.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Column10.Width = 55;
-            // 
-            // Column11
-            // 
-            this.Column11.HeaderText = "URL";
-            this.Column11.Name = "Column11";
-            this.Column11.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Column11.Width = 90;
-            // 
             // button_save_api
             // 
             this.button_save_api.Location = new System.Drawing.Point(948, 6);
@@ -730,13 +740,14 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
-        private System.Windows.Forms.DataGridViewButtonColumn Column12;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column10;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column11;
         private System.Windows.Forms.Button button_save_api;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
+        private System.Windows.Forms.DataGridViewComboBoxColumn Column13;
+        private System.Windows.Forms.DataGridViewButtonColumn Column12;
     }
 }
 

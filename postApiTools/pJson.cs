@@ -28,6 +28,67 @@ namespace postApiTools
             catch (Exception ex) { return ex.ToString(); }
 
         }
+
+        /// <summary>
+        /// 字符串转list[]
+        /// </summary>
+        /// <param name="json"></param>
+        /// <returns></returns>
+        public static List<string> jsonStrToListString(string json)
+        {
+            List<string> array = null;
+            try
+            {
+                JArray job = (JArray)JsonConvert.DeserializeObject(json);
+                array = new List<string> { };
+                for (int i = 0; i < job.Count; i++)
+                {
+                    array.Add(job[i].ToString());
+                }
+                return array;
+            }
+            catch (Exception ex)
+            {
+                pLogs.logs("string:" + json + ex.ToString());
+                return array;
+            }
+        }
+
+        /// <summary>
+        /// 字符串转list[]
+        /// </summary>
+        /// <param name="json"></param>
+        /// <returns></returns>
+        public static List<string> jsonStrToArrayOne(string json)
+        {
+            List<string> array = null;
+            try
+            {
+                JObject job = (JObject)JsonConvert.DeserializeObject(json);
+                array = new List<string> { };
+                for (int i = 0; i < job.Count; i++)
+                {
+                    array.Add(job[i].ToString());
+                }
+                return array;
+            }
+            catch (Exception ex)
+            {
+                pLogs.logs("string:" + json + ex.ToString());
+                return array;
+            }
+        }
+
+        /// <summary>
+        /// list 转字符串
+        /// </summary>
+        /// <param name="json"></param>
+        /// <returns></returns>
+        public static string listToJson(List<string> json)
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(json);
+        }
+
         /// <summary>
         /// object 转成字符串
         /// </summary>
@@ -58,11 +119,11 @@ namespace postApiTools
             return obj;
         }
         /// <summary>
-         /// 字符串转object数组
-         /// </summary>
-         /// <param name="str"></param>
-         /// <param name="line"></param>
-         /// <returns></returns>
+        /// 字符串转object数组
+        /// </summary>
+        /// <param name="str"></param>
+        /// <param name="line"></param>
+        /// <returns></returns>
         public static string[,] jsonStrToObjectArrayString(string str, int line = 3)
         {
             string[,] obj = null;

@@ -76,6 +76,7 @@
     <Compile Include="pLogs.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="pSetting.cs" />
     <Compile Include="Setting.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -5,6 +5,9 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+/// <summary>
+/// by:chenran apiziliao@gmail.com
+/// </summary>
 namespace postApiTools.lib
 {
     public class pIni
@@ -50,6 +53,28 @@ namespace postApiTools.lib
         public bool ExistINIFile()
         {
             return File.Exists(inipath);
+        }
+        /// <summary>
+        /// 写入配置
+        /// </summary>
+        /// <param name="Section"></param>
+        /// <param name="Key"></param>
+        /// <param name="Value"></param>
+        public static void write(string Section, string Key, string Value)
+        {
+            pIni ini = new pIni(Config.configIni);
+            ini.IniWriteValue(Section, Key, Value);
+        }
+        /// <summary>
+        /// 读取配置
+        /// </summary>
+        /// <param name="Section"></param>
+        /// <param name="Key"></param>
+        /// <returns></returns>
+        public static string read(string Section, string Key)
+        {
+            pIni ini = new pIni(Config.configIni);
+            return ini.IniReadValue(Section, Key);
         }
     }
 }

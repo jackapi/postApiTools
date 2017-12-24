@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 /// <summary>
-/// by:(chenran)apiziliao@gmail.com
+/// by:(chenran)apiziliao@gmail.com  
 /// </summary>
 namespace postApiTools
 {
@@ -44,12 +44,13 @@ namespace postApiTools
             this.Width = size[0];
             this.Height = size[1];
             //this.StartPosition = FormStartPosition.WindowsDefaultLocation;
-
+            comboBox_bm.Text = "UTF-8";
             pform1.textBoxUrlRead(textBox_url);
             pform1.httpHtmlTypeDataRead(comboBox_html_show_type);
             pform1.httpTypeWriteRead(comboBox_url_type);
             pform1.dataviewUrlDataRead(dataGridView_http_data);
             pHistory.dataViewRefresh(dataGridView_history);//刷新历史记录
+            pSetting.refreshTemplateList(comboBox_template);//刷新模板列表
         }
 
         Thread testTh = null;
@@ -240,17 +241,9 @@ namespace postApiTools
         private void dataGridView_http_data_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
-            if (e.RowIndex >= 0)
+            if (e.RowIndex >= 0 && e.ColumnIndex == 4)
             {
-                DataGridViewColumn column = dataGridView_http_data.Columns[e.ColumnIndex];
-                if (column is DataGridViewButtonColumn)
-                {
-                    if (dataGridView_http_data.Rows[e.RowIndex].Cells[0].Value == null)
-                    {
-                        return;
-                    }
-                    dataGridView_http_data.Rows.Remove(dataGridView_http_data.Rows[e.RowIndex]);//删除单元格
-                }
+                dataGridView_http_data.Rows.Remove(dataGridView_http_data.Rows[e.RowIndex]);//删除单元格
             }
         }
 
