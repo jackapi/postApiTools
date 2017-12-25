@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.button_test = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -77,10 +78,16 @@
             this.tabControl3 = new System.Windows.Forms.TabControl();
             this.tabPage7 = new System.Windows.Forms.TabPage();
             this.tabPage8 = new System.Windows.Forms.TabPage();
+            this.button_add_project = new System.Windows.Forms.Button();
+            this.treeView_save_list = new System.Windows.Forms.TreeView();
+            this.contextMenuStrip_save_list = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.label6 = new System.Windows.Forms.Label();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.label7 = new System.Windows.Forms.Label();
             this.button_save_api = new System.Windows.Forms.Button();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_http_data)).BeginInit();
@@ -95,6 +102,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_history)).BeginInit();
             this.tabControl3.SuspendLayout();
             this.tabPage7.SuspendLayout();
+            this.tabPage8.SuspendLayout();
+            this.contextMenuStrip_save_list.SuspendLayout();
             this.SuspendLayout();
             // 
             // button_test
@@ -166,6 +175,8 @@
             // 
             // dataGridView_http_data
             // 
+            this.dataGridView_http_data.AllowUserToResizeColumns = false;
+            this.dataGridView_http_data.AllowUserToResizeRows = false;
             this.dataGridView_http_data.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView_http_data.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -181,7 +192,9 @@
             this.dataGridView_http_data.RowTemplate.Height = 23;
             this.dataGridView_http_data.Size = new System.Drawing.Size(911, 151);
             this.dataGridView_http_data.TabIndex = 8;
+            this.dataGridView_http_data.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_http_data_CellClick);
             this.dataGridView_http_data.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_http_data_CellContentClick);
+            this.dataGridView_http_data.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_http_data_CellValueChanged);
             // 
             // Column1
             // 
@@ -191,7 +204,7 @@
             // 
             // Column2
             // 
-            this.Column2.HeaderText = "值";
+            this.Column2.HeaderText = "值(字符串)";
             this.Column2.Name = "Column2";
             this.Column2.Width = 200;
             // 
@@ -413,6 +426,8 @@
             // 
             // dataGridView_history
             // 
+            this.dataGridView_history.AllowUserToResizeColumns = false;
+            this.dataGridView_history.AllowUserToResizeRows = false;
             this.dataGridView_history.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.dataGridView_history.ColumnHeadersHeight = 30;
@@ -587,6 +602,8 @@
             // 
             // tabPage8
             // 
+            this.tabPage8.Controls.Add(this.button_add_project);
+            this.tabPage8.Controls.Add(this.treeView_save_list);
             this.tabPage8.Location = new System.Drawing.Point(4, 22);
             this.tabPage8.Name = "tabPage8";
             this.tabPage8.Padding = new System.Windows.Forms.Padding(3);
@@ -594,6 +611,45 @@
             this.tabPage8.TabIndex = 1;
             this.tabPage8.Text = "保存";
             this.tabPage8.UseVisualStyleBackColor = true;
+            // 
+            // button_add_project
+            // 
+            this.button_add_project.Location = new System.Drawing.Point(5, 3);
+            this.button_add_project.Name = "button_add_project";
+            this.button_add_project.Size = new System.Drawing.Size(68, 24);
+            this.button_add_project.TabIndex = 9;
+            this.button_add_project.Text = "添加项目";
+            this.button_add_project.UseVisualStyleBackColor = true;
+            this.button_add_project.Click += new System.EventHandler(this.button_add_project_Click);
+            // 
+            // treeView_save_list
+            // 
+            this.treeView_save_list.ContextMenuStrip = this.contextMenuStrip_save_list;
+            this.treeView_save_list.Location = new System.Drawing.Point(0, 30);
+            this.treeView_save_list.Name = "treeView_save_list";
+            this.treeView_save_list.Size = new System.Drawing.Size(182, 565);
+            this.treeView_save_list.TabIndex = 2;
+            // 
+            // contextMenuStrip_save_list
+            // 
+            this.contextMenuStrip_save_list.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1,
+            this.toolStripMenuItem3,
+            this.toolStripMenuItem2});
+            this.contextMenuStrip_save_list.Name = "contextMenuStrip_save_list";
+            this.contextMenuStrip_save_list.Size = new System.Drawing.Size(153, 92);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem1.Text = "添加";
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem2.Text = "删除";
             // 
             // label6
             // 
@@ -638,6 +694,12 @@
             this.button_save_api.Text = "保存";
             this.button_save_api.UseVisualStyleBackColor = true;
             this.button_save_api.Click += new System.EventHandler(this.button_save_api_Click);
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem3.Text = "重命名";
             // 
             // Form1
             // 
@@ -689,6 +751,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_history)).EndInit();
             this.tabControl3.ResumeLayout(false);
             this.tabPage7.ResumeLayout(false);
+            this.tabPage8.ResumeLayout(false);
+            this.contextMenuStrip_save_list.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -748,6 +812,12 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.DataGridViewComboBoxColumn Column13;
         private System.Windows.Forms.DataGridViewButtonColumn Column12;
+        private System.Windows.Forms.TreeView treeView_save_list;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip_save_list;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
+        private System.Windows.Forms.Button button_add_project;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
     }
 }
 

@@ -11,86 +11,90 @@ namespace postApiTools.lib
     public class phttp
     {
         /// <summary>
-        /// 后台发送POST请求
+        /// 上传文件方法
         /// </summary>
-        /// <param name="url">服务器地址</param>
-        /// <param name="data">发送的数据</param>
+        /// <param name="url">请求地址</param>
+        /// <param name="valuesList">参数二维数组</param>
+        /// <param name="pathList">文件二维数组</param>
+        /// <param name="encodingString">编码</param>
         /// <returns></returns>
-        public static string HttpPost(string url, string data)
+        public static string HttpUploadFile(string url, string[,] valuesList = null, string[,] pathList = null, string encodingString = "utf-8")
         {
             try
             {
-                //创建post请求
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                // 设置参数
+                HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
+                CookieContainer cookieContainer = new CookieContainer();
+                request.CookieContainer = cookieContainer;
+                request.AllowAutoRedirect = true;
                 request.Method = "POST";
-                request.ContentType = "application/json;charset=UTF-8";
-                byte[] payload = Encoding.UTF8.GetBytes(data);
-                request.ContentLength = payload.Length;
-
-                //发送post的请求
-                Stream writer = request.GetRequestStream();
-                writer.Write(payload, 0, payload.Length);
-                writer.Close();
-
-                //接受返回来的数据
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                Stream stream = response.GetResponseStream();
-                StreamReader reader = new StreamReader(stream, Encoding.UTF8);
-                string value = reader.ReadToEnd();
-
-                reader.Close();
-                stream.Close();
-                response.Close();
-
-                return value;
+                string boundary = DateTime.Now.Ticks.ToString("X"); // 随机分隔线
+                request.ContentType = "multipart/form-data;charset=utf-8;boundary=" + boundary;
+                byte[] itemBoundaryBytes = Encoding.UTF8.GetBytes("\r\n--" + boundary + "\r\n");//开始头
+                byte[] endBoundaryBytes = Encoding.UTF8.GetBytes("\r\n--" + boundary + "--\r\n");//结束尾
+                Stream postStreamStart = request.GetRequestStream();//添加数据
+                postStreamStart.Write(itemBoundaryBytes, 0, itemBoundaryBytes.Length);//开始
+                if (valuesList != null)
+                {
+                    for (int i = 0; i < valuesList.GetLength(0); i++)
+                    {
+                        byte[] by = Encoding.UTF8.GetBytes(string.Format("\r\n--" + boundary + "\r\nContent-Disposition: form-data; name=\"{0}\";\r\n\r\n{1}", valuesList[i, 0], valuesList[i, 1]));
+                        postStreamStart.Write(by, 0, by.Length);
+                    }
+                }
+                if (pathList != null)
+                {
+                    for (int i = 0; i < pathList.GetLength(0); i++)
+                    {
+                        int pos = pathList[i, 1].LastIndexOf("\\");
+                        string fileName = pathList[i, 1].Substring(pos + 1);
+                        byte[] postHeaderBytes = Encoding.UTF8.GetBytes(string.Format("\r\n--" + boundary + "\r\nContent-Disposition:form-data;name=\"" + pathList[i, 0] + "\";filename=\"{0}\"\r\nContent-Type:application/octet-stream\r\n\r\n", fileName));
+                        FileStream fs = new FileStream(pathList[i, 1], FileMode.Open, FileAccess.Read);
+                        byte[] bArr = new byte[fs.Length];
+                        fs.Read(bArr, 0, bArr.Length);
+                        fs.Close();
+                        postStreamStart.Write(postHeaderBytes, 0, postHeaderBytes.Length);//添加参数
+                        postStreamStart.Write(bArr, 0, bArr.Length);//添加文件
+                    }
+                }
+                postStreamStart.Write(endBoundaryBytes, 0, endBoundaryBytes.Length);//结尾
+                                                                                    //发送请求并获取相应回应数据
+                HttpWebResponse response = request.GetResponse() as HttpWebResponse;
+                HttpCustom_Response_Headers_Object = response.Headers;//写入数据到WebHeaderCollection
+                HttpCustom_code = lib.pBase.enumToValueInt(typeof(pHttpCode.HttpStatusCode), response.StatusCode.ToString()).ToString();//赋值状态码
+                                                                                                                                        //直到request.GetResponse()程序才开始向目标网页发送Post请求
+                Stream instream = response.GetResponseStream();
+                StreamReader sr = new StreamReader(instream, Encoding.GetEncoding(encodingString));
+                //返回结果网页（html）代码
+                string content = sr.ReadToEnd();
+                postStreamStart.Close();//关闭
+                response.Close();//关闭
+                return content;
             }
-            catch (Exception)
+            catch (WebException ex)
             {
-                return "";
+                HttpWebResponse response = (HttpWebResponse)ex.Response;
+                if (response == null)
+                {
+                    return errorDataShow;
+                }
+                HttpCustom_Response_Headers_Object = response.Headers;//写入数据到WebHeaderCollection
+                HttpCustom_code = lib.pBase.enumToValueInt(typeof(pHttpCode.HttpStatusCode), response.StatusCode.ToString()).ToString();//赋值状态码
+                StreamReader sr = new StreamReader(response.GetResponseStream(), Encoding.GetEncoding(encodingString));//读取流
+                pLogs.logs(ex.ToString());//写入日志
+                string str = sr.ReadToEnd();
+                response.Close();
+                sr.Close();
+                return str;
             }
         }
-
 
         /// <summary>
-        /// POST请求自定义
+        /// 提示信息
         /// </summary>
-        /// <param name="url">服务器地址</param>
-        /// <param name="data">发送的数据</param>
-        /// <returns></returns>
-        public static string HttpPostCustom(string url, string data, string encodingString = "utf-8")
-        {
-            try
-            {
-                //创建post请求
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-                request.Method = "POST";
-                //request.ContentType = "application/json;charset=UTF-8";
-                request.ContentType = "text/html;charset=UTF-8";
-                byte[] payload = Encoding.UTF8.GetBytes(data);
-                request.ContentLength = payload.Length;
+        private const string errorDataShow = "连接终止...远程服务器无法访问!";
 
-                //发送post的请求
-                Stream writer = request.GetRequestStream();
-                writer.Write(payload, 0, payload.Length);
-                writer.Close();
 
-                //接受返回来的数据
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                Stream stream = response.GetResponseStream();
-                StreamReader reader = new StreamReader(stream, Encoding.GetEncoding(encodingString));
-                string value = reader.ReadToEnd();
-
-                reader.Close();
-                stream.Close();
-                response.Close();
-                HttpCustom_html = value;
-                return value;
-            }
-            catch (Exception)
-            {
-                return "";
-            }
-        }
 
         /// <summary>
         /// Post提交数据
@@ -130,7 +134,7 @@ namespace postApiTools.lib
                 HttpWebResponse response = (HttpWebResponse)ex.Response;
                 if (response == null)
                 {
-                    return "连接被终止...";
+                    return errorDataShow;
                 }
                 HttpCustom_Response_Headers_Object = response.Headers;//写入数据到WebHeaderCollection
                 HttpCustom_code = lib.pBase.enumToValueInt(typeof(pHttpCode.HttpStatusCode), response.StatusCode.ToString()).ToString();//赋值状态码
@@ -217,7 +221,7 @@ namespace postApiTools.lib
                 HttpWebResponse response = (HttpWebResponse)ex.Response;
                 if (response == null)
                 {
-                    return "连接被终止...";
+                    return errorDataShow;
                 }
                 HttpCustom_Response_Headers_Object = response.Headers;//写入数据到WebHeaderCollection
                 HttpCustom_code = lib.pBase.enumToValueInt(typeof(pHttpCode.HttpStatusCode), response.StatusCode.ToString()).ToString();//赋值状态码
@@ -227,44 +231,6 @@ namespace postApiTools.lib
             }
         }
 
-
-
-
-
-        /// <summary>
-        /// 后台发送GET请求
-        /// </summary>
-        /// <param name="url">服务器地址</param>
-        /// <param name="data">发送的数据</param>
-        /// <returns></returns>
-        public static string HttpGet(string url, string data)
-        {
-            try
-            {
-                //创建Get请求
-                url = url + (data == "" ? "" : "?") + data;
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-                request.Method = "GET";
-                request.ContentType = "text/html;charset=UTF-8";
-
-                //接受返回来的数据
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                //Stream stream = response.GetResponseStream();
-                Stream stream = new System.IO.Compression.GZipStream(response.GetResponseStream(), System.IO.Compression.CompressionMode.Decompress);
-                StreamReader streamReader = new StreamReader(stream, Encoding.GetEncoding("utf-8"));
-                string retString = streamReader.ReadToEnd();
-
-                streamReader.Close();
-                stream.Close();
-                response.Close();
-
-                return retString;
-            }
-            catch (Exception)
-            {
-                return "";
-            }
-        }
 
         /// <summary>
         /// 自动转编码 获取网页源码

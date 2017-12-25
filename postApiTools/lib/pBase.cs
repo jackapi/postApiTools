@@ -7,8 +7,22 @@ using System.Threading.Tasks;
 
 namespace postApiTools.lib
 {
+    using System.IO;
     public class pBase
     {
+        /// <summary>
+        /// 获取参数类型
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string dataGridViewHttpDataValueToTypeListName(string str)
+        {
+            if (File.Exists(str))
+            {
+                return "文件";
+            }
+            return "字符串";
+        }
         /// <summary>
         /// 判断判断是否为字符串
         /// </summary>

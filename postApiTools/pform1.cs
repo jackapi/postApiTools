@@ -136,52 +136,124 @@ namespace postApiTools
 
 
         /// <summary>
-        /// dataview转object
+        /// 判断是否为文件上传
+        /// </summary>
+        /// <param name="dd"></param>
+        /// <returns></returns>
+        public static bool isDataViewTypeFile(DataGridView dd)
+        {
+            string[,] array = dataViewToStringArray(dd);
+            for (int i = 0; i < array.GetLength(0); i++)
+            {
+                if (array[i, 3] == "文件")
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        /// <summary>
+        /// dataview转object string[,]
         /// </summary>
         /// <param name="dd"></param>
         /// <returns></returns>
         public static object dataViewToObjectArray(DataGridView dd)
         {
             int row = dd.RowCount - 1;
-            object[,] array = new object[row, 3];
+            int line = dd.ColumnCount;
+            object[,] array = new object[row, line];
             for (int i = 0; i < row; i++)
             {
-                if (dd.Rows[i].Cells[0].Value != null)
+                for (int g = 0; g < line; g++)
                 {
-                    //list.Add(dd.Rows[i].Cells[0].Value.ToString());
-                    array[i, 0] = dd.Rows[i].Cells[0].Value.ToString();
-                }
-                else
-                {
-                    //list.Add("");
-                    array[i, 0] = "";
-                }
-
-                if (dd.Rows[i].Cells[1].Value != null)
-                {
-                    //list.Add(dd.Rows[i].Cells[1].Value.ToString());
-                    array[i, 1] = dd.Rows[i].Cells[1].Value.ToString();
-                }
-                else
-                {
-                    //list.Add("");
-                    array[i, 1] = "";
-                }
-
-                if (dd.Rows[i].Cells[2].Value != null)
-                {
-                    //list.Add(dd.Rows[i].Cells[2].Value.ToString());
-                    array[i, 2] = dd.Rows[i].Cells[2].Value.ToString();
-                }
-                else
-                {
-                    //list.Add("");
-                    array[i, 2] = "";
+                    if (dd.Rows[i].Cells[g].Value != null)
+                    {
+                        //list.Add(dd.Rows[i].Cells[0].Value.ToString());
+                        array[i, g] = dd.Rows[i].Cells[g].Value.ToString();
+                    }
+                    else
+                    {
+                        //list.Add("");
+                        array[i, 0] = "";
+                    }
                 }
             }
             return array;
         }
 
+        /// <summary>
+        /// dataview转string[,]
+        /// </summary>
+        /// <param name="dd"></param>
+        /// <returns></returns>
+        public static string[,] dataViewToStringArray(DataGridView dd)
+        {
+            int row = dd.RowCount - 1;
+            int line = dd.ColumnCount;
+            string[,] array = new string[row, line];
+            for (int i = 0; i < row; i++)
+            {
+                for (int g = 0; g < line; g++)
+                {
+                    if (dd.Rows[i].Cells[g].Value != null)
+                    {
+                        //list.Add(dd.Rows[i].Cells[0].Value.ToString());
+                        array[i, g] = dd.Rows[i].Cells[g].Value.ToString();
+                    }
+                    else
+                    {
+                        //list.Add("");
+                        array[i, g] = "";
+                    }
+                }
+            }
+            return array;
+        }
+
+        /// <summary>
+        /// postfile 方法
+        /// </summary>
+        /// <param name="dd"></param>
+        /// <returns></returns>
+        public static string postFile(string url, DataGridView dd)
+        {
+            string[,] array = dataViewToStringArray(dd);
+            int fileNumber = 0;
+            int textNumber = 0;
+            for (int i = 0; i < array.GetLength(0); i++)
+            {
+                if (array[i, 3] == "文件")
+                {
+                    fileNumber++;
+                }
+                if (array[i, 3] == "字符串")
+                {
+                    textNumber++;
+                }
+            }
+            int fileI = 0;
+            int textI = 0;
+            string[,] files = new string[fileNumber, 2];
+            string[,] values = new string[textNumber, 2];
+            for (int i = 0; i < array.GetLength(0); i++)
+            {
+                if (array[i, 3] == "文件")
+                {
+                    files[fileI, 0] = array[i, 0];
+                    files[fileI, 1] = array[i, 1];
+                    fileI++;
+                }
+                if (array[i, 3] == "字符串")
+                {
+                    values[textI, 0] = array[i, 0];
+                    values[textI, 1] = array[i, 1];
+                    textI++;
+                }
+            }
+            //string str = lib.phttp.Post(new Uri(url), values, files);
+            string str = lib.phttp.HttpUploadFile(url, values, files);
+            return str;
+        }
 
         /// <summary>
         /// dataview dataurl 转 多维数组
@@ -408,21 +480,38 @@ namespace postApiTools
         /// <param name="dd"></param>
         public static void dataviewUrlDataRead(DataGridView dd)
         {
-            lib.pIni ini = new lib.pIni(Config.configIni);
-            string str = ini.IniReadValue("form1", "dataviewUrlDataWrite");
-            str = lib.pBase64.base64ToString(str);
-            object[,] obj = pJson.jsonStrToObjectArray(str, 3);
-            dd.Invalidate();
-            dd.Rows.Clear();//清理行数
-            if (obj.GetLength(0) > 0)
+            try
             {
-                dd.Rows.Add(obj.GetLength(0));
-                for (int i = 0; i < obj.GetLength(0); i++)
+                lib.pIni ini = new lib.pIni(Config.configIni);
+                string str = ini.IniReadValue("form1", "dataviewUrlDataWrite");
+                str = lib.pBase64.base64ToString(str);
+                object[,] obj = pJson.jsonStrToObjectArray(str, 3);
+                dd.Invalidate();
+                dd.Rows.Clear();//清理行数
+                if (obj.GetLength(0) > 0)
                 {
-                    dd.Rows[i].Cells[0].Value = obj[i, 0];
-                    dd.Rows[i].Cells[1].Value = obj[i, 1];
-                    dd.Rows[i].Cells[2].Value = obj[i, 2];
+                    dd.Rows.Add(obj.GetLength(0));
+                    for (int i = 0; i < obj.GetLength(0); i++)
+                    {
+                        dd.Rows[i].Cells[0].Value = obj[i, 0];
+                        dd.Rows[i].Cells[1].Value = obj[i, 1];
+                        dd.Rows[i].Cells[2].Value = obj[i, 2];
+                        if (File.Exists(obj[i, 1].ToString()))
+                        {
+                            dd.Rows[i].Cells[3].Value = "文件";
+                        }
+                        else
+                        {
+                            dd.Rows[i].Cells[3].Value = "字符串";
+                        }
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                pLogs.logs(ex.ToString());
+                dd.Invalidate();
+                dd.Rows.Clear();//清理行数
             }
         }
         /// <summary>

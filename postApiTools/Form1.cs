@@ -21,7 +21,7 @@ namespace postApiTools
             InitializeComponent();
             System.Windows.Forms.Control.CheckForIllegalCrossThreadCalls = false;
         }
-
+        public int loadInt = 1;
         Thread formLoadTh = null;
         /// <summary>
         /// 界面启动时运行
@@ -48,9 +48,11 @@ namespace postApiTools
             pform1.textBoxUrlRead(textBox_url);
             pform1.httpHtmlTypeDataRead(comboBox_html_show_type);
             pform1.httpTypeWriteRead(comboBox_url_type);
-            pform1.dataviewUrlDataRead(dataGridView_http_data);
+            pform1.dataviewUrlDataRead(dataGridView_http_data);//请求参数列表
             pHistory.dataViewRefresh(dataGridView_history);//刷新历史记录
             pSetting.refreshTemplateList(comboBox_template);//刷新模板列表
+            pForm1TreeView.showMainData(treeView_save_list);//显示项目列表树
+            loadInt = 0;
         }
 
         Thread testTh = null;
@@ -107,7 +109,15 @@ namespace postApiTools
             }
             else if (comboBox_url_type.Text == "POST")
             {
-                html = lib.phttp.PostWebRequestCustom(url, urldata, encoding);//get请求获取
+                if (pform1.isDataViewTypeFile(dataGridView_http_data))
+                {
+                    html = pform1.postFile(url, dataGridView_http_data);//post文件
+                }
+                else
+                {
+                    html = lib.phttp.PostWebRequestCustom(url, urldata, encoding);//get请求获取 }
+
+                }
             }
             pform1.dataViewResponseShow(dataGridView_Response);//显示返回报文头
             pform1.webViewShow(webBrowser1, html);//浏览器显示
@@ -187,7 +197,12 @@ namespace postApiTools
         /// <param name="e"></param>
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            System.Environment.Exit(0);
+            try { System.Environment.Exit(0); }
+            catch (Exception ex)
+            {
+                pLogs.logs(ex.ToString());
+            }
+
         }
 
         private void button_setting_Click(object sender, EventArgs e)
@@ -212,6 +227,7 @@ namespace postApiTools
         /// <param name="e"></param>
         private void button_test_creation_doc_Click(object sender, EventArgs e)
         {
+            string content = pform1.postFile("http://test.cn", dataGridView_http_data);
         }
         /// <summary>
         /// 默认浏览器打开
@@ -233,19 +249,7 @@ namespace postApiTools
             Support support = new Support();
             support.ShowDialog();
         }
-        /// <summary>
-        /// 操作单元格 删除
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void dataGridView_http_data_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
 
-            if (e.RowIndex >= 0 && e.ColumnIndex == 4)
-            {
-                dataGridView_http_data.Rows.Remove(dataGridView_http_data.Rows[e.RowIndex]);//删除单元格
-            }
-        }
 
         /// <summary>
         /// 记录窗口大小变化
@@ -302,6 +306,110 @@ namespace postApiTools
         /// <param name="e"></param>
         private void button_save_api_Click(object sender, EventArgs e)
         {
+            treeView_save_list.SelectedNode.Nodes.Add("aas", "Text");
+        }
+
+        /// <summary>
+        /// 请求参数单元格改变事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dataGridView_http_data_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            //textBox_html.Text = e.RowIndex.ToString() + " " + e.ColumnIndex.ToString();
+            //if (e.ColumnIndex == 3 && e.RowIndex != -1 && loadInt == 0)//列内容改变事件
+            //{
+            //    if (dataGridView_http_data.Rows[e.RowIndex].Cells[3].Value.ToString() == "文件")//改变为文件
+            //    {
+            //        //DataGridViewCheckBoxColumn colDel = new DataGridViewCheckBoxColumn();
+            //        DataGridViewButtonColumn button = new DataGridViewButtonColumn();
+            //        button.Name = "Column2";
+            //        button.HeaderText = "值(文件)";
+            //        dataGridView_http_data.Columns.RemoveAt(1);
+            //        dataGridView_http_data.Columns.Insert(1, button);
+            //        //dataGridView_http_data.Rows[e.RowIndex].Cells[0].
+            //    }
+            //    else if (dataGridView_http_data.Rows[e.RowIndex].Cells[3].Value.ToString() == "字符串")//改变为字符串
+            //    {
+            //        DataGridViewTextBoxColumn clumn = new DataGridViewTextBoxColumn();
+            //        clumn.Name = "Column2";
+            //        clumn.HeaderText = "值(字符串)";
+            //        dataGridView_http_data.Columns.RemoveAt(1);
+            //        dataGridView_http_data.Columns.Insert(1, clumn);
+            //    }
+            //}
+        }
+
+        /// <summary>
+        /// 请求参数单元格删除 单击单元格内容
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dataGridView_http_data_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+            if (e.RowIndex >= 0 && e.ColumnIndex == 4)
+            {
+                dataGridView_http_data.Rows.Remove(dataGridView_http_data.Rows[e.RowIndex]);//删除单元格
+            }
+        }
+        /// <summary>
+        /// 单击单元格内容事件（打开文件对话框）
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dataGridView_http_data_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (dataGridView_http_data.Rows[e.RowIndex].Cells[3].Value == null && dataGridView_http_data.Rows[e.RowIndex].Cells[4].Value == null)
+            {//判断是否点击了 空白
+                return;
+            }
+            if (dataGridView_http_data.Rows[e.RowIndex].Cells[4].Value.ToString() == "删除")//创建新的列指定类型
+            {
+                if (dataGridView_http_data.Rows[e.RowIndex].Cells[3].Value == null)
+                {
+                    dataGridView_http_data.Rows[e.RowIndex].Cells[3].Value = "字符串";
+                }
+            }
+            if (e.RowIndex >= 0 && e.ColumnIndex == 1 && dataGridView_http_data.Rows[e.RowIndex].Cells[3].Value.ToString() == "文件")//只有选择文件时候才打开
+            {
+                OpenFileDialog ofd = new OpenFileDialog();
+                ofd.Filter = "所有文件|*.*";
+                ofd.ValidateNames = true;
+                ofd.CheckPathExists = true;
+                ofd.CheckFileExists = true;
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    string strFileName = ofd.FileName;
+                    //其他代码
+                    dataGridView_http_data.Rows[e.RowIndex].Cells[1].Value = strFileName;
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// 添加保存项目
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button_add_project_Click(object sender, EventArgs e)
+        {
+            string name = "";
+            string desc = "";
+            AddProject add = new AddProject();
+            add.ShowDialog();
+            name = add.projectName;
+            desc = add.projectDesc;
+            add.Close();
+            if (pForm1TreeView.insertMain(name, desc))
+            {
+                treeView_save_list.Nodes.Add(add.projectName);
+            }
+            else
+            {
+                MessageBox.Show("创建项目失败");
+            }
 
         }
     }
