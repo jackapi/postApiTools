@@ -45,13 +45,13 @@ namespace postApiTools
             this.Height = size[1];
             //this.StartPosition = FormStartPosition.WindowsDefaultLocation;
             comboBox_bm.Text = "UTF-8";
-            pform1.textBoxUrlRead(textBox_url);
-            pform1.httpHtmlTypeDataRead(comboBox_html_show_type);
-            pform1.httpTypeWriteRead(comboBox_url_type);
+            pform1.textBoxUrlRead(textBox_url);//url读取
+            pform1.httpHtmlTypeDataRead(comboBox_html_show_type);//httpHTML源码类型
+            pform1.httpTypeWriteRead(comboBox_url_type);//http类型
             pform1.dataviewUrlDataRead(dataGridView_http_data);//请求参数列表
             pHistory.dataViewRefresh(dataGridView_history);//刷新历史记录
             pSetting.refreshTemplateList(comboBox_template);//刷新模板列表
-            pForm1TreeView.showMainData(treeView_save_list);//显示项目列表树
+            pForm1TreeView.showMainData(treeView_save_list, imageList_treeview);//显示项目列表树
             loadInt = 0;
         }
 
@@ -306,7 +306,13 @@ namespace postApiTools
         /// <param name="e"></param>
         private void button_save_api_Click(object sender, EventArgs e)
         {
-            treeView_save_list.SelectedNode.Nodes.Add("aas", "Text");
+            string url = textBox_url.Text;
+            string urlType = comboBox_url_type.Text;
+            string[,] urlData = pform1.dataViewToStringArray(dataGridView_http_data);
+            SavePostApi api = new SavePostApi(urlData, url, urlType, textBox_doc.Text);
+            api.ShowDialog();
+            pForm1TreeView.showMainData(treeView_save_list, imageList_treeview);//显示项目列表树
+
         }
 
         /// <summary>
@@ -400,17 +406,89 @@ namespace postApiTools
             AddProject add = new AddProject();
             add.ShowDialog();
             name = add.projectName;
+            if (name == "")
+            {
+                return;
+            }
             desc = add.projectDesc;
             add.Close();
             if (pForm1TreeView.insertMain(name, desc))
             {
-                treeView_save_list.Nodes.Add(add.projectName);
+                pForm1TreeView.showMainData(treeView_save_list, imageList_treeview);//刷新树
             }
             else
             {
-                MessageBox.Show("创建项目失败");
+                MessageBox.Show("创建项目失败:" + pForm1TreeView.error);
             }
 
+        }
+
+        /// <summary>
+        /// 右键菜单点击事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void contextMenuStrip_save_list_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            if (e.ClickedItem.Text == "添加")
+            {
+                AddPid pid = new AddPid();
+                pid.ShowDialog();
+                string name = pid.name;
+                pid.Close();
+                if (name == "") { return; }
+                pForm1TreeView.insertPid(treeView_save_list, name);
+                if (pForm1TreeView.error != "")
+                {
+                    MessageBox.Show(pForm1TreeView.error);
+                    return;
+                }
+            }
+            if (e.ClickedItem.Text == "删除")
+            {
+                if (!pForm1TreeView.deleteTreeViewSetting(treeView_save_list))
+                {
+                    MessageBox.Show(pForm1TreeView.error);
+                }
+                pForm1TreeView.showMainData(treeView_save_list, imageList_treeview);//显示项目列表树
+            }
+            if (e.ClickedItem.Text == "重命名")
+            {
+                AddPid pid = new AddPid(treeView_save_list.SelectedNode.Text);
+                pid.Text = "重命名";
+                pid.ShowDialog();
+                string name = pid.name;
+                pid.Close();
+                if (name == "") { return; }
+                pForm1TreeView.updateNameTreeViewSetting(treeView_save_list, name);
+                pForm1TreeView.showMainData(treeView_save_list, imageList_treeview);//显示项目列表树
+            }
+        }
+        /// <summary>
+        /// 刷新树
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button_treeview_refresh_Click(object sender, EventArgs e)
+        {
+
+            pForm1TreeView.showMainData(treeView_save_list, imageList_treeview);//显示项目列表树
+        }
+        /// <summary>
+        /// 双击treeView_save_list事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void treeView_save_list_DoubleClick(object sender, EventArgs e)
+        {
+            string hash = treeView_save_list.SelectedNode.Name;
+            string name = treeView_save_list.SelectedNode.Text;
+            pForm1TreeView.openApiDataShow(treeView_save_list, textBox_url, comboBox_url_type, dataGridView_http_data);
+        }
+
+        private void dataGridView_http_data_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+            return;
         }
     }
 }

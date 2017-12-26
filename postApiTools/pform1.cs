@@ -534,5 +534,31 @@ namespace postApiTools
         {
         }
         //---------------------------------------------------历史--------------------------------------------------
+
+        /// <summary>
+        /// object二维数组显示到urldata dataview界面
+        /// </summary>
+        /// <param name="dd"></param>
+        /// <param name="obj"></param>
+        public static void objecArrayToDataViewShow(DataGridView dd, object[,] obj)
+        {
+            dd.Invoke(new Action(() =>
+            {
+                dd.Invalidate();
+                dd.Rows.Clear();//清理行数
+                if (obj.GetLength(0) > 0)
+                {
+                    dd.Rows.Add(obj.GetLength(0));
+                    for (int i = 0; i < obj.GetLength(0); i++)
+                    {
+                        for (int g = 0; g < obj.GetLength(1); g++)
+                        {
+                            dd.Rows[i].Cells[g].Value = obj[i, g];
+                        }
+                    }
+                }
+            }));
+        }
+
     }
 }

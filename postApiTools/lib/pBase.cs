@@ -11,6 +11,15 @@ namespace postApiTools.lib
     public class pBase
     {
         /// <summary>
+        /// gethash
+        /// </summary>
+        /// <returns></returns>
+        public static string getHash()
+        {
+            Random r = new Random();
+            return lib.pBase.CreateMD5Hash(lib.pDate.getTimeStamp().ToString() + r.Next(10000, 99999).ToString());
+        }
+        /// <summary>
         /// 获取参数类型
         /// </summary>
         /// <param name="str"></param>

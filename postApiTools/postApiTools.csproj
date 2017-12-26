@@ -54,6 +54,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddPid.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddPid.Designer.cs">
+      <DependentUpon>AddPid.cs</DependentUpon>
+    </Compile>
     <Compile Include="AddProject.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -102,6 +108,9 @@
     <Compile Include="Support.Designer.cs">
       <DependentUpon>Support.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="AddPid.resx">
+      <DependentUpon>AddPid.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AddProject.resx">
       <DependentUpon>AddProject.cs</DependentUpon>
     </EmbeddedResource>
@@ -118,6 +127,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="SavePostApi.resx">
+      <DependentUpon>SavePostApi.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Setting.resx">
       <DependentUpon>Setting.cs</DependentUpon>
     </EmbeddedResource>
@@ -141,6 +153,8 @@
     <Content Include="data\template.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="images\article_64px_1188314_easyicon.net.ico" />
+    <Content Include="images\folder_64px_1207828_easyicon.net.ico" />
     <Content Include="license.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

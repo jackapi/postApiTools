@@ -49,7 +49,7 @@
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.dataGridView3 = new System.Windows.Forms.DataGridView();
+            this.dataGridView_header = new System.Windows.Forms.DataGridView();
             this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -78,16 +78,18 @@
             this.tabControl3 = new System.Windows.Forms.TabControl();
             this.tabPage7 = new System.Windows.Forms.TabPage();
             this.tabPage8 = new System.Windows.Forms.TabPage();
+            this.button_treeview_refresh = new System.Windows.Forms.Button();
             this.button_add_project = new System.Windows.Forms.Button();
             this.treeView_save_list = new System.Windows.Forms.TreeView();
             this.contextMenuStrip_save_list = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.label6 = new System.Windows.Forms.Label();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.label7 = new System.Windows.Forms.Label();
             this.button_save_api = new System.Windows.Forms.Button();
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.imageList_treeview = new System.Windows.Forms.ImageList(this.components);
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_http_data)).BeginInit();
@@ -95,7 +97,7 @@
             this.tabPage4.SuspendLayout();
             this.tabPage5.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_header)).BeginInit();
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Response)).BeginInit();
             this.tabPage6.SuspendLayout();
@@ -108,7 +110,7 @@
             // 
             // button_test
             // 
-            this.button_test.Location = new System.Drawing.Point(764, 7);
+            this.button_test.Location = new System.Drawing.Point(871, 3);
             this.button_test.Name = "button_test";
             this.button_test.Size = new System.Drawing.Size(75, 25);
             this.button_test.TabIndex = 0;
@@ -119,7 +121,7 @@
             // label1
             // 
             this.label1.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(146, 12);
+            this.label1.Location = new System.Drawing.Point(253, 8);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(35, 18);
             this.label1.TabIndex = 1;
@@ -127,7 +129,7 @@
             // 
             // textBox_url
             // 
-            this.textBox_url.Location = new System.Drawing.Point(187, 9);
+            this.textBox_url.Location = new System.Drawing.Point(294, 5);
             this.textBox_url.Name = "textBox_url";
             this.textBox_url.Size = new System.Drawing.Size(571, 21);
             this.textBox_url.TabIndex = 2;
@@ -141,7 +143,7 @@
             this.comboBox_url_type.Items.AddRange(new object[] {
             "GET",
             "POST"});
-            this.comboBox_url_type.Location = new System.Drawing.Point(12, 9);
+            this.comboBox_url_type.Location = new System.Drawing.Point(119, 5);
             this.comboBox_url_type.Name = "comboBox_url_type";
             this.comboBox_url_type.Size = new System.Drawing.Size(121, 20);
             this.comboBox_url_type.TabIndex = 3;
@@ -155,10 +157,10 @@
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage6);
-            this.tabControl1.Location = new System.Drawing.Point(191, 65);
+            this.tabControl1.Location = new System.Drawing.Point(263, 66);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(919, 591);
+            this.tabControl1.Size = new System.Drawing.Size(993, 592);
             this.tabControl1.TabIndex = 4;
             // 
             // tabPage1
@@ -168,7 +170,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(911, 565);
+            this.tabPage1.Size = new System.Drawing.Size(985, 566);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "数据";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -190,11 +192,12 @@
             this.dataGridView_http_data.Name = "dataGridView_http_data";
             this.dataGridView_http_data.RowHeadersVisible = false;
             this.dataGridView_http_data.RowTemplate.Height = 23;
-            this.dataGridView_http_data.Size = new System.Drawing.Size(911, 151);
+            this.dataGridView_http_data.Size = new System.Drawing.Size(985, 151);
             this.dataGridView_http_data.TabIndex = 8;
             this.dataGridView_http_data.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_http_data_CellClick);
             this.dataGridView_http_data.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_http_data_CellContentClick);
             this.dataGridView_http_data.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_http_data_CellValueChanged);
+            this.dataGridView_http_data.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dataGridView_http_data_DataError);
             // 
             // Column1
             // 
@@ -240,7 +243,7 @@
             this.tabControl2.Location = new System.Drawing.Point(6, 157);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(899, 402);
+            this.tabControl2.Size = new System.Drawing.Size(976, 402);
             this.tabControl2.TabIndex = 0;
             // 
             // tabPage4
@@ -250,7 +253,7 @@
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(891, 376);
+            this.tabPage4.Size = new System.Drawing.Size(968, 376);
             this.tabPage4.TabIndex = 0;
             this.tabPage4.Text = "源码";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -282,7 +285,7 @@
             this.textBox_html.Multiline = true;
             this.textBox_html.Name = "textBox_html";
             this.textBox_html.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox_html.Size = new System.Drawing.Size(891, 350);
+            this.textBox_html.Size = new System.Drawing.Size(968, 350);
             this.textBox_html.TabIndex = 0;
             this.textBox_html.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_html_KeyPress);
             // 
@@ -292,7 +295,7 @@
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(891, 376);
+            this.tabPage5.Size = new System.Drawing.Size(968, 376);
             this.tabPage5.TabIndex = 1;
             this.tabPage5.Text = "浏览器";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -305,36 +308,36 @@
             this.webBrowser1.Location = new System.Drawing.Point(3, 0);
             this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(885, 373);
+            this.webBrowser1.Size = new System.Drawing.Size(962, 373);
             this.webBrowser1.TabIndex = 0;
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.dataGridView3);
+            this.tabPage2.Controls.Add(this.dataGridView_header);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(911, 565);
+            this.tabPage2.Size = new System.Drawing.Size(985, 566);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "提交报文";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // dataGridView3
+            // dataGridView_header
             // 
-            this.dataGridView3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.dataGridView_header.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridView3.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView3.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridView_header.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView_header.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column4,
             this.Column5,
             this.Column6});
-            this.dataGridView3.Location = new System.Drawing.Point(3, 0);
-            this.dataGridView3.Name = "dataGridView3";
-            this.dataGridView3.RowHeadersVisible = false;
-            this.dataGridView3.RowTemplate.Height = 23;
-            this.dataGridView3.Size = new System.Drawing.Size(902, 559);
-            this.dataGridView3.TabIndex = 0;
+            this.dataGridView_header.Location = new System.Drawing.Point(3, 0);
+            this.dataGridView_header.Name = "dataGridView_header";
+            this.dataGridView_header.RowHeadersVisible = false;
+            this.dataGridView_header.RowTemplate.Height = 23;
+            this.dataGridView_header.Size = new System.Drawing.Size(982, 560);
+            this.dataGridView_header.TabIndex = 0;
             // 
             // Column4
             // 
@@ -359,7 +362,7 @@
             this.tabPage3.Controls.Add(this.dataGridView_Response);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(911, 565);
+            this.tabPage3.Size = new System.Drawing.Size(985, 566);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "返回报文";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -378,7 +381,7 @@
             this.dataGridView_Response.Name = "dataGridView_Response";
             this.dataGridView_Response.RowHeadersVisible = false;
             this.dataGridView_Response.RowTemplate.Height = 23;
-            this.dataGridView_Response.Size = new System.Drawing.Size(905, 562);
+            this.dataGridView_Response.Size = new System.Drawing.Size(982, 562);
             this.dataGridView_Response.TabIndex = 0;
             // 
             // Column7
@@ -405,7 +408,7 @@
             this.tabPage6.Location = new System.Drawing.Point(4, 22);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(911, 565);
+            this.tabPage6.Size = new System.Drawing.Size(985, 566);
             this.tabPage6.TabIndex = 3;
             this.tabPage6.Text = "生成文档";
             this.tabPage6.UseVisualStyleBackColor = true;
@@ -416,11 +419,11 @@
             this.textBox_doc.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_doc.Location = new System.Drawing.Point(6, 0);
+            this.textBox_doc.Location = new System.Drawing.Point(-4, 0);
             this.textBox_doc.Multiline = true;
             this.textBox_doc.Name = "textBox_doc";
             this.textBox_doc.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox_doc.Size = new System.Drawing.Size(902, 562);
+            this.textBox_doc.Size = new System.Drawing.Size(993, 562);
             this.textBox_doc.TabIndex = 0;
             this.textBox_doc.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_doc_KeyPress);
             // 
@@ -428,8 +431,9 @@
             // 
             this.dataGridView_history.AllowUserToResizeColumns = false;
             this.dataGridView_history.AllowUserToResizeRows = false;
-            this.dataGridView_history.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+            this.dataGridView_history.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView_history.ColumnHeadersHeight = 30;
             this.dataGridView_history.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column10,
@@ -439,7 +443,7 @@
             this.dataGridView_history.RowHeadersVisible = false;
             this.dataGridView_history.RowTemplate.Height = 23;
             this.dataGridView_history.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView_history.Size = new System.Drawing.Size(173, 589);
+            this.dataGridView_history.Size = new System.Drawing.Size(247, 591);
             this.dataGridView_history.TabIndex = 0;
             this.dataGridView_history.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_history_CellClick);
             // 
@@ -455,11 +459,11 @@
             this.Column11.HeaderText = "URL";
             this.Column11.Name = "Column11";
             this.Column11.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Column11.Width = 90;
+            this.Column11.Width = 200;
             // 
             // button_creation_doc
             // 
-            this.button_creation_doc.Location = new System.Drawing.Point(549, 37);
+            this.button_creation_doc.Location = new System.Drawing.Point(605, 34);
             this.button_creation_doc.Name = "button_creation_doc";
             this.button_creation_doc.Size = new System.Drawing.Size(75, 23);
             this.button_creation_doc.TabIndex = 5;
@@ -469,7 +473,7 @@
             // 
             // button_test_creation_doc
             // 
-            this.button_test_creation_doc.Location = new System.Drawing.Point(629, 37);
+            this.button_test_creation_doc.Location = new System.Drawing.Point(685, 34);
             this.button_test_creation_doc.Name = "button_test_creation_doc";
             this.button_test_creation_doc.Size = new System.Drawing.Size(75, 23);
             this.button_test_creation_doc.TabIndex = 5;
@@ -481,14 +485,14 @@
             // 
             this.comboBox_template.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox_template.FormattingEnabled = true;
-            this.comboBox_template.Location = new System.Drawing.Point(463, 39);
+            this.comboBox_template.Location = new System.Drawing.Point(519, 36);
             this.comboBox_template.Name = "comboBox_template";
             this.comboBox_template.Size = new System.Drawing.Size(79, 20);
             this.comboBox_template.TabIndex = 6;
             // 
             // button_setting
             // 
-            this.button_setting.Location = new System.Drawing.Point(710, 37);
+            this.button_setting.Location = new System.Drawing.Point(766, 34);
             this.button_setting.Name = "button_setting";
             this.button_setting.Size = new System.Drawing.Size(75, 23);
             this.button_setting.TabIndex = 7;
@@ -506,7 +510,7 @@
             "GB2312",
             "GB18030",
             "Unicode"});
-            this.comboBox_bm.Location = new System.Drawing.Point(848, 9);
+            this.comboBox_bm.Location = new System.Drawing.Point(955, 5);
             this.comboBox_bm.Name = "comboBox_bm";
             this.comboBox_bm.Size = new System.Drawing.Size(92, 20);
             this.comboBox_bm.TabIndex = 8;
@@ -514,7 +518,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(791, 41);
+            this.label2.Location = new System.Drawing.Point(847, 38);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(35, 12);
             this.label2.TabIndex = 9;
@@ -525,7 +529,7 @@
             this.label_code.AutoSize = true;
             this.label_code.Font = new System.Drawing.Font("宋体", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label_code.ForeColor = System.Drawing.Color.Green;
-            this.label_code.Location = new System.Drawing.Point(832, 35);
+            this.label_code.Location = new System.Drawing.Point(888, 32);
             this.label_code.Name = "label_code";
             this.label_code.Size = new System.Drawing.Size(43, 21);
             this.label_code.TabIndex = 10;
@@ -534,7 +538,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(885, 41);
+            this.label4.Location = new System.Drawing.Point(941, 38);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(35, 12);
             this.label4.TabIndex = 11;
@@ -546,7 +550,7 @@
             this.label_runtime.AutoSize = true;
             this.label_runtime.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label_runtime.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this.label_runtime.Location = new System.Drawing.Point(924, 38);
+            this.label_runtime.Location = new System.Drawing.Point(980, 35);
             this.label_runtime.Name = "label_runtime";
             this.label_runtime.Size = new System.Drawing.Size(16, 16);
             this.label_runtime.TabIndex = 12;
@@ -555,7 +559,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(424, 44);
+            this.label3.Location = new System.Drawing.Point(480, 41);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(29, 12);
             this.label3.TabIndex = 13;
@@ -564,7 +568,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(235, 42);
+            this.label5.Location = new System.Drawing.Point(291, 39);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(53, 12);
             this.label5.TabIndex = 14;
@@ -572,7 +576,7 @@
             // 
             // textBox_api_name
             // 
-            this.textBox_api_name.Location = new System.Drawing.Point(293, 38);
+            this.textBox_api_name.Location = new System.Drawing.Point(349, 35);
             this.textBox_api_name.Name = "textBox_api_name";
             this.textBox_api_name.Size = new System.Drawing.Size(125, 21);
             this.textBox_api_name.TabIndex = 15;
@@ -583,10 +587,10 @@
             | System.Windows.Forms.AnchorStyles.Left)));
             this.tabControl3.Controls.Add(this.tabPage7);
             this.tabControl3.Controls.Add(this.tabPage8);
-            this.tabControl3.Location = new System.Drawing.Point(-1, 35);
+            this.tabControl3.Location = new System.Drawing.Point(-1, 39);
             this.tabControl3.Name = "tabControl3";
             this.tabControl3.SelectedIndex = 0;
-            this.tabControl3.Size = new System.Drawing.Size(186, 621);
+            this.tabControl3.Size = new System.Drawing.Size(258, 623);
             this.tabControl3.TabIndex = 16;
             // 
             // tabPage7
@@ -595,22 +599,33 @@
             this.tabPage7.Location = new System.Drawing.Point(4, 22);
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage7.Size = new System.Drawing.Size(178, 595);
+            this.tabPage7.Size = new System.Drawing.Size(250, 597);
             this.tabPage7.TabIndex = 0;
             this.tabPage7.Text = "历史";
             this.tabPage7.UseVisualStyleBackColor = true;
             // 
             // tabPage8
             // 
+            this.tabPage8.Controls.Add(this.button_treeview_refresh);
             this.tabPage8.Controls.Add(this.button_add_project);
             this.tabPage8.Controls.Add(this.treeView_save_list);
             this.tabPage8.Location = new System.Drawing.Point(4, 22);
             this.tabPage8.Name = "tabPage8";
             this.tabPage8.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage8.Size = new System.Drawing.Size(178, 595);
+            this.tabPage8.Size = new System.Drawing.Size(250, 597);
             this.tabPage8.TabIndex = 1;
             this.tabPage8.Text = "保存";
             this.tabPage8.UseVisualStyleBackColor = true;
+            // 
+            // button_treeview_refresh
+            // 
+            this.button_treeview_refresh.Location = new System.Drawing.Point(202, 3);
+            this.button_treeview_refresh.Name = "button_treeview_refresh";
+            this.button_treeview_refresh.Size = new System.Drawing.Size(45, 23);
+            this.button_treeview_refresh.TabIndex = 10;
+            this.button_treeview_refresh.Text = "刷新";
+            this.button_treeview_refresh.UseVisualStyleBackColor = true;
+            this.button_treeview_refresh.Click += new System.EventHandler(this.button_treeview_refresh_Click);
             // 
             // button_add_project
             // 
@@ -624,11 +639,15 @@
             // 
             // treeView_save_list
             // 
+            this.treeView_save_list.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.treeView_save_list.ContextMenuStrip = this.contextMenuStrip_save_list;
-            this.treeView_save_list.Location = new System.Drawing.Point(0, 30);
+            this.treeView_save_list.Location = new System.Drawing.Point(0, 27);
             this.treeView_save_list.Name = "treeView_save_list";
-            this.treeView_save_list.Size = new System.Drawing.Size(182, 565);
+            this.treeView_save_list.Size = new System.Drawing.Size(254, 568);
             this.treeView_save_list.TabIndex = 2;
+            this.treeView_save_list.DoubleClick += new System.EventHandler(this.treeView_save_list_DoubleClick);
             // 
             // contextMenuStrip_save_list
             // 
@@ -637,25 +656,32 @@
             this.toolStripMenuItem3,
             this.toolStripMenuItem2});
             this.contextMenuStrip_save_list.Name = "contextMenuStrip_save_list";
-            this.contextMenuStrip_save_list.Size = new System.Drawing.Size(153, 92);
+            this.contextMenuStrip_save_list.Size = new System.Drawing.Size(113, 70);
+            this.contextMenuStrip_save_list.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuStrip_save_list_ItemClicked);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(112, 22);
             this.toolStripMenuItem1.Text = "添加";
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(112, 22);
+            this.toolStripMenuItem3.Text = "重命名";
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(112, 22);
             this.toolStripMenuItem2.Text = "删除";
             // 
             // label6
             // 
             this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(1, 663);
+            this.label6.Location = new System.Drawing.Point(1, 665);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(35, 12);
             this.label6.TabIndex = 17;
@@ -665,7 +691,7 @@
             // 
             this.linkLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(42, 663);
+            this.linkLabel1.Location = new System.Drawing.Point(42, 665);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(125, 12);
             this.linkLabel1.TabIndex = 18;
@@ -678,7 +704,7 @@
             this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label7.AutoSize = true;
             this.label7.ForeColor = System.Drawing.Color.Red;
-            this.label7.Location = new System.Drawing.Point(185, 663);
+            this.label7.Location = new System.Drawing.Point(185, 665);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(53, 12);
             this.label7.TabIndex = 19;
@@ -687,7 +713,7 @@
             // 
             // button_save_api
             // 
-            this.button_save_api.Location = new System.Drawing.Point(948, 6);
+            this.button_save_api.Location = new System.Drawing.Point(1055, 2);
             this.button_save_api.Name = "button_save_api";
             this.button_save_api.Size = new System.Drawing.Size(75, 23);
             this.button_save_api.TabIndex = 20;
@@ -695,17 +721,18 @@
             this.button_save_api.UseVisualStyleBackColor = true;
             this.button_save_api.Click += new System.EventHandler(this.button_save_api_Click);
             // 
-            // toolStripMenuItem3
+            // imageList_treeview
             // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(152, 22);
-            this.toolStripMenuItem3.Text = "重命名";
+            this.imageList_treeview.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList_treeview.ImageStream")));
+            this.imageList_treeview.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList_treeview.Images.SetKeyName(0, "folder");
+            this.imageList_treeview.Images.SetKeyName(1, "article");
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1122, 684);
+            this.ClientSize = new System.Drawing.Size(1268, 686);
             this.Controls.Add(this.button_save_api);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.linkLabel1);
@@ -743,7 +770,7 @@
             this.tabPage4.PerformLayout();
             this.tabPage5.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_header)).EndInit();
             this.tabPage3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Response)).EndInit();
             this.tabPage6.ResumeLayout(false);
@@ -784,7 +811,7 @@
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.TabPage tabPage5;
         private System.Windows.Forms.ComboBox comboBox_html_show_type;
-        private System.Windows.Forms.DataGridView dataGridView3;
+        private System.Windows.Forms.DataGridView dataGridView_header;
         private System.Windows.Forms.DataGridView dataGridView_Response;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
@@ -804,8 +831,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column10;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column11;
         private System.Windows.Forms.Button button_save_api;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
@@ -818,6 +843,10 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
         private System.Windows.Forms.Button button_add_project;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column10;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column11;
+        private System.Windows.Forms.ImageList imageList_treeview;
+        private System.Windows.Forms.Button button_treeview_refresh;
     }
 }
 

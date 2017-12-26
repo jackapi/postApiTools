@@ -1,6 +1,6 @@
 ﻿namespace postApiTools
 {
-    partial class AddProject
+    partial class AddPid
     {
         /// <summary>
         /// Required designer variable.
@@ -28,18 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddProject));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddPid));
             this.button_save = new System.Windows.Forms.Button();
             this.button_back = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.textBox_name = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.textBox_desc = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // button_save
             // 
-            this.button_save.Location = new System.Drawing.Point(46, 200);
+            this.button_save.Location = new System.Drawing.Point(31, 80);
             this.button_save.Name = "button_save";
             this.button_save.Size = new System.Drawing.Size(75, 23);
             this.button_save.TabIndex = 0;
@@ -49,7 +47,7 @@
             // 
             // button_back
             // 
-            this.button_back.Location = new System.Drawing.Point(200, 200);
+            this.button_back.Location = new System.Drawing.Point(148, 80);
             this.button_back.Name = "button_back";
             this.button_back.Size = new System.Drawing.Size(75, 23);
             this.button_back.TabIndex = 0;
@@ -60,43 +58,24 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(27, 30);
+            this.label1.Location = new System.Drawing.Point(29, 33);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(53, 12);
+            this.label1.Size = new System.Drawing.Size(29, 12);
             this.label1.TabIndex = 1;
-            this.label1.Text = "项目名称";
+            this.label1.Text = "名称";
             // 
             // textBox_name
             // 
-            this.textBox_name.Location = new System.Drawing.Point(85, 27);
+            this.textBox_name.Location = new System.Drawing.Point(76, 29);
             this.textBox_name.Name = "textBox_name";
-            this.textBox_name.Size = new System.Drawing.Size(190, 21);
+            this.textBox_name.Size = new System.Drawing.Size(147, 21);
             this.textBox_name.TabIndex = 2;
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(27, 75);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(53, 12);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "项目描述";
-            // 
-            // textBox_desc
-            // 
-            this.textBox_desc.Location = new System.Drawing.Point(85, 72);
-            this.textBox_desc.Multiline = true;
-            this.textBox_desc.Name = "textBox_desc";
-            this.textBox_desc.Size = new System.Drawing.Size(190, 105);
-            this.textBox_desc.TabIndex = 2;
-            // 
-            // AddProject
+            // AddPid
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(313, 235);
-            this.Controls.Add(this.textBox_desc);
-            this.Controls.Add(this.label2);
+            this.ClientSize = new System.Drawing.Size(250, 117);
             this.Controls.Add(this.textBox_name);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button_back);
@@ -105,9 +84,10 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "AddProject";
+            this.Name = "AddPid";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "添加项目";
+            this.Text = "添加子类";
+            this.Load += new System.EventHandler(this.AddPid_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -119,7 +99,5 @@
         private System.Windows.Forms.Button button_back;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBox_name;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox_desc;
     }
 }

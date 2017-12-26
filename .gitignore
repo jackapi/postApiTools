@@ -1,4 +1,4 @@
 /.vs
 /postApiTools/bin/Debug/runtime
 /postApiTools/bin/Debug/Debug.zip
-*.db
+/postApiTools/bin/Debug
