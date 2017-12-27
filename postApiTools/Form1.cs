@@ -63,6 +63,7 @@ namespace postApiTools
         /// <param name="e"></param>
         private void button_test_Click(object sender, EventArgs e)
         {
+            if (loadInt != 0) { MessageBox.Show("数据没有加载完成！无法进行操作！"); return; }
             if (button_test.Text == "提交测试")
             {
                 this.testTh = new Thread(testButton);
@@ -124,14 +125,8 @@ namespace postApiTools
             this.testHtml = html;
             lib.pRunTimeNumber.end();
             pform1.labelShowStatusRunTime(label_code, label_runtime, lib.phttp.HttpCustom_code, lib.pRunTimeNumber.result());//显示运行时间和状态
-            if (comboBox_html_show_type.Text == "JSON")
-            {
-                textBox_html.Text = pJson.jsonStrToFormat(html);//格式化json
-            }
-            else
-            {
-                textBox_html.Text = html;//显示
-            }
+
+            pform1.htmlToFormatting(this.testHtml, comboBox_html_show_type, textBox_html, tabControl2);//格式化输出源码结果
             button_test.Text = "提交测试";
         }
 
@@ -142,24 +137,7 @@ namespace postApiTools
         /// <param name="e"></param>
         private void comboBox_html_show_type_SelectedIndexChanged(object sender, EventArgs e)
         {
-
-            string html = this.testHtml;
-            if (html == "")
-            {
-                return;
-            }
-            if (comboBox_html_show_type.Text == "JSON")
-            {
-                textBox_html.Text = pJson.jsonStrToFormat(html);//格式化json
-            }
-            else if (comboBox_html_show_type.Text == "HTML")
-            {
-                tabControl2.SelectedIndex = 1;
-            }
-            else
-            {
-                textBox_html.Text = html;//显示
-            }
+            pform1.htmlToFormatting(this.testHtml, comboBox_html_show_type, textBox_html, tabControl2);
         }
 
 
@@ -205,10 +183,18 @@ namespace postApiTools
 
         }
 
+        /// <summary>
+        /// 打开设置界面
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button_setting_Click(object sender, EventArgs e)
         {
+            loadInt = 1;
             Setting setting = new Setting();
             setting.ShowDialog();
+            formLoadTh = new Thread(formLoadFun);
+            formLoadTh.Start();
         }
 
         private void textBox_doc_KeyPress(object sender, KeyPressEventArgs e)
@@ -489,6 +475,37 @@ namespace postApiTools
         private void dataGridView_http_data_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
             return;
+        }
+
+
+        /// <summary>
+        /// 搜索内容
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button_search_Click(object sender, EventArgs e)
+        {
+            string search = textBox_search.Text;
+            if (search == "")
+            {
+                pForm1TreeView.showMainData(treeView_save_list, imageList_treeview);
+                return;
+            }
+            pForm1TreeView.showMainData(treeView_save_list, imageList_treeview);
+            pForm1TreeView.apidocSearch(treeView_save_list, search, textBox_html);
+        }
+
+        /// <summary>
+        /// 清理历史按钮
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button_delete_history_Click(object sender, EventArgs e)
+        {
+            int rows = pHistory.historyAllDelete();
+            pHistory.dataViewRefresh(dataGridView_history);//刷新历史
+            MessageBox.Show(string.Format("成功清理历史{0}个！", rows));
+
         }
     }
 }

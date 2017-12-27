@@ -14,6 +14,40 @@ namespace postApiTools
     using System.Threading;
     public class pform1
     {
+        /// <summary>
+        /// 格式化输出源码结果
+        /// </summary>
+        /// <param name="html"></param>
+        /// <param name="com"></param>
+        /// <param name="textboxHtml"></param>
+        /// <param name="tab"></param>
+        public static void htmlToFormatting(string html, ComboBox com, TextBox textboxHtml, TabControl tab)
+        {
+            if (html == "")
+            {
+                return;
+            }
+            if (com.Text == "JSON")
+            {
+                string htmlTmep = pJson.jsonStrToFormat(html);
+                if (pJson.error.Length > 0)
+                {
+                    textboxHtml.Text = html;
+                }
+                else
+                {
+                    textboxHtml.Text = htmlTmep;//格式化json}
+                }
+            }
+            else if (com.Text == "HTML")
+            {
+                tab.SelectedIndex = 1;
+            }
+            else
+            {
+                textboxHtml.Text = html;//显示
+            }
+        }
 
         /// <summary>
         /// 写入窗体改变大小
@@ -346,15 +380,18 @@ namespace postApiTools
                     return;
                 }
             }
-            dd.Invalidate();
-            dd.Rows.Clear();//清理行数
-            dd.Rows.Add(data.GetLength(0));
-            for (int i = 0; i < data.GetLength(0); i++)
+            dd.Invoke(new Action(() =>
             {
-                dd.Rows[i].Cells[0].Value = data[i, 0];
-                dd.Rows[i].Cells[1].Value = data[i, 1];
-                dd.Rows[i].Cells[2].Value = "";
-            }
+                dd.Invalidate();
+                dd.Rows.Clear();//清理行数
+                dd.Rows.Add(data.GetLength(0));
+                for (int i = 0; i < data.GetLength(0); i++)
+                {
+                    dd.Rows[i].Cells[0].Value = data[i, 0];
+                    dd.Rows[i].Cells[1].Value = data[i, 1];
+                    dd.Rows[i].Cells[2].Value = "";
+                }
+            }));
         }
         private static Thread webViewShowTh = null;
         /// <summary>
@@ -364,17 +401,20 @@ namespace postApiTools
         /// <param name="html"></param>
         public static void webViewShow(WebBrowser w, string html)
         {
-            string path = Config.exePath + "/runtime/";
-            if (!Directory.Exists(path))//判断文件夹是否存在
+            w.Invoke(new Action(() =>
             {
-                Directory.CreateDirectory(path);
-            }
-            string pathHtml = path + lib.pBase.CreateMD5Hash(DateTime.Now.ToLocalTime().ToString()) + ".html";
-            lib.pFile.Write(pathHtml, html);
-            w.ScriptErrorsSuppressed = true;
-            w.Url = new Uri(pathHtml);
-            webViewShowTh = new Thread(new ParameterizedThreadStart(webViewShowFileDelete));
-            webViewShowTh.Start(pathHtml);
+                string path = Config.exePath + "/runtime/";
+                if (!Directory.Exists(path))//判断文件夹是否存在
+                {
+                    Directory.CreateDirectory(path);
+                }
+                string pathHtml = path + lib.pBase.CreateMD5Hash(DateTime.Now.ToLocalTime().ToString()) + ".html";
+                lib.pFile.Write(pathHtml, html);
+                w.ScriptErrorsSuppressed = true;
+                w.Url = new Uri(pathHtml);
+                webViewShowTh = new Thread(new ParameterizedThreadStart(webViewShowFileDelete));
+                webViewShowTh.Start(pathHtml);
+            }));
         }
         /// <summary>
         /// 开启线程删除文件

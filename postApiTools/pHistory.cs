@@ -92,36 +92,44 @@ namespace postApiTools
             try
             {
 
-                Dictionary<int, object> data = sqlite.getRows("select *from " + table + " order by addtime desc");
-                if (data.Count <= 0)
+                history.Invoke(new Action(() =>
                 {
-                    return;
-                }
-                history.Invalidate();
-                history.Rows.Clear();//清理行数
-                history.Rows.Add(data.Count);
-                history.RowTemplate.Height = 30;//行距
-                                                //设置自动调整高度
-                history.ReadOnly = true;//不可编辑
-                for (int i = 0; i < data.Count; i++)
-                {
-                    Dictionary<string, string> d = new Dictionary<string, string> { };
-                    d = (Dictionary<string, string>)data[i];
-                    history.Rows[i].Cells[0].Value = d["method"];
-                    history.Rows[i].Cells[0].ToolTipText = d["hash"];
-                    history.Rows[i].Cells[0].Style.BackColor = Color.Aqua;
+                    Dictionary<int, object> data = sqlite.getRows("select *from " + table + " order by addtime desc");
+                    if (data.Count <= 0)
+                    {
+                        history.Invalidate();
+                        history.Rows.Clear();//清理行数
+                        return;
+                    }
+                    history.Invalidate();
+                    history.Rows.Clear();//清理行数
+                    history.Rows.Add(data.Count);
+                    history.RowTemplate.Height = 30;//行距
+                                                    //设置自动调整高度
+                    history.ReadOnly = true;//不可编辑
+                    for (int i = 0; i < data.Count; i++)
+                    {
+                        Dictionary<string, string> d = new Dictionary<string, string> { };
+                        d = (Dictionary<string, string>)data[i];
+                        history.Rows[i].Cells[0].Value = d["method"];
+                        history.Rows[i].Cells[0].ToolTipText = d["hash"];
+                        history.Rows[i].Cells[0].Style.BackColor = Color.Aqua;
 
-                    history.Rows[i].Cells[1].Value = d["url"];
-                    history.Rows[i].Cells[1].ToolTipText = d["url"];
-                    //history.Rows[i].Cells[1].Style.BackColor = Color.LightGray;
-                }
-                //history.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-                //history.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+                        history.Rows[i].Cells[1].Value = d["url"];
+                        history.Rows[i].Cells[1].ToolTipText = d["url"];
+                        //history.Rows[i].Cells[1].Style.BackColor = Color.LightGray;
+                    }
+                    //history.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+                    //history.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+                }));
             }
             catch (Exception ex)
             {
-                history.Invalidate();
-                history.Rows.Clear();//清理行数
+                history.Invoke(new Action(() =>
+                {
+                    history.Invalidate();
+                    history.Rows.Clear();//清理行数
+                }));
                 pLogs.logs(ex.ToString());
             }
         }
@@ -157,6 +165,14 @@ namespace postApiTools
         public static void create()
         {
             sqlite.executeNonQuery("CREATE TABLE IF NOT EXISTS " + table + "(hash varchar(200) , url varchar(200), dataurl varchar(2000), method varchar(200),addtime integer);");
+        }
+
+        /// <summary>
+        /// 清理全部
+        /// </summary>
+        public static int historyAllDelete()
+        {
+            return sqlite.executeNonQuery("delete from " + table);
         }
     }
 }

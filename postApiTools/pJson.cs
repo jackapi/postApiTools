@@ -13,6 +13,7 @@ namespace postApiTools
     using Newtonsoft.Json.Linq;
     public class pJson
     {
+        public static string error = "";
         /// <summary>
         /// 格式化json
         /// </summary>
@@ -25,7 +26,11 @@ namespace postApiTools
                 JObject job = (JObject)JsonConvert.DeserializeObject(str);
                 return job.ToString();
             }
-            catch (Exception ex) { return ex.ToString(); }
+            catch (Exception ex)
+            {
+                error = ex.ToString();
+                return ex.ToString();
+            }
 
         }
 

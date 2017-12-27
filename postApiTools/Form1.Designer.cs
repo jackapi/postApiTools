@@ -90,6 +90,9 @@
             this.label7 = new System.Windows.Forms.Label();
             this.button_save_api = new System.Windows.Forms.Button();
             this.imageList_treeview = new System.Windows.Forms.ImageList(this.components);
+            this.textBox_search = new System.Windows.Forms.TextBox();
+            this.button_search = new System.Windows.Forms.Button();
+            this.button_delete_history = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_http_data)).BeginInit();
@@ -438,12 +441,12 @@
             this.dataGridView_history.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column10,
             this.Column11});
-            this.dataGridView_history.Location = new System.Drawing.Point(3, 3);
+            this.dataGridView_history.Location = new System.Drawing.Point(3, 27);
             this.dataGridView_history.Name = "dataGridView_history";
             this.dataGridView_history.RowHeadersVisible = false;
             this.dataGridView_history.RowTemplate.Height = 23;
             this.dataGridView_history.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView_history.Size = new System.Drawing.Size(247, 591);
+            this.dataGridView_history.Size = new System.Drawing.Size(247, 567);
             this.dataGridView_history.TabIndex = 0;
             this.dataGridView_history.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_history_CellClick);
             // 
@@ -595,6 +598,7 @@
             // 
             // tabPage7
             // 
+            this.tabPage7.Controls.Add(this.button_delete_history);
             this.tabPage7.Controls.Add(this.dataGridView_history);
             this.tabPage7.Location = new System.Drawing.Point(4, 22);
             this.tabPage7.Name = "tabPage7";
@@ -606,6 +610,8 @@
             // 
             // tabPage8
             // 
+            this.tabPage8.Controls.Add(this.button_search);
+            this.tabPage8.Controls.Add(this.textBox_search);
             this.tabPage8.Controls.Add(this.button_treeview_refresh);
             this.tabPage8.Controls.Add(this.button_add_project);
             this.tabPage8.Controls.Add(this.treeView_save_list);
@@ -619,7 +625,7 @@
             // 
             // button_treeview_refresh
             // 
-            this.button_treeview_refresh.Location = new System.Drawing.Point(202, 3);
+            this.button_treeview_refresh.Location = new System.Drawing.Point(83, 2);
             this.button_treeview_refresh.Name = "button_treeview_refresh";
             this.button_treeview_refresh.Size = new System.Drawing.Size(45, 23);
             this.button_treeview_refresh.TabIndex = 10;
@@ -629,7 +635,7 @@
             // 
             // button_add_project
             // 
-            this.button_add_project.Location = new System.Drawing.Point(5, 3);
+            this.button_add_project.Location = new System.Drawing.Point(9, 2);
             this.button_add_project.Name = "button_add_project";
             this.button_add_project.Size = new System.Drawing.Size(68, 24);
             this.button_add_project.TabIndex = 9;
@@ -643,9 +649,9 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.treeView_save_list.ContextMenuStrip = this.contextMenuStrip_save_list;
-            this.treeView_save_list.Location = new System.Drawing.Point(0, 27);
+            this.treeView_save_list.Location = new System.Drawing.Point(0, 59);
             this.treeView_save_list.Name = "treeView_save_list";
-            this.treeView_save_list.Size = new System.Drawing.Size(254, 568);
+            this.treeView_save_list.Size = new System.Drawing.Size(254, 536);
             this.treeView_save_list.TabIndex = 2;
             this.treeView_save_list.DoubleClick += new System.EventHandler(this.treeView_save_list_DoubleClick);
             // 
@@ -728,6 +734,33 @@
             this.imageList_treeview.Images.SetKeyName(0, "folder");
             this.imageList_treeview.Images.SetKeyName(1, "article");
             // 
+            // textBox_search
+            // 
+            this.textBox_search.Location = new System.Drawing.Point(9, 32);
+            this.textBox_search.Name = "textBox_search";
+            this.textBox_search.Size = new System.Drawing.Size(155, 21);
+            this.textBox_search.TabIndex = 21;
+            // 
+            // button_search
+            // 
+            this.button_search.Location = new System.Drawing.Point(174, 30);
+            this.button_search.Name = "button_search";
+            this.button_search.Size = new System.Drawing.Size(70, 23);
+            this.button_search.TabIndex = 21;
+            this.button_search.Text = "搜索";
+            this.button_search.UseVisualStyleBackColor = true;
+            this.button_search.Click += new System.EventHandler(this.button_search_Click);
+            // 
+            // button_delete_history
+            // 
+            this.button_delete_history.Location = new System.Drawing.Point(171, 3);
+            this.button_delete_history.Name = "button_delete_history";
+            this.button_delete_history.Size = new System.Drawing.Size(75, 23);
+            this.button_delete_history.TabIndex = 21;
+            this.button_delete_history.Text = "清理";
+            this.button_delete_history.UseVisualStyleBackColor = true;
+            this.button_delete_history.Click += new System.EventHandler(this.button_delete_history_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -779,6 +812,7 @@
             this.tabControl3.ResumeLayout(false);
             this.tabPage7.ResumeLayout(false);
             this.tabPage8.ResumeLayout(false);
+            this.tabPage8.PerformLayout();
             this.contextMenuStrip_save_list.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -847,6 +881,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column11;
         private System.Windows.Forms.ImageList imageList_treeview;
         private System.Windows.Forms.Button button_treeview_refresh;
+        private System.Windows.Forms.Button button_search;
+        private System.Windows.Forms.TextBox textBox_search;
+        private System.Windows.Forms.Button button_delete_history;
     }
 }
 

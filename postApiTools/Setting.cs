@@ -99,13 +99,25 @@ namespace postApiTools
             string path = Config.templatePath + listName + pSetting.fx;
             if (File.Exists(path))
             {
-               pSetting.deleteTemplate(listName, comboBox_template_list);
+                pSetting.deleteTemplate(listName, comboBox_template_list);
             }
             else
             {
                 MessageBox.Show("不存在模板 无法删除");
             }
 
+        }
+
+        /// <summary>
+        /// 清理历史
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button_history_Click(object sender, EventArgs e)
+        {
+            int rows = pHistory.historyAllDelete();
+
+            MessageBox.Show(string.Format("成功清理历史{0}个！", rows));
         }
     }
 }

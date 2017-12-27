@@ -272,5 +272,48 @@ namespace postApiTools
             return false;
         }
 
+        /// <summary>
+        /// 搜索接口文档
+        /// </summary>
+        /// <param name="search"></param>
+        public static void apidocSearch(TreeView t, string search, TextBox text)
+        {
+            t.Invoke(new Action(() =>
+            {
+                string sql = string.Format("select *from {0} where name like  '%{1}%' or desc like  '%{1}%'", table, search);
+                Dictionary<int, object> list = sqlite.getRows(sql);
+                for (int i = 0; i < list.Count; i++)
+                {
+                    Dictionary<string, string> d = (Dictionary<string, string>)list[i];
+                    TreeNode tn = FindNodeByName(t.Nodes, d["hash"]);
+                    tn.BackColor = System.Drawing.Color.Red;
+                    t.ExpandAll();
+                }
+            }));
+        }
+
+
+        /// <summary>
+        /// 根据名称查找节点
+        /// </summary>
+        /// <param name="ParentNods">节点集合</param>
+        /// <param name="name">要查找的名字</param>
+        /// <returns>目标节点</returns>
+        private static TreeNode FindNodeByName(TreeNodeCollection ParentNods, string name)
+        {
+            TreeNode temNode = null;
+            foreach (TreeNode tn in ParentNods)
+            {
+                if (tn.Name.Equals(name))
+                    return tn;
+                else
+                {
+                    temNode = FindNodeByName(tn.Nodes, name);
+                    if (temNode != null)
+                        return temNode;
+                }
+            }
+            return temNode;
+        }
     }
 }
