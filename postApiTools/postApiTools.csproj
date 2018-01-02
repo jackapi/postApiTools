@@ -73,6 +73,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="lib\pApizlHttp.cs" />
     <Compile Include="lib\pBase.cs" />
     <Compile Include="lib\pBase64.cs" />
     <Compile Include="lib\pDate.cs" />
@@ -80,6 +81,8 @@
     <Compile Include="lib\phttp.cs" />
     <Compile Include="lib\pHttpCode.cs" />
     <Compile Include="lib\pIni.cs" />
+    <Compile Include="lib\pJsonData.cs" />
+    <Compile Include="lib\pRegex.cs" />
     <Compile Include="lib\pRunTimeNumber.cs" />
     <Compile Include="lib\pSqlite.cs" />
     <Compile Include="pform1.cs" />
@@ -87,6 +90,7 @@
     <Compile Include="pHistory.cs" />
     <Compile Include="pJson.cs" />
     <Compile Include="pLogs.cs" />
+    <Compile Include="pPublic.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="pSetting.cs" />

@@ -52,6 +52,8 @@ namespace postApiTools
             pHistory.dataViewRefresh(dataGridView_history);//刷新历史记录
             pSetting.refreshTemplateList(comboBox_template);//刷新模板列表
             pForm1TreeView.showMainData(treeView_save_list, imageList_treeview);//显示项目列表树
+            pform1.toRnShow(checkBox_to_rn);//自动转换选中显示
+            timer_server.Start();//启动定时器
             loadInt = 0;
         }
 
@@ -91,16 +93,11 @@ namespace postApiTools
             textBox_html.Text = "";//html
             label_code.Text = "";//httpcode
             label_runtime.Text = "";//ms
-            pHistory.dataViewShow(dataGridView_history, dataGridView_http_data, textBox_url.Text, comboBox_url_type.Text);//刷新历史数据
-            pform1.httpHtmlTypeDataWrite(comboBox_html_show_type);//写入HTML类型
-            pform1.httpTypeWrite(comboBox_url_type);
-            pform1.dataviewUrlDataWrite(dataGridView_http_data);//写入dataurl配置
             string url = textBox_url.Text;
             if (url == "")
             {
                 MessageBox.Show("url不能为空");
             }
-            pform1.textBoxUrlWrite(textBox_url, url);
             lib.pRunTimeNumber.start();
             string html = "";
             string urldata = pform1.objectArrayToUrlData(pform1.dataViewToObjectArray(dataGridView_http_data));
@@ -110,15 +107,7 @@ namespace postApiTools
             }
             else if (comboBox_url_type.Text == "POST")
             {
-                if (pform1.isDataViewTypeFile(dataGridView_http_data))
-                {
-                    html = pform1.postFile(url, dataGridView_http_data);//post文件
-                }
-                else
-                {
-                    html = lib.phttp.PostWebRequestCustom(url, urldata, encoding);//get请求获取 }
-
-                }
+                html = pform1.postFile(url, dataGridView_http_data, encoding);//post文件
             }
             pform1.dataViewResponseShow(dataGridView_Response);//显示返回报文头
             pform1.webViewShow(webBrowser1, html);//浏览器显示
@@ -128,6 +117,12 @@ namespace postApiTools
 
             pform1.htmlToFormatting(this.testHtml, comboBox_html_show_type, textBox_html, tabControl2);//格式化输出源码结果
             button_test.Text = "提交测试";
+            pform1.textBoxUrlWrite(textBox_url, url);
+            pform1.httpHtmlTypeDataWrite(comboBox_html_show_type);//写入HTML类型
+            pform1.httpTypeWrite(comboBox_url_type);
+            pform1.dataviewUrlDataWrite(dataGridView_http_data);//写入dataurl配置
+            pHistory.dataViewShow(dataGridView_history, dataGridView_http_data, textBox_url.Text, comboBox_url_type.Text);//刷新历史数据
+            pform1.toRn(checkBox_to_rn, textBox_html.Text, textBox_html);//自动换行
         }
 
         /// <summary>
@@ -195,6 +190,7 @@ namespace postApiTools
             setting.ShowDialog();
             formLoadTh = new Thread(formLoadFun);
             formLoadTh.Start();
+            setting.Close();
         }
 
         private void textBox_doc_KeyPress(object sender, KeyPressEventArgs e)
@@ -213,7 +209,7 @@ namespace postApiTools
         /// <param name="e"></param>
         private void button_test_creation_doc_Click(object sender, EventArgs e)
         {
-            string content = pform1.postFile("http://test.cn", dataGridView_http_data);
+            lib.pApizlHttp.Login("test", "121212");
         }
         /// <summary>
         /// 默认浏览器打开
@@ -246,6 +242,14 @@ namespace postApiTools
         {
             int w = this.Width;
             int h = this.Height;
+            if (w <= 160)
+            {
+                return;
+            }
+            if (h <= 39)
+            {
+                return;
+            }
             //if (w < 1138)
             //{
             //    this.Size = new Size(1138, this.Size.Height);
@@ -352,6 +356,7 @@ namespace postApiTools
         /// <param name="e"></param>
         private void dataGridView_http_data_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (e.RowIndex < 0) { return; }//防止闪退
             if (dataGridView_http_data.Rows[e.RowIndex].Cells[3].Value == null && dataGridView_http_data.Rows[e.RowIndex].Cells[4].Value == null)
             {//判断是否点击了 空白
                 return;
@@ -416,6 +421,10 @@ namespace postApiTools
         /// <param name="e"></param>
         private void contextMenuStrip_save_list_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
+            if (e.ClickedItem == null)
+            {
+                return;
+            }
             if (e.ClickedItem.Text == "添加")
             {
                 AddPid pid = new AddPid();
@@ -505,6 +514,38 @@ namespace postApiTools
             int rows = pHistory.historyAllDelete();
             pHistory.dataViewRefresh(dataGridView_history);//刷新历史
             MessageBox.Show(string.Format("成功清理历史{0}个！", rows));
+
+        }
+
+        /// <summary>
+        /// 转换换行
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button_to_rn_Click(object sender, EventArgs e)
+        {
+            string html = this.testHtml;
+            html = html.Replace("\n", "\r\n");
+            textBox_html.Text = html;
+        }
+
+        /// <summary>
+        /// 改变发生
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void checkBox_to_rn_CheckStateChanged(object sender, EventArgs e)
+        {
+            pform1.toRnEvent(checkBox_to_rn);
+        }
+
+        /// <summary>
+        /// 定时器任务
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void timer_server_Tick(object sender, EventArgs e)
+        {
 
         }
     }

@@ -44,6 +44,8 @@
             this.Column12 = new System.Windows.Forms.DataGridViewButtonColumn();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.checkBox_to_rn = new System.Windows.Forms.CheckBox();
+            this.button_to_rn = new System.Windows.Forms.Button();
             this.comboBox_html_show_type = new System.Windows.Forms.ComboBox();
             this.textBox_html = new System.Windows.Forms.TextBox();
             this.tabPage5 = new System.Windows.Forms.TabPage();
@@ -77,7 +79,10 @@
             this.textBox_api_name = new System.Windows.Forms.TextBox();
             this.tabControl3 = new System.Windows.Forms.TabControl();
             this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.button_delete_history = new System.Windows.Forms.Button();
             this.tabPage8 = new System.Windows.Forms.TabPage();
+            this.button_search = new System.Windows.Forms.Button();
+            this.textBox_search = new System.Windows.Forms.TextBox();
             this.button_treeview_refresh = new System.Windows.Forms.Button();
             this.button_add_project = new System.Windows.Forms.Button();
             this.treeView_save_list = new System.Windows.Forms.TreeView();
@@ -90,9 +95,7 @@
             this.label7 = new System.Windows.Forms.Label();
             this.button_save_api = new System.Windows.Forms.Button();
             this.imageList_treeview = new System.Windows.Forms.ImageList(this.components);
-            this.textBox_search = new System.Windows.Forms.TextBox();
-            this.button_search = new System.Windows.Forms.Button();
-            this.button_delete_history = new System.Windows.Forms.Button();
+            this.timer_server = new System.Windows.Forms.Timer(this.components);
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_http_data)).BeginInit();
@@ -251,6 +254,8 @@
             // 
             // tabPage4
             // 
+            this.tabPage4.Controls.Add(this.checkBox_to_rn);
+            this.tabPage4.Controls.Add(this.button_to_rn);
             this.tabPage4.Controls.Add(this.comboBox_html_show_type);
             this.tabPage4.Controls.Add(this.textBox_html);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
@@ -260,6 +265,28 @@
             this.tabPage4.TabIndex = 0;
             this.tabPage4.Text = "源码";
             this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // checkBox_to_rn
+            // 
+            this.checkBox_to_rn.AutoSize = true;
+            this.checkBox_to_rn.Location = new System.Drawing.Point(139, 7);
+            this.checkBox_to_rn.Name = "checkBox_to_rn";
+            this.checkBox_to_rn.Size = new System.Drawing.Size(72, 16);
+            this.checkBox_to_rn.TabIndex = 3;
+            this.checkBox_to_rn.Text = "自动换行";
+            this.checkBox_to_rn.UseVisualStyleBackColor = true;
+            this.checkBox_to_rn.CheckStateChanged += new System.EventHandler(this.checkBox_to_rn_CheckStateChanged);
+            // 
+            // button_to_rn
+            // 
+            this.button_to_rn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button_to_rn.Location = new System.Drawing.Point(885, 4);
+            this.button_to_rn.Name = "button_to_rn";
+            this.button_to_rn.Size = new System.Drawing.Size(77, 24);
+            this.button_to_rn.TabIndex = 2;
+            this.button_to_rn.Text = "转换行";
+            this.button_to_rn.UseVisualStyleBackColor = true;
+            this.button_to_rn.Click += new System.EventHandler(this.button_to_rn_Click);
             // 
             // comboBox_html_show_type
             // 
@@ -608,6 +635,16 @@
             this.tabPage7.Text = "历史";
             this.tabPage7.UseVisualStyleBackColor = true;
             // 
+            // button_delete_history
+            // 
+            this.button_delete_history.Location = new System.Drawing.Point(171, 3);
+            this.button_delete_history.Name = "button_delete_history";
+            this.button_delete_history.Size = new System.Drawing.Size(75, 23);
+            this.button_delete_history.TabIndex = 21;
+            this.button_delete_history.Text = "清理";
+            this.button_delete_history.UseVisualStyleBackColor = true;
+            this.button_delete_history.Click += new System.EventHandler(this.button_delete_history_Click);
+            // 
             // tabPage8
             // 
             this.tabPage8.Controls.Add(this.button_search);
@@ -622,6 +659,23 @@
             this.tabPage8.TabIndex = 1;
             this.tabPage8.Text = "保存";
             this.tabPage8.UseVisualStyleBackColor = true;
+            // 
+            // button_search
+            // 
+            this.button_search.Location = new System.Drawing.Point(174, 30);
+            this.button_search.Name = "button_search";
+            this.button_search.Size = new System.Drawing.Size(70, 23);
+            this.button_search.TabIndex = 21;
+            this.button_search.Text = "搜索";
+            this.button_search.UseVisualStyleBackColor = true;
+            this.button_search.Click += new System.EventHandler(this.button_search_Click);
+            // 
+            // textBox_search
+            // 
+            this.textBox_search.Location = new System.Drawing.Point(9, 32);
+            this.textBox_search.Name = "textBox_search";
+            this.textBox_search.Size = new System.Drawing.Size(155, 21);
+            this.textBox_search.TabIndex = 21;
             // 
             // button_treeview_refresh
             // 
@@ -734,32 +788,10 @@
             this.imageList_treeview.Images.SetKeyName(0, "folder");
             this.imageList_treeview.Images.SetKeyName(1, "article");
             // 
-            // textBox_search
+            // timer_server
             // 
-            this.textBox_search.Location = new System.Drawing.Point(9, 32);
-            this.textBox_search.Name = "textBox_search";
-            this.textBox_search.Size = new System.Drawing.Size(155, 21);
-            this.textBox_search.TabIndex = 21;
-            // 
-            // button_search
-            // 
-            this.button_search.Location = new System.Drawing.Point(174, 30);
-            this.button_search.Name = "button_search";
-            this.button_search.Size = new System.Drawing.Size(70, 23);
-            this.button_search.TabIndex = 21;
-            this.button_search.Text = "搜索";
-            this.button_search.UseVisualStyleBackColor = true;
-            this.button_search.Click += new System.EventHandler(this.button_search_Click);
-            // 
-            // button_delete_history
-            // 
-            this.button_delete_history.Location = new System.Drawing.Point(171, 3);
-            this.button_delete_history.Name = "button_delete_history";
-            this.button_delete_history.Size = new System.Drawing.Size(75, 23);
-            this.button_delete_history.TabIndex = 21;
-            this.button_delete_history.Text = "清理";
-            this.button_delete_history.UseVisualStyleBackColor = true;
-            this.button_delete_history.Click += new System.EventHandler(this.button_delete_history_Click);
+            this.timer_server.Interval = 1000;
+            this.timer_server.Tick += new System.EventHandler(this.timer_server_Tick);
             // 
             // Form1
             // 
@@ -884,6 +916,9 @@
         private System.Windows.Forms.Button button_search;
         private System.Windows.Forms.TextBox textBox_search;
         private System.Windows.Forms.Button button_delete_history;
+        private System.Windows.Forms.Button button_to_rn;
+        private System.Windows.Forms.CheckBox checkBox_to_rn;
+        private System.Windows.Forms.Timer timer_server;
     }
 }
 

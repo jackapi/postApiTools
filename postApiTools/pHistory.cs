@@ -8,8 +8,11 @@ using System.Threading.Tasks;
 /// </summary>
 namespace postApiTools
 {
+    using System.Threading;
     using System.Drawing;
     using System.Windows.Forms;
+    using System.Data;
+
     /// <summary>
     /// 历史记录类
     /// </summary>
@@ -28,6 +31,7 @@ namespace postApiTools
         /// 错误信息
         /// </summary>
         public static string error = "";
+
         /// <summary>
         /// 刷新显示历史
         /// </summary>
@@ -40,12 +44,20 @@ namespace postApiTools
             string[,] urlData = pform1.dataViewUrlDataToObjectArray(urlDataView);
             if (pHistory.insert(url, urlData, method) > 0)
             {
-                dataViewRefresh(history);
+                Thread th = new Thread(new ParameterizedThreadStart(dataViewShow));
+                th.Start(history);
             }
             else
             {
                 error = sqlite.error;//显示错误信息
             }
+        }
+        /// <summary>
+        /// 线程中刷新
+        /// </summary>
+        private static void dataViewShow(object history)
+        {
+            dataViewRefresh((DataGridView)history);
         }
 
         /// <summary>
@@ -83,6 +95,13 @@ namespace postApiTools
                 MessageBox.Show("请重试");
             }
         }
+
+        private delegate void dataViewRefreshD(DataGridView history);
+
+        /// <summary>
+        /// 包含添加过总数
+        /// </summary>
+        public static int dataViewRefreshRows = 0;
         /// <summary>
         /// 刷新历史数据框
         /// </summary>
@@ -94,29 +113,60 @@ namespace postApiTools
 
                 history.Invoke(new Action(() =>
                 {
-                    Dictionary<int, object> data = sqlite.getRows("select *from " + table + " order by addtime desc");
+                    Dictionary<int, object> data = sqlite.getRows("select *from " + table + " order by addtime desc limit 0,30");
                     if (data.Count <= 0)
                     {
                         history.Invalidate();
                         history.Rows.Clear();//清理行数
                         return;
                     }
+
+                    //if (dataViewRefreshRows > 0)
+                    //{
+                    //    history.Invalidate();
+                    //    history.ReadOnly = true;//不可编辑
+                    //    DataGridViewRowCollection yuan = history.Rows;
+
+                    //    history.Rows.Clear();//清理行数
+                    //    history.Rows.Add(data.Count);
+                    //    for (int i = dataViewRefreshRows ; i < data.Count; i++)
+                    //    {
+                    //        history.DataSource = yuan;
+                    //        Dictionary<string, string> d = new Dictionary<string, string> { };
+                    //        d = (Dictionary<string, string>)data[i];
+                    //        history.Rows[i].Cells[0].Value = d["method"];
+                    //        history.Rows[i].Cells[0].ToolTipText = d["hash"];
+                    //        history.Rows[i].Cells[0].Style.BackColor = Color.Aqua;
+                    //        history.Rows[i].Cells[1].Value = d["url"];
+                    //        history.Rows[i].Cells[1].ToolTipText = d["url"];
+                    //        history.Rows[i].DataGridView.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+                    //        history.Rows[i].DataGridView.AutoResizeColumns();
+                    //        history.Rows[i].DataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCellsExceptHeaders;
+                    //        dataViewRefreshRows++;
+                    //    }
+                    //    return;
+                    //}
                     history.Invalidate();
                     history.Rows.Clear();//清理行数
                     history.Rows.Add(data.Count);
                     history.RowTemplate.Height = 30;//行距
                                                     //设置自动调整高度
                     history.ReadOnly = true;//不可编辑
+
                     for (int i = 0; i < data.Count; i++)
                     {
+
                         Dictionary<string, string> d = new Dictionary<string, string> { };
                         d = (Dictionary<string, string>)data[i];
                         history.Rows[i].Cells[0].Value = d["method"];
                         history.Rows[i].Cells[0].ToolTipText = d["hash"];
                         history.Rows[i].Cells[0].Style.BackColor = Color.Aqua;
-
                         history.Rows[i].Cells[1].Value = d["url"];
                         history.Rows[i].Cells[1].ToolTipText = d["url"];
+                        history.Rows[i].DataGridView.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+                        history.Rows[i].DataGridView.AutoResizeColumns();
+                        history.Rows[i].DataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCellsExceptHeaders;
+                        dataViewRefreshRows++;
                         //history.Rows[i].Cells[1].Style.BackColor = Color.LightGray;
                     }
                     //history.DefaultCellStyle.WrapMode = DataGridViewTriState.True;

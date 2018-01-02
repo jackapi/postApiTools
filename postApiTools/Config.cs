@@ -37,5 +37,24 @@ namespace postApiTools
         /// 模板目录
         /// </summary>
         public static string templatePath = exePath + "/data/template_";
+
+        /// <summary>
+        /// 开启更新服务
+        /// </summary>
+        public static string openServerUpdate = pSetting.openServerUpdateRead();
+        /// <summary>
+        /// 服务器url
+        /// </summary>
+        public static string openServerUrl = lib.pIni.read("setting", "web_url");
+        /// <summary>
+        /// 服务器用户名
+        /// </summary>
+        public static string openServerName = lib.pIni.read("setting", "web_name");
+        /// <summary>
+        /// 服务器用户密码
+        /// </summary>
+        public static string openServerPassword = lib.pIni.read("setting", "web_password");
+
+
     }
 }

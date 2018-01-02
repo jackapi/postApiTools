@@ -36,8 +36,8 @@ namespace postApiTools
         /// </summary>
         public static void create()
         {
-            sqlite.executeNonQuery("CREATE TABLE IF NOT EXISTS " + table + "(hash varchar(200),project_id varchar(200),sort integer , name varchar(200), desc varchar(2000),url varchar(200),urldata varchar(20000),method varchar(200),addtime integer);");//创建详情表
-            sqlite.executeNonQuery("CREATE TABLE IF NOT EXISTS " + tableSetting + "(hash varchar(200),pid varchar(200) ,sort integer , name varchar(200), desc varchar(2000),addtime integer);");//创建配置表
+            sqlite.executeNonQuery("CREATE TABLE IF NOT EXISTS " + table + "(hash varchar(200),project_id varchar(200),sort integer , name varchar(200), desc varchar(2000),url varchar(200),urldata varchar(20000),method varchar(200),server_hash varchar(200),server_update integer,addtime integer);");//创建详情表
+            sqlite.executeNonQuery("CREATE TABLE IF NOT EXISTS " + tableSetting + "(hash varchar(200),pid varchar(200) ,sort integer , name varchar(200), desc varchar(2000),server_hash varchar(200),server_update integer,addtime integer);");//创建配置表
         }
         /// <summary>
         /// 插入主要项目名称
@@ -55,11 +55,14 @@ namespace postApiTools
                 return false;
             }
             string hash = lib.pBase.getHash();//生成hash
-            string sql = "insert into " + tableSetting + "(hash,pid,sort,name,desc,addtime)values('{0}','{1}','{2}','{3}','{4}','{5}')";
-            sql = string.Format(sql, hash, 0, 0, name, desc, lib.pDate.getTimeStamp());
-            if (sqlite.executeNonQuery(sql) > 0)
+            if (lib.pApizlHttp.createProject(lib.pApizlHttp.token, name, desc, "0")) //创建在线
             {
-                return true;
+                string sql = "insert into " + tableSetting + "(hash,pid,sort,name,desc,server_hash,server_update,addtime)values('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}')";
+                sql = string.Format(sql, hash, 0, 0, name, desc, lib.pApizlHttp.project_hash, lib.pDate.getTimeStamp(), lib.pDate.getTimeStamp());
+                if (sqlite.executeNonQuery(sql) > 0)
+                {
+                    return true;
+                }
             }
             error = sqlite.error;
             return false;
@@ -164,10 +167,13 @@ namespace postApiTools
             if (mainResult.Count <= 0) { error = "需要一个上级"; return; }
             string mainHash = mainResult["hash"];
             string hash = lib.pBase.getHash();
-            string sql = "insert into " + tableSetting + "(hash,pid,sort,name,desc,addtime)values('{0}','{1}','{2}','{3}','{4}','{5}')";
-            sql = string.Format(sql, hash, mainHash, 0, name, "", lib.pDate.getTimeStamp());
-            sqlite.executeNonQuery(sql);
-            t.SelectedNode.Nodes.Add(hash, name);
+            if (lib.pApizlHttp.createProjectPid(lib.pApizlHttp.token, mainResult["server_hash"], name, "", "0"))
+            {
+                string sql = "insert into " + tableSetting + "(hash,pid,sort,name,desc,server_hash,server_update,addtime)values('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}')";
+                sql = string.Format(sql, hash, mainHash, 0, name, "", lib.pApizlHttp.project_hash, lib.pDate.getTimeStamp(), lib.pDate.getTimeStamp());
+                sqlite.executeNonQuery(sql);
+                t.SelectedNode.Nodes.Add(hash, name);
+            }
         }
 
         /// <summary>
@@ -184,16 +190,27 @@ namespace postApiTools
             string hash = lib.pBase.getHash();
             string project_id = t.SelectedNode.Name;
             string urlDataStr = lib.pBase64.stringToBase64(pJson.objectToJsonStr(urlData));
-            string sql = string.Format("insert into {0} (hash,project_id,sort,name,desc,url,urldata,method,addtime)values('{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}')", table, hash, project_id, 0, name, desc, url, urlDataStr, urlType, lib.pDate.getTimeStamp());
-            if (sqlite.executeNonQuery(sql) > 0)
-            {
-                return true;
-            }
-            else
+            Dictionary<string, string> d = sqlite.getOne(string.Format("select *from {0} where hash='{1}'", tableSetting, project_id));
+            if (d.Count <= 0)
             {
                 error = sqlite.error;
                 return false;
             }
+            if (lib.pApizlHttp.createDocument(lib.pApizlHttp.token, d["server_hash"], name, desc, url, urlDataStr, urlType))
+            {
+                string sql = string.Format("insert into {0} (hash,project_id,sort,name,desc,url,urldata,method,server_hash,server_update,addtime)values('{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}')", table, hash, project_id, 0, name, desc, url, urlDataStr, urlType, lib.pApizlHttp.project_hash, lib.pDate.getTimeStamp(), lib.pDate.getTimeStamp());
+                if (sqlite.executeNonQuery(sql) > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    error = sqlite.error;
+                    return false;
+                }
+            }
+            error = sqlite.error;
+            return false;
         }
         /// <summary>
         /// 删除树

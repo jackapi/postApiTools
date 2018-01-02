@@ -10,6 +10,16 @@ namespace postApiTools.lib
 {
     public class phttp
     {
+
+        /// <summary>
+        /// cookie
+        /// </summary>
+        public static string Cookie = "";
+        /// <summary>
+        /// 超时 毫秒
+        /// </summary>
+        public static int Timeout = pPublic.readTimeOut();
+
         /// <summary>
         /// 上传文件方法
         /// </summary>
@@ -28,6 +38,11 @@ namespace postApiTools.lib
                 request.CookieContainer = cookieContainer;
                 request.AllowAutoRedirect = true;
                 request.Method = "POST";
+                request.Timeout = Timeout;
+                if (HttpCustom_Request_Headers_Object!=null)
+                {
+                    request.Headers = HttpCustom_Request_Headers_Object;//请求报文头
+                }
                 string boundary = DateTime.Now.Ticks.ToString("X"); // 随机分隔线
                 request.ContentType = "multipart/form-data;charset=utf-8;boundary=" + boundary;
                 byte[] itemBoundaryBytes = Encoding.UTF8.GetBytes("\r\n--" + boundary + "\r\n");//开始头
@@ -73,6 +88,10 @@ namespace postApiTools.lib
             }
             catch (WebException ex)
             {
+                if (ex.Message == "操作超时")
+                {
+                    return ex.Message + " " + errorDataShow;
+                }
                 HttpWebResponse response = (HttpWebResponse)ex.Response;
                 if (response == null)
                 {
@@ -111,15 +130,21 @@ namespace postApiTools.lib
                     return "";
 
                 byte[] byteArray = Encoding.Default.GetBytes(paramData); //转化
-                HttpWebRequest webReq = (HttpWebRequest)WebRequest.Create(new Uri(postUrl));
-                webReq.KeepAlive = false;  //设置不建立持久性连接连接
-                webReq.Method = "POST";
-                webReq.ContentType = "application/x-www-form-urlencoded;charset=utf8";
-                webReq.ContentLength = byteArray.Length;
-                Stream newStream = webReq.GetRequestStream();
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(new Uri(postUrl));
+                //webReq.KeepAlive = false;  //设置不建立持久性连接连接
+                request.AllowAutoRedirect = true;
+                request.Method = "POST";
+                request.Timeout = Timeout;
+                request.ContentType = "application/x-www-form-urlencoded;charset=utf8";
+                request.ContentLength = byteArray.Length;
+                if (HttpCustom_Request_Headers_Object != null)
+                {
+                    request.Headers = HttpCustom_Request_Headers_Object;//请求报文头
+                }
+                Stream newStream = request.GetRequestStream();
                 newStream.Write(byteArray, 0, byteArray.Length);//写入参数
                 newStream.Close();
-                HttpWebResponse response = (HttpWebResponse)webReq.GetResponse();
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                 HttpCustom_Response_Headers_Object = response.Headers;//写入数据到WebHeaderCollection
                 HttpCustom_code = lib.pBase.enumToValueInt(typeof(pHttpCode.HttpStatusCode), response.StatusCode.ToString()).ToString();//赋值状态码
                 StreamReader sr = new StreamReader(response.GetResponseStream(), Encoding.GetEncoding(encodingString));
@@ -131,6 +156,10 @@ namespace postApiTools.lib
             }
             catch (WebException ex)
             {
+                if (ex.Message == "操作超时")
+                {
+                    return ex.Message + " " + errorDataShow;
+                }
                 HttpWebResponse response = (HttpWebResponse)ex.Response;
                 if (response == null)
                 {
@@ -160,7 +189,20 @@ namespace postApiTools.lib
         /// </summary>
         public static string[,] HttpCustom_Response_Headers = null;
 
+        /// <summary>
+        /// 返回报文头对象
+        /// </summary>
         public static WebHeaderCollection HttpCustom_Response_Headers_Object = null;
+
+        /// <summary>
+        /// 请求报文头数组
+        /// </summary>
+        public static string[,] HttpCustom_Request_Headers = null;
+
+        /// <summary>
+        /// 请求报文头对象
+        /// </summary>
+        public static WebHeaderCollection HttpCustom_Request_Headers_Object = null;
 
         /// <summary>
         /// 获取返回报文头
@@ -203,6 +245,11 @@ namespace postApiTools.lib
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                 request.Method = "GET";
                 request.ContentType = "text/html;charset=UTF-8";
+                request.Timeout = Timeout;
+                if (HttpCustom_Request_Headers_Object!=null)
+                {
+                    request.Headers = HttpCustom_Request_Headers_Object;//请求报文头
+                }
                 //接受返回来的数据
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                 HttpCustom_Response_Headers_Object = response.Headers;//写入数据到WebHeaderCollection
@@ -218,6 +265,10 @@ namespace postApiTools.lib
             }
             catch (WebException ex)
             {
+                if (ex.Message == "操作超时")
+                {
+                    return ex.Message + " " + errorDataShow;
+                }
                 HttpWebResponse response = (HttpWebResponse)ex.Response;
                 if (response == null)
                 {

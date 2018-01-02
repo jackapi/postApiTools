@@ -208,7 +208,7 @@ namespace postApiTools
                     else
                     {
                         //list.Add("");
-                        array[i, 0] = "";
+                        array[i, g] = "";
                     }
                 }
             }
@@ -249,7 +249,7 @@ namespace postApiTools
         /// </summary>
         /// <param name="dd"></param>
         /// <returns></returns>
-        public static string postFile(string url, DataGridView dd)
+        public static string postFile(string url, DataGridView dd, string encodingString = "utf-8")
         {
             string[,] array = dataViewToStringArray(dd);
             int fileNumber = 0;
@@ -284,8 +284,7 @@ namespace postApiTools
                     textI++;
                 }
             }
-            //string str = lib.phttp.Post(new Uri(url), values, files);
-            string str = lib.phttp.HttpUploadFile(url, values, files);
+            string str = lib.phttp.HttpUploadFile(url, values, files, encodingString);
             return str;
         }
 
@@ -364,6 +363,7 @@ namespace postApiTools
 
             return urlData;
         }
+
 
         /// <summary>
         /// 输出报文头
@@ -598,6 +598,60 @@ namespace postApiTools
                     }
                 }
             }));
+        }
+
+        /// <summary>
+        /// to rn 改变事件
+        /// </summary>
+        /// <param name="cb"></param>
+        public static void toRnEvent(CheckBox cb)
+        {
+            if (cb.CheckState == CheckState.Checked)
+            {
+                lib.pIni.write("form1", "to_rn", "true");
+
+            }
+            if (cb.CheckState == CheckState.Unchecked)
+            {
+                lib.pIni.write("form1", "to_rn", "false");
+            }
+        }
+
+        /// <summary>
+        /// 自动转换选中显示
+        /// </summary>
+        public static void toRnShow(CheckBox cb)
+        {
+            string f = lib.pIni.read("form1", "to_rn");
+            if (f == "true")
+            {
+                cb.CheckState = CheckState.Checked;
+                return;
+            }
+        }
+        /// <summary>
+        /// 自动转换HTML
+        /// </summary>
+        /// <param name="cb"></param>
+        /// <param name="html"></param>
+        /// <param name="t"></param>
+        public static void toRn(CheckBox cb, string html, TextBox t)
+        {
+            string f = lib.pIni.read("form1", "to_rn");
+            if (f == "true")
+            {
+                int number = html.IndexOf("\r\n");
+                if (number > 0)
+                {
+                    return;
+                }
+                html = html.Replace("\n", "\r\n");
+                t.Text = html;
+                return;
+            }
+            else
+            {
+            }
         }
 
     }
