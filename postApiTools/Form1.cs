@@ -285,6 +285,7 @@ namespace postApiTools
         {
             if (e.RowIndex >= 0)
             {
+                button_new_url_http_Click(null, null);//先清理在添加数据
                 string hash = dataGridView_history.Rows[e.RowIndex].Cells[0].ToolTipText;
                 pHistory.fillData(dataGridView_http_data, hash, comboBox_url_type, textBox_url, textBox_html);//填充数据
             }
@@ -299,6 +300,23 @@ namespace postApiTools
             string url = textBox_url.Text;
             string urlType = comboBox_url_type.Text;
             string[,] urlData = pform1.dataViewToStringArray(dataGridView_http_data);
+            if (editApiHash != "")
+            {
+                string name = textBox_api_name.Text;
+                string desc = textBox_doc.Text;
+                if (MessageBox.Show("保存文档[" + name + "]", "操作提示", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    string urlDataStr = lib.pBase64.stringToBase64(pJson.objectToJsonStr(urlData));
+                    if (pForm1TreeView.editApi(editApiHash, name, desc, url, urlDataStr, urlType))
+                    {
+                        MessageBox.Show("编辑成功");
+                        return;
+                    }
+                    MessageBox.Show("编辑失败:" + pForm1TreeView.error);
+                    return;
+                }
+                return;
+            }
             SavePostApi api = new SavePostApi(urlData, url, urlType, textBox_doc.Text);
             api.ShowDialog();
             pForm1TreeView.showMainData(treeView_save_list, imageList_treeview);//显示项目列表树
@@ -469,6 +487,11 @@ namespace postApiTools
 
             pForm1TreeView.showMainData(treeView_save_list, imageList_treeview);//显示项目列表树
         }
+
+        /// <summary>
+        /// 编辑文档hash
+        /// </summary>
+        public string editApiHash = "";
         /// <summary>
         /// 双击treeView_save_list事件
         /// </summary>
@@ -478,7 +501,8 @@ namespace postApiTools
         {
             string hash = treeView_save_list.SelectedNode.Name;
             string name = treeView_save_list.SelectedNode.Text;
-            pForm1TreeView.openApiDataShow(treeView_save_list, textBox_url, comboBox_url_type, dataGridView_http_data);
+            editApiHash = hash;
+            pForm1TreeView.openApiDataShow(treeView_save_list, textBox_url, comboBox_url_type, dataGridView_http_data, textBox_api_name);
         }
 
         private void dataGridView_http_data_DataError(object sender, DataGridViewDataErrorEventArgs e)
@@ -573,6 +597,65 @@ namespace postApiTools
             {
                 dataGridView_http_data.Rows.Clear();
             }
+        }
+
+        /// <summary>
+        /// url改变
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void textBox_url_TextChanged(object sender, EventArgs e)
+        {
+            if (loadInt != 0)
+            {
+                return;
+            }
+            string url = textBox_url.Text;
+            if (url == "")
+            {
+                return;
+            }
+        }
+
+        /// <summary>
+        /// 新建操作
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button_new_url_http_Click(object sender, EventArgs e)
+        {
+            dataGridView_http_data.Rows.Clear();
+            editApiHash = "";
+            textBox_url.Text = "";
+            textBox_api_name.Text = "";
+        }
+
+        /// <summary>
+        /// 快捷键注册绑定
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Modifiers == Keys.Control && e.KeyCode == Keys.W)//新建操作
+            {
+                button_new_url_http_Click(null, null);
+            }
+            if (e.Modifiers == Keys.Control && e.KeyCode == Keys.S)//保存接口事件
+            {
+                button_save_api_Click(null, null);
+            }
+        }
+
+        /// <summary>
+        /// 帮助说明
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void label_help_Click(object sender, EventArgs e)
+        {
+            Help h = new Help();
+            h.ShowDialog();
         }
     }
 }

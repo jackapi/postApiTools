@@ -34,6 +34,10 @@ namespace postApiTools
         public static string templateTxt = exePath + "/data/template.txt";
 
         /// <summary>
+        /// data目录
+        /// </summary>
+        public static string dataPath = exePath + "/data/";
+        /// <summary>
         /// 模板目录
         /// </summary>
         public static string templatePath = exePath + "/data/template_";

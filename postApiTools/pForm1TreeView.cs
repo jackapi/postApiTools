@@ -340,7 +340,7 @@ namespace postApiTools
         /// <param name="urlType"></param>
         /// <param name="dd"></param>
         /// <returns></returns>
-        public static bool openApiDataShow(TreeView t, TextBox url, ComboBox urlType, DataGridView dd)
+        public static bool openApiDataShow(TreeView t, TextBox url, ComboBox urlType, DataGridView dd, TextBox textBox_api_name)
         {
             string idHash = t.SelectedNode.Name;
             string sql = string.Format("select *from {0} where hash='{1}' ", table, idHash);
@@ -352,6 +352,7 @@ namespace postApiTools
             }
             url.Text = list["url"];
             urlType.Text = list["method"];
+            textBox_api_name.Text = list["name"];
             string urlDataStr = list["urldata"];
             urlDataStr = lib.pBase64.base64ToString(urlDataStr);
             object[,] obj = pJson.jsonStrToObjectArray(urlDataStr, 4);
@@ -401,6 +402,32 @@ namespace postApiTools
                 }
             }
             return temNode;
+        }
+
+        /// <summary>
+        /// 编辑API
+        /// </summary>
+        public static bool editApi(string hash, string name, string desc, string url,string urldata, string urlType)
+        {
+            if (hash == "")
+            {
+                error = "hash error";
+                return false;
+            }
+            Dictionary<string, string> d = sqlite.getOne(string.Format("select *from {0} where hash='{1}'", table, hash));
+            if (d.Count <= 0)
+            {
+                error = "不存在数据";
+                return false;
+            }
+
+            string sql = "update {0} set name='{1}' , desc='{2}',url='{3}',urldata='{4}',method='{5}' where hash='{6}'";
+            sql = string.Format(sql, table, name, desc, url, urldata, urlType, hash);
+            if (sqlite.executeNonQuery(sql)>0) {
+                return true;
+            }
+            error = sqlite.error;
+            return false;
         }
     }
 }

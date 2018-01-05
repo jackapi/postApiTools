@@ -98,6 +98,8 @@
             this.清空ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Column10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.button_new_url_http = new System.Windows.Forms.Button();
+            this.label_help = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_http_data)).BeginInit();
@@ -143,6 +145,7 @@
             this.textBox_url.Size = new System.Drawing.Size(571, 21);
             this.textBox_url.TabIndex = 2;
             this.textBox_url.WordWrap = false;
+            this.textBox_url.TextChanged += new System.EventHandler(this.textBox_url_TextChanged);
             this.textBox_url.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox_url_KeyDown);
             // 
             // comboBox_url_type
@@ -764,7 +767,7 @@
             // 
             // button_save_api
             // 
-            this.button_save_api.Location = new System.Drawing.Point(1055, 2);
+            this.button_save_api.Location = new System.Drawing.Point(1052, 27);
             this.button_save_api.Name = "button_save_api";
             this.button_save_api.Size = new System.Drawing.Size(75, 23);
             this.button_save_api.TabIndex = 20;
@@ -813,11 +816,35 @@
             this.Column11.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.Column11.Width = 200;
             // 
+            // button_new_url_http
+            // 
+            this.button_new_url_http.Location = new System.Drawing.Point(1052, 2);
+            this.button_new_url_http.Name = "button_new_url_http";
+            this.button_new_url_http.Size = new System.Drawing.Size(75, 23);
+            this.button_new_url_http.TabIndex = 20;
+            this.button_new_url_http.Tag = "ctrl+w";
+            this.button_new_url_http.Text = "新建";
+            this.button_new_url_http.UseVisualStyleBackColor = true;
+            this.button_new_url_http.Click += new System.EventHandler(this.button_new_url_http_Click);
+            // 
+            // label_help
+            // 
+            this.label_help.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label_help.AutoSize = true;
+            this.label_help.Location = new System.Drawing.Point(254, 665);
+            this.label_help.Name = "label_help";
+            this.label_help.Size = new System.Drawing.Size(53, 12);
+            this.label_help.TabIndex = 21;
+            this.label_help.Text = "帮助说明";
+            this.label_help.Click += new System.EventHandler(this.label_help_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1268, 686);
+            this.Controls.Add(this.label_help);
+            this.Controls.Add(this.button_new_url_http);
             this.Controls.Add(this.button_save_api);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.linkLabel1);
@@ -841,11 +868,13 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button_test);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.KeyPreview = true;
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "PostApiTools(测试接口、生成文档) 作者:apiziliao@gmail.com  qq群:616318658";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.Resize += new System.EventHandler(this.Form1_Resize);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
@@ -942,6 +971,8 @@
         private System.Windows.Forms.ToolStripMenuItem 清空ToolStripMenuItem;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column10;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column11;
+        private System.Windows.Forms.Button button_new_url_http;
+        private System.Windows.Forms.Label label_help;
     }
 }
 
