@@ -37,20 +37,22 @@
             this.comboBox_template_list = new System.Windows.Forms.ComboBox();
             this.textBox_save_name = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.label2 = new System.Windows.Forms.Label();
-            this.textBox_web_url = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.textBox_web_username = new System.Windows.Forms.TextBox();
-            this.textBox_web_password = new System.Windows.Forms.TextBox();
+            this.checkBox_open_server_update = new System.Windows.Forms.CheckBox();
             this.button_web_save = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.textBox_web_password = new System.Windows.Forms.TextBox();
+            this.textBox_web_username = new System.Windows.Forms.TextBox();
+            this.textBox_web_url = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.button_history = new System.Windows.Forms.Button();
+            this.checkBox_agreed = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
+            this.tabPage2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -137,19 +139,10 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "模板名:";
             // 
-            // tabPage2
-            // 
-            this.tabPage2.Controls.Add(this.button_history);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(874, 546);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "其他";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.checkBox_agreed);
+            this.tabPage3.Controls.Add(this.checkBox_open_server_update);
             this.tabPage3.Controls.Add(this.button_web_save);
             this.tabPage3.Controls.Add(this.label4);
             this.tabPage3.Controls.Add(this.label3);
@@ -164,30 +157,25 @@
             this.tabPage3.Text = "配置服务器";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // label2
+            // checkBox_open_server_update
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(8, 20);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(23, 12);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "URL";
+            this.checkBox_open_server_update.AutoSize = true;
+            this.checkBox_open_server_update.Location = new System.Drawing.Point(37, 109);
+            this.checkBox_open_server_update.Name = "checkBox_open_server_update";
+            this.checkBox_open_server_update.Size = new System.Drawing.Size(72, 16);
+            this.checkBox_open_server_update.TabIndex = 5;
+            this.checkBox_open_server_update.Text = "开启同步";
+            this.checkBox_open_server_update.UseVisualStyleBackColor = true;
             // 
-            // textBox_web_url
+            // button_web_save
             // 
-            this.textBox_web_url.Location = new System.Drawing.Point(37, 17);
-            this.textBox_web_url.Name = "textBox_web_url";
-            this.textBox_web_url.Size = new System.Drawing.Size(235, 21);
-            this.textBox_web_url.TabIndex = 1;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 52);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(29, 12);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "账号";
+            this.button_web_save.Location = new System.Drawing.Point(278, 10);
+            this.button_web_save.Name = "button_web_save";
+            this.button_web_save.Size = new System.Drawing.Size(129, 115);
+            this.button_web_save.TabIndex = 4;
+            this.button_web_save.Text = "保存";
+            this.button_web_save.UseVisualStyleBackColor = true;
+            this.button_web_save.Click += new System.EventHandler(this.button_web_save_Click);
             // 
             // label4
             // 
@@ -198,12 +186,14 @@
             this.label4.TabIndex = 3;
             this.label4.Text = "密码";
             // 
-            // textBox_web_username
+            // label3
             // 
-            this.textBox_web_username.Location = new System.Drawing.Point(37, 49);
-            this.textBox_web_username.Name = "textBox_web_username";
-            this.textBox_web_username.Size = new System.Drawing.Size(235, 21);
-            this.textBox_web_username.TabIndex = 1;
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 52);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(29, 12);
+            this.label3.TabIndex = 2;
+            this.label3.Text = "账号";
             // 
             // textBox_web_password
             // 
@@ -211,15 +201,41 @@
             this.textBox_web_password.Name = "textBox_web_password";
             this.textBox_web_password.Size = new System.Drawing.Size(235, 21);
             this.textBox_web_password.TabIndex = 1;
+            this.textBox_web_password.UseSystemPasswordChar = true;
             // 
-            // button_web_save
+            // textBox_web_username
             // 
-            this.button_web_save.Location = new System.Drawing.Point(278, 10);
-            this.button_web_save.Name = "button_web_save";
-            this.button_web_save.Size = new System.Drawing.Size(129, 96);
-            this.button_web_save.TabIndex = 4;
-            this.button_web_save.Text = "保存";
-            this.button_web_save.UseVisualStyleBackColor = true;
+            this.textBox_web_username.Location = new System.Drawing.Point(37, 49);
+            this.textBox_web_username.Name = "textBox_web_username";
+            this.textBox_web_username.Size = new System.Drawing.Size(235, 21);
+            this.textBox_web_username.TabIndex = 1;
+            // 
+            // textBox_web_url
+            // 
+            this.textBox_web_url.Location = new System.Drawing.Point(37, 17);
+            this.textBox_web_url.Name = "textBox_web_url";
+            this.textBox_web_url.Size = new System.Drawing.Size(235, 21);
+            this.textBox_web_url.TabIndex = 1;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(8, 20);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(23, 12);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "URL";
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.button_history);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(874, 546);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "其他";
+            this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // button_history
             // 
@@ -230,6 +246,16 @@
             this.button_history.Text = "清理历史";
             this.button_history.UseVisualStyleBackColor = true;
             this.button_history.Click += new System.EventHandler(this.button_history_Click);
+            // 
+            // checkBox_agreed
+            // 
+            this.checkBox_agreed.AutoSize = true;
+            this.checkBox_agreed.Location = new System.Drawing.Point(127, 109);
+            this.checkBox_agreed.Name = "checkBox_agreed";
+            this.checkBox_agreed.Size = new System.Drawing.Size(72, 16);
+            this.checkBox_agreed.TabIndex = 6;
+            this.checkBox_agreed.Text = "保持一致";
+            this.checkBox_agreed.UseVisualStyleBackColor = true;
             // 
             // Setting
             // 
@@ -247,9 +273,9 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
-            this.tabPage2.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
+            this.tabPage2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -274,5 +300,7 @@
         private System.Windows.Forms.TextBox textBox_web_username;
         private System.Windows.Forms.Button button_web_save;
         private System.Windows.Forms.Button button_history;
+        private System.Windows.Forms.CheckBox checkBox_open_server_update;
+        private System.Windows.Forms.CheckBox checkBox_agreed;
     }
 }

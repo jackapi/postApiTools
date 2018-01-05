@@ -32,12 +32,28 @@ namespace postApiTools
         const string tableSetting = "treeview_project_setting";
 
         /// <summary>
+        /// 获取文档表
+        /// </summary>
+        /// <returns></returns>
+        public static string getTable()
+        {
+            return table;
+        }
+        /// <summary>
+        /// 获取栏目表
+        /// </summary>
+        /// <returns></returns>
+        public static string getTableSetting()
+        {
+            return tableSetting;
+        }
+        /// <summary>
         /// 创建表
         /// </summary>
         public static void create()
         {
-            sqlite.executeNonQuery("CREATE TABLE IF NOT EXISTS " + table + "(hash varchar(200),project_id varchar(200),sort integer , name varchar(200), desc varchar(2000),url varchar(200),urldata varchar(20000),method varchar(200),addtime integer);");//创建详情表
-            sqlite.executeNonQuery("CREATE TABLE IF NOT EXISTS " + tableSetting + "(hash varchar(200),pid varchar(200) ,sort integer , name varchar(200), desc varchar(2000),addtime integer);");//创建配置表
+            sqlite.executeNonQuery("CREATE TABLE IF NOT EXISTS " + table + "(hash varchar(200),project_id varchar(200),sort integer , name varchar(200), desc varchar(2000),url varchar(200),urldata varchar(20000),method varchar(200),server_hash varchar(200),server_update integer,addtime integer);");//创建详情表
+            sqlite.executeNonQuery("CREATE TABLE IF NOT EXISTS " + tableSetting + "(hash varchar(200),pid varchar(200) ,sort integer , name varchar(200), desc varchar(2000),server_hash varchar(200),server_update integer,addtime integer);");//创建配置表
         }
         /// <summary>
         /// 插入主要项目名称
@@ -55,11 +71,14 @@ namespace postApiTools
                 return false;
             }
             string hash = lib.pBase.getHash();//生成hash
-            string sql = "insert into " + tableSetting + "(hash,pid,sort,name,desc,addtime)values('{0}','{1}','{2}','{3}','{4}','{5}')";
-            sql = string.Format(sql, hash, 0, 0, name, desc, lib.pDate.getTimeStamp());
-            if (sqlite.executeNonQuery(sql) > 0)
+            if (lib.pApizlHttp.createProject(lib.pApizlHttp.token, name, desc, "0")) //创建在线
             {
-                return true;
+                string sql = "insert into " + tableSetting + "(hash,pid,sort,name,desc,server_hash,server_update,addtime)values('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}')";
+                sql = string.Format(sql, hash, 0, 0, name, desc, lib.pApizlHttp.project_hash, lib.pDate.getTimeStamp(), lib.pDate.getTimeStamp());
+                if (sqlite.executeNonQuery(sql) > 0)
+                {
+                    return true;
+                }
             }
             error = sqlite.error;
             return false;
@@ -150,7 +169,17 @@ namespace postApiTools
                 }
             }));
         }
-
+        /// <summary>
+        /// 更新项目中服务器hash
+        /// </summary>
+        /// <param name="hash"></param>
+        /// <param name="serverHash"></param>
+        /// <returns>int</returns>
+        public static int updateProjectServerHash(string hash, string serverHash)
+        {
+            string sql = string.Format("update {0} set server_hash='{1}' ,server_update='{2}' where hash='{3}'", tableSetting, serverHash, lib.pDate.getTimeStamp(), hash);
+            return sqlite.executeNonQuery(sql);
+        }
         /// <summary>
         /// 添加子类
         /// </summary>
@@ -162,14 +191,44 @@ namespace postApiTools
             string getSql = string.Format("select *from {0} where hash='{1}' ", tableSetting, idHash);
             Dictionary<string, string> mainResult = sqlite.getOne(getSql);
             if (mainResult.Count <= 0) { error = "需要一个上级"; return; }
-            string mainHash = mainResult["hash"];
             string hash = lib.pBase.getHash();
-            string sql = "insert into " + tableSetting + "(hash,pid,sort,name,desc,addtime)values('{0}','{1}','{2}','{3}','{4}','{5}')";
-            sql = string.Format(sql, hash, mainHash, 0, name, "", lib.pDate.getTimeStamp());
-            sqlite.executeNonQuery(sql);
+            if (lib.pApizlHttp.createProjectPid(lib.pApizlHttp.token, mainResult["server_hash"], name, "", "0"))
+            {
+                string mainHash = mainResult["hash"];
+                insertPidData(name, hash, mainHash, lib.pApizlHttp.project_hash);
+                //string sql = "insert into " + tableSetting + "(hash,pid,sort,name,desc,server_hash,server_update,addtime)values('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}')";
+                //sql = string.Format(sql, hash, mainHash, 0, name, "", lib.pApizlHttp.project_hash, lib.pDate.getTimeStamp(), lib.pDate.getTimeStamp());
+                //sqlite.executeNonQuery(sql);
+            }
             t.SelectedNode.Nodes.Add(hash, name);
         }
 
+
+        /// <summary>
+        /// 更新子类serverHash
+        /// </summary>
+        /// <param name="hash"></param>
+        /// <param name="serverHash"></param>
+        /// <returns></returns>
+        public static int updateProjectPidServerHash(string hash, string serverHash)
+        {
+            string sql = string.Format("update {0} set server_hash='{1}' ,server_update='{2}' where hash='{3}'", tableSetting, serverHash, lib.pDate.getTimeStamp(), hash);
+            return sqlite.executeNonQuery(sql);
+        }
+
+        /// <summary>
+        /// 添加子类
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="hash"></param>
+        /// <param name="projectHash"></param>
+        /// <param name="serverHash"></param>
+        public static void insertPidData(string name, string hash, string projectHash, string serverHash)
+        {
+            string sql = "insert into " + tableSetting + "(hash,pid,sort,name,desc,server_hash,server_update,addtime)values('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}')";
+            sql = string.Format(sql, hash, projectHash, 0, name, "", serverHash, lib.pDate.getTimeStamp(), lib.pDate.getTimeStamp());
+            sqlite.executeNonQuery(sql);
+        }
         /// <summary>
         /// 添加接口文档
         /// </summary>
@@ -184,16 +243,44 @@ namespace postApiTools
             string hash = lib.pBase.getHash();
             string project_id = t.SelectedNode.Name;
             string urlDataStr = lib.pBase64.stringToBase64(pJson.objectToJsonStr(urlData));
-            string sql = string.Format("insert into {0} (hash,project_id,sort,name,desc,url,urldata,method,addtime)values('{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}')", table, hash, project_id, 0, name, desc, url, urlDataStr, urlType, lib.pDate.getTimeStamp());
-            if (sqlite.executeNonQuery(sql) > 0)
-            {
-                return true;
-            }
-            else
+            Dictionary<string, string> d = sqlite.getOne(string.Format("select *from {0} where hash='{1}'", tableSetting, project_id));
+            if (d.Count <= 0)
             {
                 error = sqlite.error;
                 return false;
             }
+            if (lib.pApizlHttp.createDocument(lib.pApizlHttp.token, d["server_hash"], name, desc, url, urlDataStr, urlType))
+            {
+                string sql = string.Format("insert into {0} (hash,project_id,sort,name,desc,url,urldata,method,server_hash,server_update,addtime)values('{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}')", table, hash, project_id, 0, name, desc, url, urlDataStr, urlType, lib.pApizlHttp.project_hash, lib.pDate.getTimeStamp(), lib.pDate.getTimeStamp());
+                if (sqlite.executeNonQuery(sql) > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    error = sqlite.error;
+                    return false;
+                }
+            }
+            error = sqlite.error;
+            return false;
+        }
+
+        /// <summary>
+        /// 添加接口文档sql
+        /// </summary>
+        /// <param name="hash"></param>
+        /// <param name="project_id"></param>
+        /// <param name="name"></param>
+        /// <param name="desc"></param>
+        /// <param name="url"></param>
+        /// <param name="urlDataStr"></param>
+        /// <param name="urlType"></param>
+        /// <returns></returns>
+        public static int addApiSql(string hash, string project_id, string name, string desc, string url, string urlDataStr, string urlType, string server_hash)
+        {
+            string sql = string.Format("insert into {0} (hash,project_id,sort,name,desc,url,urldata,method,server_hash,server_update,addtime)values('{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}')", table, hash, project_id, 0, name, desc, url, urlDataStr, urlType, server_hash, lib.pDate.getTimeStamp(), lib.pDate.getTimeStamp());
+            return sqlite.executeNonQuery(sql);
         }
         /// <summary>
         /// 删除树
@@ -253,7 +340,7 @@ namespace postApiTools
         /// <param name="urlType"></param>
         /// <param name="dd"></param>
         /// <returns></returns>
-        public static bool openApiDataShow(TreeView t, TextBox url, ComboBox urlType, DataGridView dd)
+        public static bool openApiDataShow(TreeView t, TextBox url, ComboBox urlType, DataGridView dd, TextBox textBox_api_name, TextBox doc)
         {
             string idHash = t.SelectedNode.Name;
             string sql = string.Format("select *from {0} where hash='{1}' ", table, idHash);
@@ -265,6 +352,8 @@ namespace postApiTools
             }
             url.Text = list["url"];
             urlType.Text = list["method"];
+            textBox_api_name.Text = list["name"];
+            doc.Text = list["desc"];
             string urlDataStr = list["urldata"];
             urlDataStr = lib.pBase64.base64ToString(urlDataStr);
             object[,] obj = pJson.jsonStrToObjectArray(urlDataStr, 4);
@@ -314,6 +403,33 @@ namespace postApiTools
                 }
             }
             return temNode;
+        }
+
+        /// <summary>
+        /// 编辑API
+        /// </summary>
+        public static bool editApi(string hash, string name, string desc, string url, string urldata, string urlType)
+        {
+            if (hash == "")
+            {
+                error = "hash error";
+                return false;
+            }
+            Dictionary<string, string> d = sqlite.getOne(string.Format("select *from {0} where hash='{1}'", table, hash));
+            if (d.Count <= 0)
+            {
+                error = "不存在数据";
+                return false;
+            }
+
+            string sql = "update {0} set name='{1}' , desc='{2}',url='{3}',urldata='{4}',method='{5}' where hash='{6}'";
+            sql = string.Format(sql, table, name, desc, url, urldata, urlType, hash);
+            if (sqlite.executeNonQuery(sql) > 0)
+            {
+                return true;
+            }
+            error = sqlite.error;
+            return false;
         }
     }
 }

@@ -11,6 +11,14 @@ namespace postApiTools.lib
     public class pBase
     {
         /// <summary>
+        /// 打开浏览器
+        /// </summary>
+        /// <param name="url"></param>
+        public static void openWeb(string url)
+        {
+            System.Diagnostics.Process.Start(url);
+        }
+        /// <summary>
         /// gethash
         /// </summary>
         /// <returns></returns>

@@ -98,5 +98,54 @@ namespace postApiTools
             refreshTemplateList(combobox);
             File.Delete(Config.templatePath + name + fx);//删除模板
         }
+
+        /// <summary>
+        /// 服务器URL
+        /// </summary>
+        public static string web_url = lib.pIni.read("setting", "web_url");
+        /// <summary>
+        /// 服务器用户名
+        /// </summary>
+        public static string web_name = lib.pIni.read("setting", "web_name");
+        /// <summary>
+        /// 服务器密码
+        /// </summary>
+        public static string web_password = lib.pIni.read("setting", "web_password");
+
+        /// <summary>
+        /// 服务器更新
+        /// </summary>
+        public static string web_update= lib.pIni.read("setting", "web_update");
+
+        /// <summary>
+        /// 保存服务器信息
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="name"></param>
+        /// <param name="password"></param>
+        public static void saveUrlNamePassword(string url, string name, string password, CheckState c, CheckState agreed)
+        {
+            lib.pIni.write("setting", "web_url", url);
+            lib.pIni.write("setting", "web_name", name);
+            lib.pIni.write("setting", "web_password", password);
+            lib.pIni.write("setting", "web_update", c.ToString());
+            lib.pIni.write("setting", "web_agreed", agreed.ToString());
+        }
+        /// <summary>
+        /// 服务器更新服务配置
+        /// </summary>
+        /// <returns></returns>
+        public static string openServerUpdateRead()
+        {
+            return lib.pIni.read("setting", "web_update");
+        }
+        /// <summary>
+        /// 写入服务器更新服务配置
+        /// </summary>
+        /// <param name="value"></param>
+        public static void openServerUpdateWrite(string value)
+        {
+            lib.pIni.write("setting", "web_update", value);
+        }
     }
 }

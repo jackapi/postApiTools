@@ -14,6 +14,21 @@ namespace postApiTools
     public class pJson
     {
         public static string error = "";
+
+        /// <summary>
+        /// JSON转对象
+        /// </summary>
+        /// <typeparam name="T">对象</typeparam>
+        /// <param name="jsonString">json字符串</param>
+        /// <returns></returns>
+        public static Dictionary<object, object> jsonToObject(string jsonString)
+        {
+            JObject job = (JObject)JsonConvert.DeserializeObject(jsonString);
+            int count = job.Count;
+            string msg = job["msg"].ToString();
+            JObject list = (JObject)job["result"];
+            return null;
+        }
         /// <summary>
         /// 格式化json
         /// </summary>
@@ -24,6 +39,7 @@ namespace postApiTools
             try
             {
                 JObject job = (JObject)JsonConvert.DeserializeObject(str);
+                error = "";
                 return job.ToString();
             }
             catch (Exception ex)

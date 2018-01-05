@@ -58,7 +58,7 @@ namespace postApiTools
         }
 
         /// <summary>
-        /// 
+        /// 界面打开加载
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -68,6 +68,13 @@ namespace postApiTools
             textBox_template.Text = template;
             pSetting.refreshTemplateList(comboBox_template_list);
             comboBox_template_list.Text = "默认模板";
+
+            textBox_web_url.Text = pSetting.web_url;
+            textBox_web_username.Text = pSetting.web_name;
+            textBox_web_password.Text = pSetting.web_password;
+            checkBox_open_server_update.CheckState = pSetting.web_update == "Checked" ? CheckState.Checked : CheckState.Unchecked;//是否开启更新
+
+            checkBox_agreed.CheckState = Config.openServerAgreed == "Checked" ? CheckState.Checked : CheckState.Unchecked;//服务器保持一致
         }
 
         /// <summary>
@@ -118,6 +125,38 @@ namespace postApiTools
             int rows = pHistory.historyAllDelete();
 
             MessageBox.Show(string.Format("成功清理历史{0}个！", rows));
+        }
+
+        /// <summary>
+        /// 保存配置
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button_web_save_Click(object sender, EventArgs e)
+        {
+            string url = textBox_web_url.Text;
+            string name = textBox_web_username.Text;
+            string password = textBox_web_password.Text;
+            CheckState update = checkBox_open_server_update.CheckState;
+            CheckState agreed = checkBox_agreed.CheckState;
+            if (!lib.pRegex.IsUrl(url))
+            {
+                MessageBox.Show("请填写正确URL");
+                return;
+            }
+            if (url == "")
+            {
+                MessageBox.Show("url不能为空");
+                return;
+            }
+            if (name == "" || password == "")
+            {
+                MessageBox.Show("账号密码不能为空!");
+                return;
+            }
+            pSetting.saveUrlNamePassword(url, name, password, update, agreed);
+            MessageBox.Show("设置成功");
+
         }
     }
 }

@@ -42,8 +42,12 @@
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column13 = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.Column12 = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.contextMenuStrip_urldata_dataview = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.清空ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.checkBox_to_rn = new System.Windows.Forms.CheckBox();
+            this.button_to_rn = new System.Windows.Forms.Button();
             this.comboBox_html_show_type = new System.Windows.Forms.ComboBox();
             this.textBox_html = new System.Windows.Forms.TextBox();
             this.tabPage5 = new System.Windows.Forms.TabPage();
@@ -77,12 +81,16 @@
             this.textBox_api_name = new System.Windows.Forms.TextBox();
             this.tabControl3 = new System.Windows.Forms.TabControl();
             this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.button_delete_history = new System.Windows.Forms.Button();
             this.tabPage8 = new System.Windows.Forms.TabPage();
+            this.button_search = new System.Windows.Forms.Button();
+            this.textBox_search = new System.Windows.Forms.TextBox();
             this.button_treeview_refresh = new System.Windows.Forms.Button();
             this.button_add_project = new System.Windows.Forms.Button();
             this.treeView_save_list = new System.Windows.Forms.TreeView();
             this.contextMenuStrip_save_list = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.查看ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.label6 = new System.Windows.Forms.Label();
@@ -90,12 +98,13 @@
             this.label7 = new System.Windows.Forms.Label();
             this.button_save_api = new System.Windows.Forms.Button();
             this.imageList_treeview = new System.Windows.Forms.ImageList(this.components);
-            this.textBox_search = new System.Windows.Forms.TextBox();
-            this.button_search = new System.Windows.Forms.Button();
-            this.button_delete_history = new System.Windows.Forms.Button();
+            this.timer_server = new System.Windows.Forms.Timer(this.components);
+            this.button_new_url_http = new System.Windows.Forms.Button();
+            this.label_help = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_http_data)).BeginInit();
+            this.contextMenuStrip_urldata_dataview.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.tabPage5.SuspendLayout();
@@ -137,6 +146,7 @@
             this.textBox_url.Size = new System.Drawing.Size(571, 21);
             this.textBox_url.TabIndex = 2;
             this.textBox_url.WordWrap = false;
+            this.textBox_url.TextChanged += new System.EventHandler(this.textBox_url_TextChanged);
             this.textBox_url.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox_url_KeyDown);
             // 
             // comboBox_url_type
@@ -191,6 +201,7 @@
             this.Column3,
             this.Column13,
             this.Column12});
+            this.dataGridView_http_data.ContextMenuStrip = this.contextMenuStrip_urldata_dataview;
             this.dataGridView_http_data.Location = new System.Drawing.Point(0, 0);
             this.dataGridView_http_data.Name = "dataGridView_http_data";
             this.dataGridView_http_data.RowHeadersVisible = false;
@@ -212,7 +223,7 @@
             // 
             this.Column2.HeaderText = "值(字符串)";
             this.Column2.Name = "Column2";
-            this.Column2.Width = 200;
+            this.Column2.Width = 350;
             // 
             // Column3
             // 
@@ -236,6 +247,20 @@
             this.Column12.ToolTipText = "删除";
             this.Column12.UseColumnTextForButtonValue = true;
             // 
+            // contextMenuStrip_urldata_dataview
+            // 
+            this.contextMenuStrip_urldata_dataview.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.清空ToolStripMenuItem});
+            this.contextMenuStrip_urldata_dataview.Name = "contextMenuStrip_urldata_dataview";
+            this.contextMenuStrip_urldata_dataview.Size = new System.Drawing.Size(101, 26);
+            this.contextMenuStrip_urldata_dataview.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuStrip_urldata_dataview_ItemClicked);
+            // 
+            // 清空ToolStripMenuItem
+            // 
+            this.清空ToolStripMenuItem.Name = "清空ToolStripMenuItem";
+            this.清空ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.清空ToolStripMenuItem.Text = "清空";
+            // 
             // tabControl2
             // 
             this.tabControl2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -251,6 +276,8 @@
             // 
             // tabPage4
             // 
+            this.tabPage4.Controls.Add(this.checkBox_to_rn);
+            this.tabPage4.Controls.Add(this.button_to_rn);
             this.tabPage4.Controls.Add(this.comboBox_html_show_type);
             this.tabPage4.Controls.Add(this.textBox_html);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
@@ -260,6 +287,28 @@
             this.tabPage4.TabIndex = 0;
             this.tabPage4.Text = "源码";
             this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // checkBox_to_rn
+            // 
+            this.checkBox_to_rn.AutoSize = true;
+            this.checkBox_to_rn.Location = new System.Drawing.Point(139, 7);
+            this.checkBox_to_rn.Name = "checkBox_to_rn";
+            this.checkBox_to_rn.Size = new System.Drawing.Size(72, 16);
+            this.checkBox_to_rn.TabIndex = 3;
+            this.checkBox_to_rn.Text = "自动换行";
+            this.checkBox_to_rn.UseVisualStyleBackColor = true;
+            this.checkBox_to_rn.CheckStateChanged += new System.EventHandler(this.checkBox_to_rn_CheckStateChanged);
+            // 
+            // button_to_rn
+            // 
+            this.button_to_rn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button_to_rn.Location = new System.Drawing.Point(885, 4);
+            this.button_to_rn.Name = "button_to_rn";
+            this.button_to_rn.Size = new System.Drawing.Size(77, 24);
+            this.button_to_rn.TabIndex = 2;
+            this.button_to_rn.Text = "转换行";
+            this.button_to_rn.UseVisualStyleBackColor = true;
+            this.button_to_rn.Click += new System.EventHandler(this.button_to_rn_Click);
             // 
             // comboBox_html_show_type
             // 
@@ -449,6 +498,7 @@
             this.dataGridView_history.Size = new System.Drawing.Size(247, 567);
             this.dataGridView_history.TabIndex = 0;
             this.dataGridView_history.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_history_CellClick);
+            this.dataGridView_history.Scroll += new System.Windows.Forms.ScrollEventHandler(this.dataGridView_history_Scroll);
             // 
             // Column10
             // 
@@ -462,6 +512,7 @@
             this.Column11.HeaderText = "URL";
             this.Column11.Name = "Column11";
             this.Column11.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Column11.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.Column11.Width = 200;
             // 
             // button_creation_doc
@@ -531,7 +582,7 @@
             // 
             this.label_code.AutoSize = true;
             this.label_code.Font = new System.Drawing.Font("宋体", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label_code.ForeColor = System.Drawing.Color.Green;
+            this.label_code.ForeColor = System.Drawing.Color.LimeGreen;
             this.label_code.Location = new System.Drawing.Point(888, 32);
             this.label_code.Name = "label_code";
             this.label_code.Size = new System.Drawing.Size(43, 21);
@@ -608,6 +659,16 @@
             this.tabPage7.Text = "历史";
             this.tabPage7.UseVisualStyleBackColor = true;
             // 
+            // button_delete_history
+            // 
+            this.button_delete_history.Location = new System.Drawing.Point(171, 3);
+            this.button_delete_history.Name = "button_delete_history";
+            this.button_delete_history.Size = new System.Drawing.Size(75, 23);
+            this.button_delete_history.TabIndex = 21;
+            this.button_delete_history.Text = "清理";
+            this.button_delete_history.UseVisualStyleBackColor = true;
+            this.button_delete_history.Click += new System.EventHandler(this.button_delete_history_Click);
+            // 
             // tabPage8
             // 
             this.tabPage8.Controls.Add(this.button_search);
@@ -623,9 +684,26 @@
             this.tabPage8.Text = "保存";
             this.tabPage8.UseVisualStyleBackColor = true;
             // 
+            // button_search
+            // 
+            this.button_search.Location = new System.Drawing.Point(174, 30);
+            this.button_search.Name = "button_search";
+            this.button_search.Size = new System.Drawing.Size(70, 23);
+            this.button_search.TabIndex = 21;
+            this.button_search.Text = "搜索";
+            this.button_search.UseVisualStyleBackColor = true;
+            this.button_search.Click += new System.EventHandler(this.button_search_Click);
+            // 
+            // textBox_search
+            // 
+            this.textBox_search.Location = new System.Drawing.Point(9, 32);
+            this.textBox_search.Name = "textBox_search";
+            this.textBox_search.Size = new System.Drawing.Size(155, 21);
+            this.textBox_search.TabIndex = 21;
+            // 
             // button_treeview_refresh
             // 
-            this.button_treeview_refresh.Location = new System.Drawing.Point(83, 2);
+            this.button_treeview_refresh.Location = new System.Drawing.Point(83, 5);
             this.button_treeview_refresh.Name = "button_treeview_refresh";
             this.button_treeview_refresh.Size = new System.Drawing.Size(45, 23);
             this.button_treeview_refresh.TabIndex = 10;
@@ -635,7 +713,7 @@
             // 
             // button_add_project
             // 
-            this.button_add_project.Location = new System.Drawing.Point(9, 2);
+            this.button_add_project.Location = new System.Drawing.Point(9, 4);
             this.button_add_project.Name = "button_add_project";
             this.button_add_project.Size = new System.Drawing.Size(68, 24);
             this.button_add_project.TabIndex = 9;
@@ -659,10 +737,11 @@
             // 
             this.contextMenuStrip_save_list.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem1,
+            this.查看ToolStripMenuItem,
             this.toolStripMenuItem3,
             this.toolStripMenuItem2});
             this.contextMenuStrip_save_list.Name = "contextMenuStrip_save_list";
-            this.contextMenuStrip_save_list.Size = new System.Drawing.Size(113, 70);
+            this.contextMenuStrip_save_list.Size = new System.Drawing.Size(113, 92);
             this.contextMenuStrip_save_list.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuStrip_save_list_ItemClicked);
             // 
             // toolStripMenuItem1
@@ -670,6 +749,12 @@
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(112, 22);
             this.toolStripMenuItem1.Text = "添加";
+            // 
+            // 查看ToolStripMenuItem
+            // 
+            this.查看ToolStripMenuItem.Name = "查看ToolStripMenuItem";
+            this.查看ToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.查看ToolStripMenuItem.Text = "查看";
             // 
             // toolStripMenuItem3
             // 
@@ -719,7 +804,7 @@
             // 
             // button_save_api
             // 
-            this.button_save_api.Location = new System.Drawing.Point(1055, 2);
+            this.button_save_api.Location = new System.Drawing.Point(1052, 27);
             this.button_save_api.Name = "button_save_api";
             this.button_save_api.Size = new System.Drawing.Size(75, 23);
             this.button_save_api.TabIndex = 20;
@@ -734,38 +819,40 @@
             this.imageList_treeview.Images.SetKeyName(0, "folder");
             this.imageList_treeview.Images.SetKeyName(1, "article");
             // 
-            // textBox_search
+            // timer_server
             // 
-            this.textBox_search.Location = new System.Drawing.Point(9, 32);
-            this.textBox_search.Name = "textBox_search";
-            this.textBox_search.Size = new System.Drawing.Size(155, 21);
-            this.textBox_search.TabIndex = 21;
+            this.timer_server.Interval = 10000;
+            this.timer_server.Tick += new System.EventHandler(this.timer_server_Tick);
             // 
-            // button_search
+            // button_new_url_http
             // 
-            this.button_search.Location = new System.Drawing.Point(174, 30);
-            this.button_search.Name = "button_search";
-            this.button_search.Size = new System.Drawing.Size(70, 23);
-            this.button_search.TabIndex = 21;
-            this.button_search.Text = "搜索";
-            this.button_search.UseVisualStyleBackColor = true;
-            this.button_search.Click += new System.EventHandler(this.button_search_Click);
+            this.button_new_url_http.Location = new System.Drawing.Point(1052, 2);
+            this.button_new_url_http.Name = "button_new_url_http";
+            this.button_new_url_http.Size = new System.Drawing.Size(75, 23);
+            this.button_new_url_http.TabIndex = 20;
+            this.button_new_url_http.Tag = "ctrl+w";
+            this.button_new_url_http.Text = "新建";
+            this.button_new_url_http.UseVisualStyleBackColor = true;
+            this.button_new_url_http.Click += new System.EventHandler(this.button_new_url_http_Click);
             // 
-            // button_delete_history
+            // label_help
             // 
-            this.button_delete_history.Location = new System.Drawing.Point(171, 3);
-            this.button_delete_history.Name = "button_delete_history";
-            this.button_delete_history.Size = new System.Drawing.Size(75, 23);
-            this.button_delete_history.TabIndex = 21;
-            this.button_delete_history.Text = "清理";
-            this.button_delete_history.UseVisualStyleBackColor = true;
-            this.button_delete_history.Click += new System.EventHandler(this.button_delete_history_Click);
+            this.label_help.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label_help.AutoSize = true;
+            this.label_help.Location = new System.Drawing.Point(254, 665);
+            this.label_help.Name = "label_help";
+            this.label_help.Size = new System.Drawing.Size(53, 12);
+            this.label_help.TabIndex = 21;
+            this.label_help.Text = "帮助说明";
+            this.label_help.Click += new System.EventHandler(this.label_help_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1268, 686);
+            this.Controls.Add(this.label_help);
+            this.Controls.Add(this.button_new_url_http);
             this.Controls.Add(this.button_save_api);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.linkLabel1);
@@ -789,15 +876,18 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button_test);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.KeyPreview = true;
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "PostApiTools(测试接口、生成文档) 作者:apiziliao@gmail.com  qq群:616318658";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.Resize += new System.EventHandler(this.Form1_Resize);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_http_data)).EndInit();
+            this.contextMenuStrip_urldata_dataview.ResumeLayout(false);
             this.tabControl2.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
@@ -866,24 +956,32 @@
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button button_save_api;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
-        private System.Windows.Forms.DataGridViewComboBoxColumn Column13;
-        private System.Windows.Forms.DataGridViewButtonColumn Column12;
         private System.Windows.Forms.TreeView treeView_save_list;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip_save_list;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
         private System.Windows.Forms.Button button_add_project;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column10;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column11;
         private System.Windows.Forms.ImageList imageList_treeview;
         private System.Windows.Forms.Button button_treeview_refresh;
         private System.Windows.Forms.Button button_search;
         private System.Windows.Forms.TextBox textBox_search;
         private System.Windows.Forms.Button button_delete_history;
+        private System.Windows.Forms.Button button_to_rn;
+        private System.Windows.Forms.CheckBox checkBox_to_rn;
+        private System.Windows.Forms.Timer timer_server;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
+        private System.Windows.Forms.DataGridViewComboBoxColumn Column13;
+        private System.Windows.Forms.DataGridViewButtonColumn Column12;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip_urldata_dataview;
+        private System.Windows.Forms.ToolStripMenuItem 清空ToolStripMenuItem;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column10;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column11;
+        private System.Windows.Forms.Button button_new_url_http;
+        private System.Windows.Forms.Label label_help;
+        private System.Windows.Forms.ToolStripMenuItem 查看ToolStripMenuItem;
     }
 }
 

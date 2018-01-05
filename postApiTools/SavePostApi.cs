@@ -87,5 +87,17 @@ namespace postApiTools
         {
             this.Close();
         }
+        /// <summary>
+        /// 键盘注册事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SavePostApi_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)//esc按键关闭窗口
+            {
+                this.Close();
+            }
+        }
     }
 }

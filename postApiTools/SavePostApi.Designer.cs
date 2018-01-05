@@ -142,12 +142,14 @@
             this.Controls.Add(this.treeView);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.KeyPreview = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "SavePostApi";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "保存接口";
             this.Load += new System.EventHandler(this.SavePostApi_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.SavePostApi_KeyDown);
             this.ResumeLayout(false);
             this.PerformLayout();
 

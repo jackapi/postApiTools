@@ -35,6 +35,9 @@
     <ApplicationIcon>post_it_96px_1206795_easyicon.net.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MaterialSkin">
+      <HintPath>..\MaterialSkin.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -73,6 +76,21 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormAll\openApiForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormAll\openApiForm.Designer.cs">
+      <DependentUpon>openApiForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormClass\pMemo.cs" />
+    <Compile Include="FormClass\pUpdate.cs" />
+    <Compile Include="Help.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Help.Designer.cs">
+      <DependentUpon>Help.cs</DependentUpon>
+    </Compile>
+    <Compile Include="lib\pApizlHttp.cs" />
     <Compile Include="lib\pBase.cs" />
     <Compile Include="lib\pBase64.cs" />
     <Compile Include="lib\pDate.cs" />
@@ -80,13 +98,27 @@
     <Compile Include="lib\phttp.cs" />
     <Compile Include="lib\pHttpCode.cs" />
     <Compile Include="lib\pIni.cs" />
+    <Compile Include="lib\pJsonData.cs" />
+    <Compile Include="lib\pMaterialSkin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="lib\pRegex.cs" />
     <Compile Include="lib\pRunTimeNumber.cs" />
     <Compile Include="lib\pSqlite.cs" />
+    <Compile Include="lib\pUpdateServerWeb.cs" />
+    <Compile Include="lib\pUpdateServerSocket.cs" />
+    <Compile Include="Memo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Memo.Designer.cs">
+      <DependentUpon>Memo.cs</DependentUpon>
+    </Compile>
     <Compile Include="pform1.cs" />
     <Compile Include="pForm1TreeView.cs" />
     <Compile Include="pHistory.cs" />
     <Compile Include="pJson.cs" />
     <Compile Include="pLogs.cs" />
+    <Compile Include="pPublic.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="pSetting.cs" />
@@ -116,6 +148,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormAll\openApiForm.resx">
+      <DependentUpon>openApiForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Help.resx">
+      <DependentUpon>Help.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Memo.resx">
+      <DependentUpon>Memo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -150,6 +191,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="data\help.key.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="data\template.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
