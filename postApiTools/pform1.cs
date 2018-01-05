@@ -11,6 +11,7 @@ using System.Windows.Forms;
 /// </summary>
 namespace postApiTools
 {
+    using System.Drawing;
     using System.Threading;
     public class pform1
     {
@@ -165,6 +166,14 @@ namespace postApiTools
         public static void labelShowStatusRunTime(Label code, Label runtime, string codeStr, string runStr)
         {
             code.Text = codeStr;
+            if (codeStr == "200")
+            {
+                code.ForeColor = Color.LimeGreen;
+            }
+            else
+            {
+                code.ForeColor = Color.Red;
+            }
             runtime.Text = runStr + "ms";
         }
 

@@ -123,12 +123,13 @@ namespace postApiTools
         /// <param name="url"></param>
         /// <param name="name"></param>
         /// <param name="password"></param>
-        public static void saveUrlNamePassword(string url, string name, string password,CheckState c)
+        public static void saveUrlNamePassword(string url, string name, string password, CheckState c, CheckState agreed)
         {
             lib.pIni.write("setting", "web_url", url);
             lib.pIni.write("setting", "web_name", name);
             lib.pIni.write("setting", "web_password", password);
             lib.pIni.write("setting", "web_update", c.ToString());
+            lib.pIni.write("setting", "web_agreed", agreed.ToString());
         }
         /// <summary>
         /// 服务器更新服务配置

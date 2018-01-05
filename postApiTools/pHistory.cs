@@ -69,25 +69,28 @@ namespace postApiTools
         {
             try
             {
-                Dictionary<string, string> data = sqlite.getOne("select *from " + table + " where hash='" + hash + "'");
-                comboBox_url_type.Text = data["method"];
-                textBox_url.Text = data["url"];
-                string str = lib.pBase64.base64ToString(data["dataurl"]);
-                string[,] array = pJson.jsonStrToObjectArrayString(str, 3);//获取字符串数组
-                dd.Invalidate();//重新绘制
-                dd.Rows.Clear();//清理行数
-                if (array.GetLength(0) > 0)
+                dd.Invoke(new Action(() =>
                 {
-                    dd.Rows.Add(array.GetLength(0));
-                    for (int i = 0; i < array.GetLength(0); i++)
+                    Dictionary<string, string> data = sqlite.getOne("select *from " + table + " where hash='" + hash + "'");
+                    comboBox_url_type.Text = data["method"];
+                    textBox_url.Text = data["url"];
+                    string str = lib.pBase64.base64ToString(data["dataurl"]);
+                    string[,] array = pJson.jsonStrToObjectArrayString(str, 3);//获取字符串数组
+                    dd.Invalidate();//重新绘制
+                    dd.Rows.Clear();//清理行数
+                    if (array.GetLength(0) > 0)
                     {
-                        dd.Rows[i].Cells[0].Value = array[i, 0];
-                        dd.Rows[i].Cells[1].Value = array[i, 1];
-                        dd.Rows[i].Cells[2].Value = array[i, 2];
-                        dd.Rows[i].Cells[3].Value = lib.pBase.dataGridViewHttpDataValueToTypeListName(array[i, 2]);//输出类型
+                        dd.Rows.Add(array.GetLength(0));
+                        for (int i = 0; i < array.GetLength(0); i++)
+                        {
+                            dd.Rows[i].Cells[0].Value = array[i, 0];
+                            dd.Rows[i].Cells[1].Value = array[i, 1];
+                            dd.Rows[i].Cells[2].Value = array[i, 2];
+                            dd.Rows[i].Cells[3].Value = lib.pBase.dataGridViewHttpDataValueToTypeListName(array[i, 2]);//输出类型
+                        }
                     }
-                }
-                textBox_html.Text = "";
+                    textBox_html.Text = "";
+                }));
             }
             catch (Exception ex)
             {
@@ -102,6 +105,7 @@ namespace postApiTools
         /// 包含添加过总数
         /// </summary>
         public static int dataViewRefreshRows = 0;
+
         /// <summary>
         /// 刷新历史数据框
         /// </summary>
@@ -110,10 +114,9 @@ namespace postApiTools
         {
             try
             {
-
                 history.Invoke(new Action(() =>
                 {
-                    Dictionary<int, object> data = sqlite.getRows("select *from " + table + " order by addtime desc limit 0,30");
+                    Dictionary<int, object> data = sqlite.getRows("select *from " + table + " order by addtime desc limit 0,32");
                     if (data.Count <= 0)
                     {
                         history.Invalidate();
@@ -149,7 +152,7 @@ namespace postApiTools
                     history.Invalidate();
                     history.Rows.Clear();//清理行数
                     history.Rows.Add(data.Count);
-                    history.RowTemplate.Height = 30;//行距
+                    //history.RowTemplate.Height = 30;//行距
                                                     //设置自动调整高度
                     history.ReadOnly = true;//不可编辑
 
@@ -169,8 +172,8 @@ namespace postApiTools
                         dataViewRefreshRows++;
                         //history.Rows[i].Cells[1].Style.BackColor = Color.LightGray;
                     }
-                    //history.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-                    //history.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+                    history.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+                    history.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
                 }));
             }
             catch (Exception ex)
@@ -184,6 +187,51 @@ namespace postApiTools
             }
         }
 
+        static int historyCountI = 0;
+        static int historyCount = 0;
+        public static void dataViewHistoryLoading(DataGridView history)
+        {
+            try
+            {
+                int size = 5;
+                history.Invoke(new Action(() =>
+                {
+                    historyCount = size * historyCountI;
+                    Dictionary<int, object> data = sqlite.getRows("select *from " + table + " order by addtime desc limit " + historyCount + "," + size);
+                    if (data.Count <= 0)
+                    {
+                        return;
+                    }
+                    int yuan = history.Rows.Count;
+                    history.Rows.Add(yuan + data.Count);
+                    history.RowTemplate.Height = 30;//行距 //设置自动调整高度
+                    history.ReadOnly = true;//不可编辑
+                    for (int i = yuan; i < (yuan + data.Count); i++)
+                    {
+                        Dictionary<string, string> d = new Dictionary<string, string> { };
+                        if (d.Count <= 0)
+                        {
+                            continue;
+                        }
+                        d = (Dictionary<string, string>)data[i];
+                        history.Rows[i].Cells[0].Value = d["method"];
+                        history.Rows[i].Cells[0].ToolTipText = d["hash"];
+                        history.Rows[i].Cells[0].Style.BackColor = Color.Aqua;
+                        history.Rows[i].Cells[1].Value = d["url"];
+                        history.Rows[i].Cells[1].ToolTipText = d["url"];
+                        history.Rows[i].DataGridView.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+                        history.Rows[i].DataGridView.AutoResizeColumns();
+                        history.Rows[i].DataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCellsExceptHeaders;
+                        dataViewRefreshRows++;
+                    }
+                    historyCountI++;
+                }));
+            }
+            catch (Exception ex)
+            {
+                pLogs.logs(ex.ToString());
+            }
+        }
         /// <summary>
         /// 插入数据
         /// </summary>

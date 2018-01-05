@@ -72,7 +72,9 @@ namespace postApiTools
             textBox_web_url.Text = pSetting.web_url;
             textBox_web_username.Text = pSetting.web_name;
             textBox_web_password.Text = pSetting.web_password;
-            checkBox_open_server_update.CheckState = pSetting.web_update == "Checked" ? CheckState.Checked : CheckState.Unchecked;
+            checkBox_open_server_update.CheckState = pSetting.web_update == "Checked" ? CheckState.Checked : CheckState.Unchecked;//是否开启更新
+
+            checkBox_agreed.CheckState = Config.openServerAgreed == "Checked" ? CheckState.Checked : CheckState.Unchecked;//服务器保持一致
         }
 
         /// <summary>
@@ -136,6 +138,7 @@ namespace postApiTools
             string name = textBox_web_username.Text;
             string password = textBox_web_password.Text;
             CheckState update = checkBox_open_server_update.CheckState;
+            CheckState agreed = checkBox_agreed.CheckState;
             if (!lib.pRegex.IsUrl(url))
             {
                 MessageBox.Show("请填写正确URL");
@@ -151,7 +154,7 @@ namespace postApiTools
                 MessageBox.Show("账号密码不能为空!");
                 return;
             }
-            pSetting.saveUrlNamePassword(url, name, password, update);
+            pSetting.saveUrlNamePassword(url, name, password, update, agreed);
             MessageBox.Show("设置成功");
 
         }

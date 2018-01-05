@@ -55,6 +55,11 @@ namespace postApiTools
         /// </summary>
         public static string openServerPassword = lib.pIni.read("setting", "web_password");
 
+        /// <summary>
+        /// 服务器保持一致性
+        /// </summary>
+        public static string openServerAgreed = lib.pIni.read("setting", "web_agreed");
+
 
     }
 }

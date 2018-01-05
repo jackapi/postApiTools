@@ -38,6 +38,7 @@
             this.textBox_save_name = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.checkBox_open_server_update = new System.Windows.Forms.CheckBox();
             this.button_web_save = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -47,7 +48,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.button_history = new System.Windows.Forms.Button();
-            this.checkBox_open_server_update = new System.Windows.Forms.CheckBox();
+            this.checkBox_agreed = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage3.SuspendLayout();
@@ -140,6 +141,7 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.checkBox_agreed);
             this.tabPage3.Controls.Add(this.checkBox_open_server_update);
             this.tabPage3.Controls.Add(this.button_web_save);
             this.tabPage3.Controls.Add(this.label4);
@@ -154,6 +156,16 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "配置服务器";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // checkBox_open_server_update
+            // 
+            this.checkBox_open_server_update.AutoSize = true;
+            this.checkBox_open_server_update.Location = new System.Drawing.Point(37, 109);
+            this.checkBox_open_server_update.Name = "checkBox_open_server_update";
+            this.checkBox_open_server_update.Size = new System.Drawing.Size(72, 16);
+            this.checkBox_open_server_update.TabIndex = 5;
+            this.checkBox_open_server_update.Text = "开启同步";
+            this.checkBox_open_server_update.UseVisualStyleBackColor = true;
             // 
             // button_web_save
             // 
@@ -235,15 +247,15 @@
             this.button_history.UseVisualStyleBackColor = true;
             this.button_history.Click += new System.EventHandler(this.button_history_Click);
             // 
-            // checkBox_open_server_update
+            // checkBox_agreed
             // 
-            this.checkBox_open_server_update.AutoSize = true;
-            this.checkBox_open_server_update.Location = new System.Drawing.Point(37, 109);
-            this.checkBox_open_server_update.Name = "checkBox_open_server_update";
-            this.checkBox_open_server_update.Size = new System.Drawing.Size(72, 16);
-            this.checkBox_open_server_update.TabIndex = 5;
-            this.checkBox_open_server_update.Text = "开启同步";
-            this.checkBox_open_server_update.UseVisualStyleBackColor = true;
+            this.checkBox_agreed.AutoSize = true;
+            this.checkBox_agreed.Location = new System.Drawing.Point(127, 109);
+            this.checkBox_agreed.Name = "checkBox_agreed";
+            this.checkBox_agreed.Size = new System.Drawing.Size(72, 16);
+            this.checkBox_agreed.TabIndex = 6;
+            this.checkBox_agreed.Text = "保持一致";
+            this.checkBox_agreed.UseVisualStyleBackColor = true;
             // 
             // Setting
             // 
@@ -289,5 +301,6 @@
         private System.Windows.Forms.Button button_web_save;
         private System.Windows.Forms.Button button_history;
         private System.Windows.Forms.CheckBox checkBox_open_server_update;
+        private System.Windows.Forms.CheckBox checkBox_agreed;
     }
 }

@@ -248,7 +248,7 @@ namespace postApiTools.lib
         /// <param name="desc"></param>
         /// <param name="sort"></param>
         /// <returns></returns>
-        public static bool createDocument(string token, string projectHash, string name,string desc,string url,string urldata,string method)
+        public static bool createDocument(string token, string projectHash, string name, string desc, string url, string urldata, string method)
         {
             if (Config.openServerUpdate != CheckState.Checked.ToString())
             {
@@ -291,6 +291,173 @@ namespace postApiTools.lib
             }
             error = job["msg"].ToString();
             return false;
+        }
+
+
+        /// <summary>
+        /// 获取自己项目
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public static JObject getUserProjectList(string token)
+        {
+            if (Config.openServerUpdate != CheckState.Checked.ToString())
+            {
+                error = "已关闭自动更新";
+                return null;
+            }
+            string urlStr = Url + "/index/role/getProjectSettingList";
+            string[,] urlData = new string[1, 2];
+            urlData[0, 0] = "token";
+            urlData[0, 1] = token;
+            string json = phttp.HttpUploadFile(urlStr, urlData);
+            if (json.Length <= 0)
+            {
+                error = "数据请求失败";
+                return null;
+            }
+            JObject job = pJsonData.stringToJobject(json);
+            if (job == null)
+            {
+                error = "服务器异常";
+                return null;
+            }
+            if (job["code"].ToString() == "1")
+            {
+                error = job["msg"].ToString();
+                return job;
+            }
+            error = job["msg"].ToString();
+            return null;
+        }
+
+        /// <summary>
+        /// 获取自己子类项目
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public static JObject getProjectSettingPidList(string token, string hash)
+        {
+            if (Config.openServerUpdate != CheckState.Checked.ToString())
+            {
+                error = "已关闭自动更新";
+                return null;
+            }
+            string urlStr = Url + "/index/role/getProjectSettingList";
+            string[,] urlData = new string[2, 2];
+            urlData[0, 0] = "token";
+            urlData[0, 1] = token;
+            urlData[1, 0] = "pid";
+            urlData[1, 1] = hash;
+            string json = phttp.HttpUploadFile(urlStr, urlData);
+            if (json.Length <= 0)
+            {
+                error = "数据请求失败";
+                return null;
+            }
+            JObject job = pJsonData.stringToJobject(json);
+            if (job == null)
+            {
+                error = "服务器异常";
+                return null;
+            }
+            if (job["code"].ToString() == "1")
+            {
+                error = job["msg"].ToString();
+                return job;
+            }
+            error = job["msg"].ToString();
+            return null;
+        }
+
+
+        /// <summary>
+        /// 获取内容列表
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public static JObject getDocumentList(string token, string hash)
+        {
+            if (Config.openServerUpdate != CheckState.Checked.ToString())
+            {
+                error = "已关闭自动更新";
+                return null;
+            }
+            string urlStr = Url + "/index/role/getProjectList";
+            string[,] urlData = new string[2, 2];
+            urlData[0, 0] = "token";
+            urlData[0, 1] = token;
+            urlData[1, 0] = "hash";
+            urlData[1, 1] = hash;
+            string json = phttp.HttpUploadFile(urlStr, urlData);
+            if (json.Length <= 0)
+            {
+                error = "数据请求失败";
+                return null;
+            }
+            JObject job = pJsonData.stringToJobject(json);
+            if (job == null)
+            {
+                error = "服务器异常";
+                return null;
+            }
+            if (job["code"].ToString() == "1")
+            {
+                error = job["msg"].ToString();
+                return job;
+            }
+            error = job["msg"].ToString();
+            return null;
+        }
+
+        /// <summary>
+        /// 通用登录请求接口方法
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static JObject getHttpData(string url, string[,] data)
+        {
+            if (Config.openServerUpdate != CheckState.Checked.ToString())
+            {
+                error = "已关闭自动更新";
+                return null;
+            }
+            string json = phttp.HttpUploadFile(url, data);
+            if (json.Length <= 0)
+            {
+                error = "数据请求失败";
+                return null;
+            }
+            JObject job = pJsonData.stringToJobject(json);
+            if (job == null)
+            {
+                error = "服务器异常";
+                return null;
+            }
+            if (job["code"].ToString() == "1")
+            {
+                error = job["msg"].ToString();
+                return job;
+            }
+            error = job["msg"].ToString();
+            return null;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="hash"></param>
+        /// <returns></returns>
+        public static JObject getDocumentInfo(string hash)
+        {
+            string[,] urlData = new string[2, 2];
+            urlData[0, 0] = "token";
+            urlData[0, 1] = token;
+            urlData[1, 0] = "hash";
+            urlData[1, 1] = hash;
+            string urlStr = Url + "/index/role/getProjectList";
+            return getHttpData(urlStr, urlData);
         }
     }
 }

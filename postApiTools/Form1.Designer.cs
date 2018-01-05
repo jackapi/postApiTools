@@ -63,8 +63,6 @@
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.textBox_doc = new System.Windows.Forms.TextBox();
             this.dataGridView_history = new System.Windows.Forms.DataGridView();
-            this.Column10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.button_creation_doc = new System.Windows.Forms.Button();
             this.button_test_creation_doc = new System.Windows.Forms.Button();
             this.comboBox_template = new System.Windows.Forms.ComboBox();
@@ -96,6 +94,10 @@
             this.button_save_api = new System.Windows.Forms.Button();
             this.imageList_treeview = new System.Windows.Forms.ImageList(this.components);
             this.timer_server = new System.Windows.Forms.Timer(this.components);
+            this.contextMenuStrip_urldata_dataview = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.清空ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.Column10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_http_data)).BeginInit();
@@ -112,6 +114,7 @@
             this.tabPage7.SuspendLayout();
             this.tabPage8.SuspendLayout();
             this.contextMenuStrip_save_list.SuspendLayout();
+            this.contextMenuStrip_urldata_dataview.SuspendLayout();
             this.SuspendLayout();
             // 
             // button_test
@@ -194,6 +197,7 @@
             this.Column3,
             this.Column13,
             this.Column12});
+            this.dataGridView_http_data.ContextMenuStrip = this.contextMenuStrip_urldata_dataview;
             this.dataGridView_http_data.Location = new System.Drawing.Point(0, 0);
             this.dataGridView_http_data.Name = "dataGridView_http_data";
             this.dataGridView_http_data.RowHeadersVisible = false;
@@ -215,7 +219,7 @@
             // 
             this.Column2.HeaderText = "值(字符串)";
             this.Column2.Name = "Column2";
-            this.Column2.Width = 200;
+            this.Column2.Width = 350;
             // 
             // Column3
             // 
@@ -476,20 +480,7 @@
             this.dataGridView_history.Size = new System.Drawing.Size(247, 567);
             this.dataGridView_history.TabIndex = 0;
             this.dataGridView_history.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_history_CellClick);
-            // 
-            // Column10
-            // 
-            this.Column10.HeaderText = "类型";
-            this.Column10.Name = "Column10";
-            this.Column10.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Column10.Width = 55;
-            // 
-            // Column11
-            // 
-            this.Column11.HeaderText = "URL";
-            this.Column11.Name = "Column11";
-            this.Column11.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Column11.Width = 200;
+            this.dataGridView_history.Scroll += new System.Windows.Forms.ScrollEventHandler(this.dataGridView_history_Scroll);
             // 
             // button_creation_doc
             // 
@@ -558,7 +549,7 @@
             // 
             this.label_code.AutoSize = true;
             this.label_code.Font = new System.Drawing.Font("宋体", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label_code.ForeColor = System.Drawing.Color.Green;
+            this.label_code.ForeColor = System.Drawing.Color.LimeGreen;
             this.label_code.Location = new System.Drawing.Point(888, 32);
             this.label_code.Name = "label_code";
             this.label_code.Size = new System.Drawing.Size(43, 21);
@@ -790,8 +781,37 @@
             // 
             // timer_server
             // 
-            this.timer_server.Interval = 1000;
+            this.timer_server.Interval = 10000;
             this.timer_server.Tick += new System.EventHandler(this.timer_server_Tick);
+            // 
+            // contextMenuStrip_urldata_dataview
+            // 
+            this.contextMenuStrip_urldata_dataview.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.清空ToolStripMenuItem});
+            this.contextMenuStrip_urldata_dataview.Name = "contextMenuStrip_urldata_dataview";
+            this.contextMenuStrip_urldata_dataview.Size = new System.Drawing.Size(101, 26);
+            this.contextMenuStrip_urldata_dataview.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuStrip_urldata_dataview_ItemClicked);
+            // 
+            // 清空ToolStripMenuItem
+            // 
+            this.清空ToolStripMenuItem.Name = "清空ToolStripMenuItem";
+            this.清空ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.清空ToolStripMenuItem.Text = "清空";
+            // 
+            // Column10
+            // 
+            this.Column10.HeaderText = "类型";
+            this.Column10.Name = "Column10";
+            this.Column10.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Column10.Width = 55;
+            // 
+            // Column11
+            // 
+            this.Column11.HeaderText = "URL";
+            this.Column11.Name = "Column11";
+            this.Column11.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Column11.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Column11.Width = 200;
             // 
             // Form1
             // 
@@ -846,6 +866,7 @@
             this.tabPage8.ResumeLayout(false);
             this.tabPage8.PerformLayout();
             this.contextMenuStrip_save_list.ResumeLayout(false);
+            this.contextMenuStrip_urldata_dataview.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -898,19 +919,12 @@
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button button_save_api;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
-        private System.Windows.Forms.DataGridViewComboBoxColumn Column13;
-        private System.Windows.Forms.DataGridViewButtonColumn Column12;
         private System.Windows.Forms.TreeView treeView_save_list;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip_save_list;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
         private System.Windows.Forms.Button button_add_project;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column10;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column11;
         private System.Windows.Forms.ImageList imageList_treeview;
         private System.Windows.Forms.Button button_treeview_refresh;
         private System.Windows.Forms.Button button_search;
@@ -919,6 +933,15 @@
         private System.Windows.Forms.Button button_to_rn;
         private System.Windows.Forms.CheckBox checkBox_to_rn;
         private System.Windows.Forms.Timer timer_server;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
+        private System.Windows.Forms.DataGridViewComboBoxColumn Column13;
+        private System.Windows.Forms.DataGridViewButtonColumn Column12;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip_urldata_dataview;
+        private System.Windows.Forms.ToolStripMenuItem 清空ToolStripMenuItem;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column10;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column11;
     }
 }
 

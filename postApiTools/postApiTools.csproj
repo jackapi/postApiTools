@@ -85,6 +85,8 @@
     <Compile Include="lib\pRegex.cs" />
     <Compile Include="lib\pRunTimeNumber.cs" />
     <Compile Include="lib\pSqlite.cs" />
+    <Compile Include="lib\pUpdateServerWeb.cs" />
+    <Compile Include="lib\pUpdateServerSocket.cs" />
     <Compile Include="pform1.cs" />
     <Compile Include="pForm1TreeView.cs" />
     <Compile Include="pHistory.cs" />

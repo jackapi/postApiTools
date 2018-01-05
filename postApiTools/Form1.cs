@@ -32,6 +32,7 @@ namespace postApiTools
         {
             formLoadTh = new Thread(formLoadFun);
             formLoadTh.Start();
+            timer_server.Start();//启动定时器 不能再线程中使用
         }
         /// <summary>
         /// 使用线程加载
@@ -53,7 +54,6 @@ namespace postApiTools
             pSetting.refreshTemplateList(comboBox_template);//刷新模板列表
             pForm1TreeView.showMainData(treeView_save_list, imageList_treeview);//显示项目列表树
             pform1.toRnShow(checkBox_to_rn);//自动转换选中显示
-            timer_server.Start();//启动定时器
             loadInt = 0;
         }
 
@@ -546,7 +546,33 @@ namespace postApiTools
         /// <param name="e"></param>
         private void timer_server_Tick(object sender, EventArgs e)
         {
+            //lib.pUpdateServerWeb.updateProjectMain2();//更新主项目
+        }
 
+        /// <summary>
+        /// 历史滚动dataview
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dataGridView_history_Scroll(object sender, ScrollEventArgs e)
+        {
+            if (e.ScrollOrientation == ScrollOrientation.VerticalScroll)
+            {
+                //pHistory.dataViewHistoryLoading(dataGridView_history);
+            }
+        }
+
+        /// <summary>
+        /// 清空urldata  dataview
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void contextMenuStrip_urldata_dataview_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            if (e.ClickedItem.ToString() == "清空")
+            {
+                dataGridView_http_data.Rows.Clear();
+            }
         }
     }
 }
