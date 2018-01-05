@@ -90,7 +90,6 @@
             this.treeView_save_list = new System.Windows.Forms.TreeView();
             this.contextMenuStrip_save_list = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.查看ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.label6 = new System.Windows.Forms.Label();
@@ -101,6 +100,7 @@
             this.timer_server = new System.Windows.Forms.Timer(this.components);
             this.button_new_url_http = new System.Windows.Forms.Button();
             this.label_help = new System.Windows.Forms.Label();
+            this.查看ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_http_data)).BeginInit();
@@ -703,7 +703,7 @@
             // 
             // button_treeview_refresh
             // 
-            this.button_treeview_refresh.Location = new System.Drawing.Point(83, 5);
+            this.button_treeview_refresh.Location = new System.Drawing.Point(83, 2);
             this.button_treeview_refresh.Name = "button_treeview_refresh";
             this.button_treeview_refresh.Size = new System.Drawing.Size(45, 23);
             this.button_treeview_refresh.TabIndex = 10;
@@ -713,7 +713,7 @@
             // 
             // button_add_project
             // 
-            this.button_add_project.Location = new System.Drawing.Point(9, 4);
+            this.button_add_project.Location = new System.Drawing.Point(9, 2);
             this.button_add_project.Name = "button_add_project";
             this.button_add_project.Size = new System.Drawing.Size(68, 24);
             this.button_add_project.TabIndex = 9;
@@ -741,31 +741,25 @@
             this.toolStripMenuItem3,
             this.toolStripMenuItem2});
             this.contextMenuStrip_save_list.Name = "contextMenuStrip_save_list";
-            this.contextMenuStrip_save_list.Size = new System.Drawing.Size(113, 92);
+            this.contextMenuStrip_save_list.Size = new System.Drawing.Size(153, 114);
             this.contextMenuStrip_save_list.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuStrip_save_list_ItemClicked);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(112, 22);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
             this.toolStripMenuItem1.Text = "添加";
-            // 
-            // 查看ToolStripMenuItem
-            // 
-            this.查看ToolStripMenuItem.Name = "查看ToolStripMenuItem";
-            this.查看ToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
-            this.查看ToolStripMenuItem.Text = "查看";
             // 
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(112, 22);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(152, 22);
             this.toolStripMenuItem3.Text = "重命名";
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(112, 22);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(152, 22);
             this.toolStripMenuItem2.Text = "删除";
             // 
             // label6
@@ -845,6 +839,12 @@
             this.label_help.TabIndex = 21;
             this.label_help.Text = "帮助说明";
             this.label_help.Click += new System.EventHandler(this.label_help_Click);
+            // 
+            // 查看ToolStripMenuItem
+            // 
+            this.查看ToolStripMenuItem.Name = "查看ToolStripMenuItem";
+            this.查看ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.查看ToolStripMenuItem.Text = "查看";
             // 
             // Form1
             // 

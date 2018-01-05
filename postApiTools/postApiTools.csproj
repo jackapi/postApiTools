@@ -37,6 +37,7 @@
   <ItemGroup>
     <Reference Include="MaterialSkin">
       <HintPath>..\MaterialSkin.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\Newtonsoft.Json.dll</HintPath>
@@ -83,7 +84,6 @@
       <DependentUpon>openApiForm.cs</DependentUpon>
     </Compile>
     <Compile Include="FormClass\pMemo.cs" />
-    <Compile Include="FormClass\pUpdate.cs" />
     <Compile Include="Help.cs">
       <SubType>Form</SubType>
     </Compile>

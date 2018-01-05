@@ -101,8 +101,16 @@ namespace postApiTools
         /// <param name="comboBox"></param>
         public static void httpTypeWriteRead(ComboBox comboBox)
         {
-            lib.pIni ini = new lib.pIni(Config.configIni);
-            try { comboBox.Text = ini.IniReadValue("form1", "httpTypeWrite"); } catch { comboBox.Text = "GET"; }
+            try
+            {
+                string urlType = lib.pIni.read("form1", "httpTypeWrite");
+                if (urlType == "")
+                {
+                    urlType = "GET";
+                }
+                comboBox.Text = urlType;
+            }
+            catch { comboBox.Text = "GET"; }
 
         }
         /// <summary>

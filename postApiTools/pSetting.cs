@@ -39,6 +39,10 @@ namespace postApiTools
         public static List<string> templateListReadList()
         {
             string result = lib.pIni.read("setting", "templateListWrite");//读取配置
+            if (result == "")//默认模板string
+            {
+                result = "WyLErMjPxKOw5SJd";
+            }
             result = lib.pBase64.base64ToString(result);//64转字符串
             List<string> array = pJson.jsonStrToListString(result);//转成list
             return array;
@@ -115,7 +119,7 @@ namespace postApiTools
         /// <summary>
         /// 服务器更新
         /// </summary>
-        public static string web_update= lib.pIni.read("setting", "web_update");
+        public static string web_update = lib.pIni.read("setting", "web_update");
 
         /// <summary>
         /// 保存服务器信息
