@@ -16,6 +16,8 @@ namespace postApiTools
 {
     using FormAll;
     using System.Data.OleDb;
+    using lib;
+    using System.Diagnostics;
 
     public partial class Form1 : Form
     {
@@ -24,6 +26,8 @@ namespace postApiTools
             InitializeComponent();
             System.Windows.Forms.Control.CheckForIllegalCrossThreadCalls = false;
         }
+
+        pUpdate update = new pUpdate();
         public int loadInt = 1;
         Thread formLoadTh = null;
         /// <summary>
@@ -36,6 +40,7 @@ namespace postApiTools
             formLoadTh = new Thread(formLoadFun);
             formLoadTh.Start();
             timer_server.Start();//启动定时器 不能再线程中使用
+            this.Text = this.Text + " v" + update.version + " (测试接口、生成文档) 作者:apiziliao@gmail.com  qq群:616318658";
         }
         /// <summary>
         /// 使用线程加载
@@ -58,6 +63,22 @@ namespace postApiTools
             pForm1TreeView.showMainData(treeView_save_list, imageList_treeview);//显示项目列表树
             pform1.toRnShow(checkBox_to_rn);//自动转换选中显示
             loadInt = 0;
+            if (update.isUpdate())//判断更新
+            {
+                if (MessageBox.Show("确认更新,将关闭当前软件！", "操作提示", MessageBoxButtons.YesNo) == DialogResult.No)
+                {
+                    return;
+                }
+                else
+                {
+                    this.Enabled = false;//界面不可使用
+                    update.download();
+                    Process process = new Process();//声明一个进程类对象
+                    process.StartInfo.FileName = update.setup;
+                    process.Start();
+                    this.Close();
+                }
+            }
         }
 
         Thread testTh = null;
@@ -212,7 +233,8 @@ namespace postApiTools
         /// <param name="e"></param>
         private void button_test_creation_doc_Click(object sender, EventArgs e)
         {
-       
+            pUpdate updata = new pUpdate();
+            MessageBox.Show(updata.isUpdate().ToString());
         }
 
         /// <summary>
@@ -304,7 +326,7 @@ namespace postApiTools
             string url = textBox_url.Text;
             string urlType = comboBox_url_type.Text;
             string[,] urlData = pform1.dataViewToStringArray(dataGridView_http_data);
-            if (editApiHash != "")
+            if (pForm1TreeView.isApiHash(editApiHash))
             {
                 string name = textBox_api_name.Text;
                 string desc = textBox_doc.Text;
@@ -319,7 +341,14 @@ namespace postApiTools
                     MessageBox.Show("编辑失败:" + pForm1TreeView.error);
                     return;
                 }
-                return;
+                else
+                {
+                    return;
+                }
+            }
+            else
+            {
+                editApiHash = "";
             }
             SavePostApi api = new SavePostApi(urlData, url, urlType, textBox_doc.Text);
             api.ShowDialog();
@@ -510,7 +539,10 @@ namespace postApiTools
         {
             string hash = treeView_save_list.SelectedNode.Name;
             string name = treeView_save_list.SelectedNode.Text;
-            editApiHash = hash;
+            if (pForm1TreeView.isApiHash(hash))
+            {
+                editApiHash = hash;
+            }
             pForm1TreeView.openApiDataShow(treeView_save_list, textBox_url, comboBox_url_type, dataGridView_http_data, textBox_api_name, textBox_doc);
         }
 
@@ -675,6 +707,18 @@ namespace postApiTools
         {
             Help h = new Help();
             h.ShowDialog();
+        }
+        /// <summary>
+        /// 判断软件是否在更新
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Form1_Click(object sender, EventArgs e)
+        {
+            if (this.Enabled == false)
+            {
+                MessageBox.Show("请耐心等待更新结束！");
+            }
         }
     }
 }

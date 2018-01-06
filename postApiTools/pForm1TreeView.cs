@@ -404,7 +404,24 @@ namespace postApiTools
             }
             return temNode;
         }
+        /// <summary>
+        /// 判断文档是否存在
+        /// </summary>
+        /// <param name="hash"></param>
+        /// <returns></returns>
+        public static bool isApiHash(string hash)
+        {
+            if (hash == "")
+            {
+                error = "hash error";
+                return false;
+            }
+            string sql = string.Format("select *from {0} where hash='{1}'", table, hash);
+            error = sqlite.error;
+            Dictionary<string, string> d = sqlite.getOne(sql);
+            return d.Count > 0 ? true : false;
 
+        }
         /// <summary>
         /// 编辑API
         /// </summary>

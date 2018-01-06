@@ -13,6 +13,7 @@ namespace postApiTools
     using lib;
     public partial class Help : Form
     {
+        pUpdate update = new pUpdate();
         public Help()
         {
             InitializeComponent();
@@ -21,6 +22,7 @@ namespace postApiTools
         private void Help_Load(object sender, EventArgs e)
         {
             richTextBox1.Text = lib.pFile.Read(Config.dataPath + "help.key.txt");
+            richTextBox2.Text = update.getVersionDesc();
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

@@ -37,6 +37,11 @@ namespace postApiTools.lib
         /// <returns></returns>
         public static string getToken()
         {
+            if (Config.openServerUpdate != CheckState.Checked.ToString())
+            {
+                error = "已关闭自动更新";
+                return "";
+            }
             string token = pIni.read("apizlHttp", "usertoken");
             if (token != "")
             {

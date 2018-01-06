@@ -12,6 +12,40 @@ namespace postApiTools.lib
 {
     public class pFile
     {
+
+        /// <summary>
+        /// 根据路径循环创建文件夹
+        /// </summary>
+        /// <param name="pathFile"></param>
+        public static void createFolder(string pathFile)
+        {
+            try
+            {
+                string[] array = pathFile.Split('/');
+                for (int i = 0; i < array.Length; i++)
+                {
+                    //if (i == array.Length - 1) { continue; }
+                    string tempPath = "";
+                    for (int q = 0; q < i; q++)
+                    {
+                        tempPath += array[q] + "/";
+                        if (tempPath != "")
+                        {
+                            Directory.CreateDirectory(tempPath);
+                        }
+                    }
+                    //if (Directory.Exists(tempPath))
+                    //{
+                    //    tempPath = tempPath.Replace("/", "\\");
+                    //}
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+        }
         /// <summary>
         /// 创建一个文件进行写入操作
         /// </summary>
@@ -36,7 +70,8 @@ namespace postApiTools.lib
             {
                 return File.ReadAllText(path, Encoding.GetEncoding(encoding));
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 return ex.ToString();
             }
 

@@ -11,13 +11,19 @@ using System.Windows.Forms;
 namespace postApiTools
 {
     using FormClass;
+    using MaterialSkin;
     using MaterialSkin.Controls;
 
     public partial class Memo : lib.pMaterialSkin
     {
+        private readonly MaterialSkinManager materialSkinManager;
         public Memo()
         {
             InitializeComponent();
+            materialSkinManager = MaterialSkinManager.Instance;
+            materialSkinManager.AddFormToManage(this);
+            materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
+            materialSkinManager.ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900, Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
             seedListView();
         }
         /// <summary>
@@ -39,7 +45,7 @@ namespace postApiTools
             for (int i = 0; i < list.Count; i++)
             {
                 Dictionary<string, string> array = (Dictionary<string, string>)list[i];
-                temp[i] = new[] { array["content"], array["hash"] };
+                temp[i] = new[] { array["content"] };
                 var item = new ListViewItem(temp[i]);
                 materialListView1.Items.Add(item);
             }

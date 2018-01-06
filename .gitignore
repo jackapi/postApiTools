@@ -5,3 +5,6 @@
 /postApiTools/obj/Release
 /postApiTools/obj/Debug
 /postApiTools/bin/Release
+/postApiTools/bin/postApiTools.aip
+/postApiTools/bin/oss
+/postApiTools/bin/install

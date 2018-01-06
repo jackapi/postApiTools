@@ -34,6 +34,9 @@
   <PropertyGroup>
     <ApplicationIcon>post_it_96px_1206795_easyicon.net.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="MaterialSkin">
       <HintPath>..\MaterialSkin.dll</HintPath>
@@ -105,6 +108,7 @@
     <Compile Include="lib\pRegex.cs" />
     <Compile Include="lib\pRunTimeNumber.cs" />
     <Compile Include="lib\pSqlite.cs" />
+    <Compile Include="lib\pUpdate.cs" />
     <Compile Include="lib\pUpdateServerWeb.cs" />
     <Compile Include="lib\pUpdateServerSocket.cs" />
     <Compile Include="Memo.cs">
@@ -205,6 +209,22 @@
     <Content Include="post_it_96px_1206795_easyicon.net.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>rd /s/q $(ProjectDir)\bin\install
+mkdir $(ProjectDir)\bin\install
+d:
+cd $(ProjectDir)
+cd $(ProjectDir)\bin\
+xcopy /e $(ProjectDir)\bin\Release $(ProjectDir)\bin\install 
+del  /s/q  $(ProjectDir)\bin\install\data\database.db
+del  /s/q  $(ProjectDir)\bin\install\data\memodb.db
+del  /s/q  $(ProjectDir)\bin\install\postApiTools.vshost.exe
+del /s/q $(ProjectDir)\bin\install\postApiTools.pdb
+del   /s/q $(ProjectDir)\bin\install\postApiTools.vshost.exe.config
+del /s/q $(ProjectDir)\bin\install\postApiTools.vshost.exe.manifest
+rd /s/q $(ProjectDir)\bin\install\runtime
+mkdir $(ProjectDir)\bin\install\runtime</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

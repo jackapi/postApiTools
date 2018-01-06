@@ -90,6 +90,7 @@
             this.treeView_save_list = new System.Windows.Forms.TreeView();
             this.contextMenuStrip_save_list = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.查看ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.label6 = new System.Windows.Forms.Label();
@@ -100,7 +101,6 @@
             this.timer_server = new System.Windows.Forms.Timer(this.components);
             this.button_new_url_http = new System.Windows.Forms.Button();
             this.label_help = new System.Windows.Forms.Label();
-            this.查看ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_http_data)).BeginInit();
@@ -741,25 +741,31 @@
             this.toolStripMenuItem3,
             this.toolStripMenuItem2});
             this.contextMenuStrip_save_list.Name = "contextMenuStrip_save_list";
-            this.contextMenuStrip_save_list.Size = new System.Drawing.Size(153, 114);
+            this.contextMenuStrip_save_list.Size = new System.Drawing.Size(113, 92);
             this.contextMenuStrip_save_list.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuStrip_save_list_ItemClicked);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(112, 22);
             this.toolStripMenuItem1.Text = "添加";
+            // 
+            // 查看ToolStripMenuItem
+            // 
+            this.查看ToolStripMenuItem.Name = "查看ToolStripMenuItem";
+            this.查看ToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.查看ToolStripMenuItem.Text = "查看";
             // 
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(112, 22);
             this.toolStripMenuItem3.Text = "重命名";
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(112, 22);
             this.toolStripMenuItem2.Text = "删除";
             // 
             // label6
@@ -776,6 +782,7 @@
             // 
             this.linkLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.linkLabel1.Location = new System.Drawing.Point(42, 665);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(125, 12);
@@ -788,6 +795,7 @@
             // 
             this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label7.AutoSize = true;
+            this.label7.Cursor = System.Windows.Forms.Cursors.Hand;
             this.label7.ForeColor = System.Drawing.Color.Red;
             this.label7.Location = new System.Drawing.Point(185, 665);
             this.label7.Name = "label7";
@@ -833,18 +841,13 @@
             // 
             this.label_help.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label_help.AutoSize = true;
+            this.label_help.Cursor = System.Windows.Forms.Cursors.Hand;
             this.label_help.Location = new System.Drawing.Point(254, 665);
             this.label_help.Name = "label_help";
             this.label_help.Size = new System.Drawing.Size(53, 12);
             this.label_help.TabIndex = 21;
             this.label_help.Text = "帮助说明";
             this.label_help.Click += new System.EventHandler(this.label_help_Click);
-            // 
-            // 查看ToolStripMenuItem
-            // 
-            this.查看ToolStripMenuItem.Name = "查看ToolStripMenuItem";
-            this.查看ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.查看ToolStripMenuItem.Text = "查看";
             // 
             // Form1
             // 
@@ -879,9 +882,10 @@
             this.KeyPreview = true;
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "PostApiTools(测试接口、生成文档) 作者:apiziliao@gmail.com  qq群:616318658";
+            this.Text = "PostApiTools";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.Click += new System.EventHandler(this.Form1_Click);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.Resize += new System.EventHandler(this.Form1_Resize);
             this.tabControl1.ResumeLayout(false);
