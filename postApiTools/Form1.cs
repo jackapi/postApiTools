@@ -18,16 +18,21 @@ namespace postApiTools
     using System.Data.OleDb;
     using lib;
     using System.Diagnostics;
-
-    public partial class Form1 : Form
+    using System.Net;
+    using System.Runtime.InteropServices;
+    using CCWin;
+    public partial class Form1 : CCSkinMain
     {
+
+
         public Form1()
         {
             InitializeComponent();
             System.Windows.Forms.Control.CheckForIllegalCrossThreadCalls = false;
+            this.dataGridView_http_data.EditMode = DataGridViewEditMode.EditOnEnter;
         }
 
-        pUpdate update = new pUpdate();
+        public lib.updateServer update = new lib.updateServer();
         public int loadInt = 1;
         Thread formLoadTh = null;
         /// <summary>
@@ -39,8 +44,8 @@ namespace postApiTools
         {
             formLoadTh = new Thread(formLoadFun);
             formLoadTh.Start();
-            timer_server.Start();//启动定时器 不能再线程中使用
-            this.Text = this.Text + " v" + update.version + " (测试接口、生成文档) 作者:apiziliao@gmail.com  qq群:616318658";
+            //timer_server.Start();//启动定时器 不能再线程中使用
+            this.Text = this.Text + " 开发助手 v" + update.version + " (测试接口、生成文档) 作者:apiziliao@gmail.com  qq群:616318658";
         }
         /// <summary>
         /// 使用线程加载
@@ -62,6 +67,8 @@ namespace postApiTools
             pSetting.refreshTemplateList(comboBox_template);//刷新模板列表
             pForm1TreeView.showMainData(treeView_save_list, imageList_treeview);//显示项目列表树
             pform1.toRnShow(checkBox_to_rn);//自动转换选中显示
+            Config.websocket.start();//启动websocket
+            pform1.message();//启动消息检测
             loadInt = 0;
             if (update.isUpdate())//判断更新
             {
@@ -121,6 +128,7 @@ namespace postApiTools
             if (url == "")
             {
                 MessageBox.Show("url不能为空");
+                return;
             }
             lib.pRunTimeNumber.start();
             string html = "";
@@ -131,7 +139,7 @@ namespace postApiTools
             }
             else if (comboBox_url_type.Text == "POST")
             {
-                html = pform1.postFile(url, dataGridView_http_data, encoding);//post文件
+                html = pform1.postFile(url, dataGridView_http_data, dataGridView_header, encoding);//post文件
             }
             pform1.dataViewResponseShow(dataGridView_Response);//显示返回报文头
             pform1.webViewShow(webBrowser1, html);//浏览器显示
@@ -209,7 +217,7 @@ namespace postApiTools
         /// <param name="e"></param>
         private void button_setting_Click(object sender, EventArgs e)
         {
-            loadInt = 1;
+            if (loadInt != 0) { MessageBox.Show("数据没有加载完成！无法进行操作！"); return; }
             Setting setting = new Setting();
             setting.ShowDialog();
             formLoadTh = new Thread(formLoadFun);
@@ -227,14 +235,12 @@ namespace postApiTools
             }
         }
         /// <summary>
-        /// 测试文档
+        /// 测试文档 测试方法
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void button_test_creation_doc_Click(object sender, EventArgs e)
         {
-            pUpdate updata = new pUpdate();
-            MessageBox.Show(updata.isUpdate().ToString());
         }
 
         /// <summary>
@@ -335,6 +341,7 @@ namespace postApiTools
                     string urlDataStr = lib.pBase64.stringToBase64(pJson.objectToJsonStr(urlData));
                     if (pForm1TreeView.editApi(editApiHash, name, desc, url, urlDataStr, urlType))
                     {
+                        pForm1TreeView.updateTreeViewText(treeView_save_list, editApiHash, name);//无刷新修改
                         MessageBox.Show("编辑成功");
                         return;
                     }
@@ -353,7 +360,6 @@ namespace postApiTools
             SavePostApi api = new SavePostApi(urlData, url, urlType, textBox_doc.Text);
             api.ShowDialog();
             pForm1TreeView.showMainData(treeView_save_list, imageList_treeview);//显示项目列表树
-
         }
 
         /// <summary>
@@ -530,6 +536,7 @@ namespace postApiTools
         /// 编辑文档hash
         /// </summary>
         public string editApiHash = "";
+
         /// <summary>
         /// 双击treeView_save_list事件
         /// </summary>
@@ -670,6 +677,8 @@ namespace postApiTools
             textBox_url.Text = "";
             textBox_api_name.Text = "";
             textBox_doc.Text = "";
+            textBox_html.Text = "";
+            webBrowser1.Navigate("about:blank");
         }
         /// <summary>
         /// 便签界面
@@ -719,6 +728,166 @@ namespace postApiTools
             {
                 MessageBox.Show("请耐心等待更新结束！");
             }
+        }
+
+        private void dataGridView_header_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            //if (lib.phttp.HttpCustom_Request_Headers_Object != null)
+            //{
+            //    lib.phttp.HttpCustom_Request_Headers_Object.Clear();
+            //}
+            //WebHeaderCollection webHeader = new WebHeaderCollection();
+            //for(int r=0;r<dataGridView_header.RowCount;r++)
+            //{
+            //    if(!dataGridView_header.Rows[r].Cells[0].Value.ToString().Trim().Equals(""))
+            //    {
+            //        webHeader.Add(dataGridView_header.Rows[r].Cells[0].Value.ToString().Trim(), dataGridView_header.Rows[r].Cells[1].Value.ToString().Trim());
+
+            //    }
+            //}
+            //lib.phttp.HttpCustom_Request_Headers_Object = webHeader;
+
+        }
+
+        /// <summary>
+        /// 拉取同步
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button_pull_Click(object sender, EventArgs e)
+        {
+            button_pull.Enabled = false;
+            pUpdateServerWeb.t = treeView_save_list;
+            pUpdateServerWeb.image = imageList_treeview;
+            pUpdateServerWeb.buttonPull = button_pull;
+            pUpdateServerWeb.pullProjectMainTh();
+        }
+
+        private void treeView_save_list_MouseClick(object sender, MouseEventArgs e)
+        {
+            TreeView tv = (TreeView)sender;
+            if (tv.SelectedNode == null) { return; }
+            tv.Focus();
+            string Text = tv.SelectedNode.Text;
+            string hash = tv.SelectedNode.Name;
+            if (pForm1TreeView.isApiHash(hash))
+            {
+                tv.SelectedImageIndex = 1;
+            }
+            else
+            {
+                tv.SelectedImageIndex = 0;
+            }
+        }
+
+        /// <summary>
+        /// 权限操作
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button_role_Click(object sender, EventArgs e)
+        {
+            using (FormRole.pRoleManage manage = new FormRole.pRoleManage())
+            {
+                manage.ShowDialog();
+            }
+        }
+        /// <summary>
+        /// 关闭界面
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void 退出ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        /// <summary>
+        /// 用户登录
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void 用户登录ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Config.openServerUrl == "") { MessageBox.Show("没有设置服务器URL！","提示",MessageBoxButtons.OK,MessageBoxIcon.Error); return; }
+            FormAll.pLogin login = new pLogin();
+            login.ShowDialog();
+        }
+
+        /// <summary>
+        /// 设置
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void 设置ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Setting set = new Setting();
+            set.ShowDialog();
+        }
+
+        /// <summary>
+        /// 用户注册
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void 用户注册ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Config.openServerUrl == "") { MessageBox.Show("没有设置服务器URL！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error); return; }
+            FormAll.pRegister register = new pRegister();
+            register.ShowDialog();
+        }
+
+        /// <summary>
+        /// 清理登录状态
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void 清除登录ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Config.openServerUrl == "") { MessageBox.Show("没有设置服务器URL！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error); return; }
+            if (MessageBox.Show("确认清理登录状态!", "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+            {
+                Config.userToken = "";
+                pIni.write("apizlHttp", "usertoken", "");
+                return;
+            }
+        }
+
+        /// <summary>
+        /// 帮助说明
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void 帮助说明ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Help help = new Help();
+            help.ShowDialog();
+        }
+
+        /// <summary>
+        /// 关于
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void 关于ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Help help = new Help();
+            help.ShowDialog();
+        }
+
+        /// <summary>
+        /// 检测更新
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void 检测更新ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void 拉取ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

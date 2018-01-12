@@ -44,14 +44,14 @@
             // 
             // treeView
             // 
-            this.treeView.Location = new System.Drawing.Point(12, 200);
+            this.treeView.Location = new System.Drawing.Point(12, 217);
             this.treeView.Name = "treeView";
             this.treeView.Size = new System.Drawing.Size(326, 202);
             this.treeView.TabIndex = 0;
             // 
             // button_save
             // 
-            this.button_save.Location = new System.Drawing.Point(60, 423);
+            this.button_save.Location = new System.Drawing.Point(60, 429);
             this.button_save.Name = "button_save";
             this.button_save.Size = new System.Drawing.Size(75, 23);
             this.button_save.TabIndex = 1;
@@ -61,7 +61,7 @@
             // 
             // button_back
             // 
-            this.button_back.Location = new System.Drawing.Point(186, 423);
+            this.button_back.Location = new System.Drawing.Point(186, 429);
             this.button_back.Name = "button_back";
             this.button_back.Size = new System.Drawing.Size(75, 23);
             this.button_back.TabIndex = 1;
@@ -72,7 +72,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(22, 15);
+            this.label1.Location = new System.Drawing.Point(22, 32);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(29, 12);
             this.label1.TabIndex = 2;
@@ -81,7 +81,7 @@
             // textBox_url
             // 
             this.textBox_url.Enabled = false;
-            this.textBox_url.Location = new System.Drawing.Point(69, 12);
+            this.textBox_url.Location = new System.Drawing.Point(69, 29);
             this.textBox_url.Name = "textBox_url";
             this.textBox_url.Size = new System.Drawing.Size(269, 21);
             this.textBox_url.TabIndex = 3;
@@ -89,7 +89,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(22, 42);
+            this.label2.Location = new System.Drawing.Point(22, 59);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(29, 12);
             this.label2.TabIndex = 2;
@@ -97,7 +97,7 @@
             // 
             // textBox_name
             // 
-            this.textBox_name.Location = new System.Drawing.Point(69, 39);
+            this.textBox_name.Location = new System.Drawing.Point(69, 56);
             this.textBox_name.Name = "textBox_name";
             this.textBox_name.Size = new System.Drawing.Size(269, 21);
             this.textBox_name.TabIndex = 3;
@@ -105,7 +105,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(22, 71);
+            this.label3.Location = new System.Drawing.Point(22, 88);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(29, 12);
             this.label3.TabIndex = 2;
@@ -113,7 +113,7 @@
             // 
             // textBox_desc
             // 
-            this.textBox_desc.Location = new System.Drawing.Point(69, 66);
+            this.textBox_desc.Location = new System.Drawing.Point(69, 83);
             this.textBox_desc.Multiline = true;
             this.textBox_desc.Name = "textBox_desc";
             this.textBox_desc.ScrollBars = System.Windows.Forms.ScrollBars.Both;

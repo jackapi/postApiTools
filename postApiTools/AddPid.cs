@@ -10,7 +10,8 @@ using System.Windows.Forms;
 
 namespace postApiTools
 {
-    public partial class AddPid : Form
+    using CCWin;
+    public partial class AddPid : CCSkinMain
     {
         public AddPid(string name = "")
         {

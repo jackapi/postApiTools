@@ -11,10 +11,32 @@ using System.Windows.Forms;
 /// </summary>
 namespace postApiTools
 {
+    using Newtonsoft.Json.Linq;
     using System.Drawing;
+    using System.Net;
+    using System.Runtime.InteropServices;
     using System.Threading;
     public class pform1
     {
+        /// <summary>
+        /// 右下角提示框
+        /// </summary>
+        /// <param name="hwnd"></param>
+        /// <param name="dwTime"></param>
+        /// <param name="dwFlags"></param>
+        /// <returns></returns>
+        [DllImport("user32")]
+        private static extern bool AnimateWindow(IntPtr hwnd, int dwTime, int dwFlags);
+        const int AW_HOR_POSITIVE = 0x0001;
+        const int AW_HOR_NEGATIVE = 0x0002;
+        const int AW_VER_POSITIVE = 0x0004;
+        const int AW_VER_NEGATIVE = 0x0008;
+        const int AW_CENTER = 0x0010;
+        const int AW_HIDE = 0x10000;
+        const int AW_ACTIVATE = 0x20000;
+        const int AW_SLIDE = 0x40000;
+        const int AW_BLEND = 0x80000;
+
         /// <summary>
         /// 格式化输出源码结果
         /// </summary>
@@ -266,7 +288,7 @@ namespace postApiTools
         /// </summary>
         /// <param name="dd"></param>
         /// <returns></returns>
-        public static string postFile(string url, DataGridView dd, string encodingString = "utf-8")
+        public static string postFile(string url, DataGridView dd, DataGridView h, string encodingString = "utf-8")
         {
             string[,] array = dataViewToStringArray(dd);
             int fileNumber = 0;
@@ -301,6 +323,64 @@ namespace postApiTools
                     textI++;
                 }
             }
+            WebHeaderCollection webHeader = new WebHeaderCollection();
+            string[,] hArray = dataViewToStringArray(h);
+
+            string DEFAULT_HEADER = "accept connection content-length content-type expect date host if-modified-since range referer transfer-encoding user-agent";
+            for (int r = 0; r < hArray.GetLength(0); r++)
+            {
+                if (DEFAULT_HEADER.Contains(hArray[r, 0].ToString().ToLower()))
+                {
+
+                    switch (hArray[r, 0].ToString().ToLower())
+                    {
+                        case "accept":
+                            RequestHeaders.Accept = hArray[r, 1];
+
+                            break;
+                        case "connection":
+                            RequestHeaders.Connection = hArray[r, 1];
+                            break;
+                        case "content-length":
+                            RequestHeaders.ContentLength = hArray[r, 1];
+                            break;
+                        case "content-type":
+                            RequestHeaders.ContentType = hArray[r, 1];
+                            break;
+                        case "expect":
+                            RequestHeaders.Expect = hArray[r, 1];
+                            break;
+                        case "date":
+                            RequestHeaders.Date = hArray[r, 1];
+                            break;
+                        case "host":
+                            RequestHeaders.Host = hArray[r, 1];
+                            break;
+                        case "if-modified-since":
+                            RequestHeaders.IfModifiedSince = hArray[r, 1];
+                            break;
+                        case "range":
+                            RequestHeaders.Range = hArray[r, 1];
+                            break;
+                        case "referer":
+                            RequestHeaders.Referer = hArray[r, 1];
+                            break;
+                        case "transfer-encoding":
+                            RequestHeaders.TransferEncoding = hArray[r, 1];
+                            break;
+                        case "user-agent":
+                            RequestHeaders.UserAgent = hArray[r, 1];
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+                else
+                { webHeader.Add(hArray[r, 0], hArray[r, 1]); }
+
+            }
+            lib.phttp.HttpCustom_Request_Headers_Object = webHeader;
             string str = lib.phttp.HttpUploadFile(url, values, files, encodingString);
             return str;
         }
@@ -543,26 +623,30 @@ namespace postApiTools
                 string str = ini.IniReadValue("form1", "dataviewUrlDataWrite");
                 str = lib.pBase64.base64ToString(str);
                 object[,] obj = pJson.jsonStrToObjectArray(str, 3);
-                dd.Invalidate();
-                dd.Rows.Clear();//清理行数
-                if (obj.GetLength(0) > 0)
+                dd.Invoke(new Action(() =>
                 {
-                    dd.Rows.Add(obj.GetLength(0));
-                    for (int i = 0; i < obj.GetLength(0); i++)
+                    dd.Invalidate();
+                    dd.Rows.Clear();//清理行数
+                    dd.EditMode = DataGridViewEditMode.EditOnEnter;
+                    if (obj.GetLength(0) > 0)
                     {
-                        dd.Rows[i].Cells[0].Value = obj[i, 0];
-                        dd.Rows[i].Cells[1].Value = obj[i, 1];
-                        dd.Rows[i].Cells[2].Value = obj[i, 2];
-                        if (File.Exists(obj[i, 1].ToString()))
+                        dd.Rows.Add(obj.GetLength(0));
+                        for (int i = 0; i < obj.GetLength(0); i++)
                         {
-                            dd.Rows[i].Cells[3].Value = "文件";
-                        }
-                        else
-                        {
-                            dd.Rows[i].Cells[3].Value = "字符串";
+                            dd.Rows[i].Cells[0].Value = obj[i, 0];
+                            dd.Rows[i].Cells[1].Value = obj[i, 1];
+                            dd.Rows[i].Cells[2].Value = obj[i, 2];
+                            if (File.Exists(obj[i, 1].ToString()))
+                            {
+                                dd.Rows[i].Cells[3].Value = "文件";
+                            }
+                            else
+                            {
+                                dd.Rows[i].Cells[3].Value = "字符串";
+                            }
                         }
                     }
-                }
+                }));
             }
             catch (Exception ex)
             {
@@ -669,6 +753,61 @@ namespace postApiTools
             else
             {
             }
+        }
+
+
+        /// <summary>
+        /// 启动消息循环检测
+        /// </summary>
+        public static void message()
+        {
+            Thread th = new Thread(messageTh);
+            th.Start();
+        }
+
+        /// <summary>
+        /// 消息循环线程检测
+        /// </summary>
+        public static void messageTh()
+        {
+            while (true)
+            {
+                Thread.Sleep(200);
+                if (Config.websocket.messageList.Count <= 0) { continue; }
+                try
+                {
+                    foreach (var item in Config.websocket.messageList)
+                    {
+                        JObject job = pJson.jsonToJobject(item.Value);
+                        if (job.Count <= 0) { continue; }
+                        if (job["type"].ToString() == "document_hash_update")
+                        {
+                            Config.websocket.messageList.Remove(item.Key);
+                            Thread th = new Thread(message_document_hash_update);
+                            th.Start(job);
+                        }
+
+                    }
+                }
+                catch { }
+
+            }
+        }
+
+        /// <summary>
+        /// document_hash_update提示线程
+        /// </summary>
+        /// <param name="obj"></param>
+        public static void message_document_hash_update(object obj)
+        {
+            JObject job = (JObject)obj;
+            pForm1TreeView.updateDocument(job["hash"].ToString());//更新一个线上文档
+            Dictionary<string, string> d = pForm1TreeView.getLocalDocumentInfo(job["hash"].ToString());
+            FormAll.pLower pLower = new FormAll.pLower();
+            pLower.title = "文档更新通知！ 已推送相关人员！";
+            pLower.mssage = d.Count > 0 ? d["name"] : "没有相关消息";
+            AnimateWindow(pLower.Handle, 1000, AW_VER_NEGATIVE | AW_ACTIVATE);//从下到上且不占其它程序焦点  
+            pLower.Show();
         }
     }
 }

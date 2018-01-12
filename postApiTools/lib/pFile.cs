@@ -42,7 +42,7 @@ namespace postApiTools.lib
             }
             catch (Exception ex)
             {
-
+                pLogs.logs(ex.ToString());
             }
 
         }

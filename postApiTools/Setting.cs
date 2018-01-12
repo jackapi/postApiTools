@@ -11,7 +11,8 @@ using System.Windows.Forms;
 
 namespace postApiTools
 {
-    public partial class Setting : Form
+    using CCWin;
+    public partial class Setting : CCSkinMain
     {
         public Setting()
         {
@@ -69,12 +70,17 @@ namespace postApiTools
             pSetting.refreshTemplateList(comboBox_template_list);
             comboBox_template_list.Text = "默认模板";
 
-            textBox_web_url.Text = pSetting.web_url;
-            textBox_web_username.Text = pSetting.web_name;
-            textBox_web_password.Text = pSetting.web_password;
-            checkBox_open_server_update.CheckState = pSetting.web_update == "Checked" ? CheckState.Checked : CheckState.Unchecked;//是否开启更新
+            textBox_web_url.Text = Config.openServerUrl;
+            textBox_web_username.Text = Config.openServerName;
+            textBox_web_password.Text = Config.openServerPassword;
+            checkBox_open_server_update.CheckState = Config.openServerUpdate == "Checked" ? CheckState.Checked : CheckState.Unchecked;//是否开启更新
 
             checkBox_agreed.CheckState = Config.openServerAgreed == "Checked" ? CheckState.Checked : CheckState.Unchecked;//服务器保持一致
+
+            textBox_websocket_ip.Text = Config.openServerWebSocketIp;
+            textBox_websocket_port.Text = Config.openServerWebSocketPort;
+
+            checkBox_force_server.CheckState = Config.openServerWebForce == "Checked" ? CheckState.Checked : CheckState.Unchecked;//强制更新
         }
 
         /// <summary>
@@ -137,8 +143,11 @@ namespace postApiTools
             string url = textBox_web_url.Text;
             string name = textBox_web_username.Text;
             string password = textBox_web_password.Text;
+            string ip = textBox_websocket_ip.Text;
+            string port = textBox_websocket_port.Text;
             CheckState update = checkBox_open_server_update.CheckState;
             CheckState agreed = checkBox_agreed.CheckState;
+            CheckState force = checkBox_force_server.CheckState;//强制更新
             if (!lib.pRegex.IsUrl(url))
             {
                 MessageBox.Show("请填写正确URL");
@@ -155,8 +164,22 @@ namespace postApiTools
                 return;
             }
             pSetting.saveUrlNamePassword(url, name, password, update, agreed);
-            MessageBox.Show("设置成功");
+            pSetting.saveSocket(ip, port, force);//socket
+            MessageBox.Show("设置成功！重启软件后生效！");
 
+        }
+        /// <summary>
+        /// 键盘事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Setting_KeyDown(object sender, KeyEventArgs e)
+        {
+
+            if (e.KeyCode == Keys.Escape)//关闭窗体
+            {
+                this.Close();
+            }
         }
     }
 }

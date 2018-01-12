@@ -10,6 +10,29 @@ namespace postApiTools.lib
     using System.IO;
     public class pBase
     {
+
+        /// <summary>
+        /// 字典转二维
+        /// </summary>
+        /// <param name="d"></param>
+        /// <returns></returns>
+        public static string[,] dicToStringArray(Dictionary<string, string> d)
+        {
+            int i = 0;
+            string[,] temp = new string[d.Count, 2];
+            if (d.Count <= 0)
+            {
+                return temp;
+            }
+            foreach (var item in d)
+            {
+                temp[i, 0] = item.Key;
+                temp[i, 1] = item.Value;
+                i++;
+            }
+            return temp;
+        }
+
         /// <summary>
         /// 打开浏览器
         /// </summary>

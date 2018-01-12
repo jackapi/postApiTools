@@ -40,7 +40,7 @@
             this.button_save.Location = new System.Drawing.Point(31, 80);
             this.button_save.Name = "button_save";
             this.button_save.Size = new System.Drawing.Size(75, 23);
-            this.button_save.TabIndex = 0;
+            this.button_save.TabIndex = 1;
             this.button_save.Text = "保存";
             this.button_save.UseVisualStyleBackColor = true;
             this.button_save.Click += new System.EventHandler(this.button_save_Click);
@@ -50,7 +50,7 @@
             this.button_back.Location = new System.Drawing.Point(148, 80);
             this.button_back.Name = "button_back";
             this.button_back.Size = new System.Drawing.Size(75, 23);
-            this.button_back.TabIndex = 0;
+            this.button_back.TabIndex = 2;
             this.button_back.Text = "返回";
             this.button_back.UseVisualStyleBackColor = true;
             this.button_back.Click += new System.EventHandler(this.button_back_Click);
@@ -58,7 +58,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(29, 33);
+            this.label1.Location = new System.Drawing.Point(29, 47);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(29, 12);
             this.label1.TabIndex = 1;
@@ -66,10 +66,10 @@
             // 
             // textBox_name
             // 
-            this.textBox_name.Location = new System.Drawing.Point(76, 29);
+            this.textBox_name.Location = new System.Drawing.Point(76, 43);
             this.textBox_name.Name = "textBox_name";
             this.textBox_name.Size = new System.Drawing.Size(147, 21);
-            this.textBox_name.TabIndex = 2;
+            this.textBox_name.TabIndex = 0;
             // 
             // AddPid
             // 

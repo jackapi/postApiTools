@@ -14,14 +14,17 @@ namespace postApiTools
         [STAThread]
         static void Main()
         {
-            try { 
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            try
+            {
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                Application.Run(new Form1());
             }
             catch (Exception ex)
             {
                 pLogs.logs(ex.ToString());
+                MessageBox.Show("错误:" + ex.ToString().Substring(0, 200) + "...", "错误提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                System.Environment.Exit(0);
             }
         }
     }

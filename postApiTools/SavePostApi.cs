@@ -10,7 +10,8 @@ using System.Windows.Forms;
 
 namespace postApiTools
 {
-    public partial class SavePostApi : Form
+    using CCWin;
+    public partial class SavePostApi : CCSkinMain
     {
         /// <summary>
         /// url参数

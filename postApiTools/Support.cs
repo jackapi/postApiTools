@@ -10,7 +10,8 @@ using System.Windows.Forms;
 
 namespace postApiTools
 {
-    public partial class Support : Form
+    using CCWin;
+    public partial class Support : CCSkinMain
     {
         public Support()
         {

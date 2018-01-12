@@ -64,6 +64,7 @@ namespace postApiTools.lib
             }
             catch (Exception ex)
             {
+                pLogs.logs(ex.ToString());
                 return false;
             }
         }
@@ -87,7 +88,29 @@ namespace postApiTools.lib
                 request.AllowAutoRedirect = true;
                 request.Method = "POST";
                 request.Timeout = Timeout;
-                if (HttpCustom_Request_Headers_Object!=null)
+
+                if (RequestHeaders.Accept != null) { request.Accept = RequestHeaders.Accept; }
+                if (RequestHeaders.Connection != null) { request.Connection = RequestHeaders.Connection; }
+                if (RequestHeaders.ContentLength != null) { request.ContentLength = Convert.ToInt32(RequestHeaders.ContentLength); }
+                if (RequestHeaders.ContentType!=null) { request.ContentType = RequestHeaders.ContentType; }
+                if (RequestHeaders.Expect != null) { request.Expect = RequestHeaders.Expect; }
+                try
+                {
+                    request.Date = DateTime.Parse(RequestHeaders.Date);
+                }
+                catch { }
+                if (RequestHeaders.Host != null) { request.Host = RequestHeaders.Host; }
+
+                request.AddRange(Convert.ToInt32(RequestHeaders.Range));
+                try
+                {
+                    request.IfModifiedSince = DateTime.Parse(RequestHeaders.IfModifiedSince);
+                }
+                catch { }
+                if (RequestHeaders.Referer != null) { request.Referer = RequestHeaders.Referer; }
+                if (RequestHeaders.TransferEncoding != null) { request.TransferEncoding = RequestHeaders.TransferEncoding; }
+                if (RequestHeaders.UserAgent != null) { request.UserAgent = RequestHeaders.UserAgent; }
+                if (HttpCustom_Request_Headers_Object != null)
                 {
                     request.Headers = HttpCustom_Request_Headers_Object;//请求报文头
                 }
@@ -294,7 +317,7 @@ namespace postApiTools.lib
                 request.Method = "GET";
                 request.ContentType = "text/html;charset=UTF-8";
                 request.Timeout = Timeout;
-                if (HttpCustom_Request_Headers_Object!=null)
+                if (HttpCustom_Request_Headers_Object != null)
                 {
                     request.Headers = HttpCustom_Request_Headers_Object;//请求报文头
                 }

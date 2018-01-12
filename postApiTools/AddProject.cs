@@ -14,12 +14,12 @@ using System.Windows.Forms;
 /// </summary>
 namespace postApiTools
 {
-    public partial class AddProject : Form
+    using CCWin;
+    public partial class AddProject : CCSkinMain
     {
 
         public AddProject()
         {
-
             InitializeComponent();
         }
         public string projectName = "";
@@ -45,6 +45,11 @@ namespace postApiTools
         private void button_back_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void AddProject_Load(object sender, EventArgs e)
+        {
+            textBox_name.Focus();
         }
     }
 }

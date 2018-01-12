@@ -16,6 +16,16 @@ namespace postApiTools
         public static string error = "";
 
         /// <summary>
+        /// json转jobject
+        /// </summary>
+        /// <param name="jsonString"></param>
+        /// <returns></returns>
+        public static JObject jsonToJobject(string jsonString)
+        {
+            try { return (JObject)JsonConvert.DeserializeObject(jsonString); } catch { return null; }
+
+        }
+        /// <summary>
         /// JSON转对象
         /// </summary>
         /// <typeparam name="T">对象</typeparam>
@@ -139,6 +149,7 @@ namespace postApiTools
             }
             return obj;
         }
+
         /// <summary>
         /// 字符串转object数组
         /// </summary>

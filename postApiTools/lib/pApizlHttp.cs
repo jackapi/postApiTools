@@ -19,7 +19,7 @@ namespace postApiTools.lib
         /// <summary>
         /// 请求url
         /// </summary>
-        public static string Url = pSetting.web_url;
+        public static string Url = Config.openServerUrl;
 
         /// <summary>
         /// 错误信息输出
@@ -114,6 +114,11 @@ namespace postApiTools.lib
         /// <returns></returns>
         public static bool Login(string name, string password)
         {
+            if (Config.openServerUpdate != CheckState.Checked.ToString())
+            {
+                error = "已关闭自动更新";
+                return true;
+            }
             string urlStr = Url + "/index/register/ajaxLoginToken";
             string[,] urlData = new string[2, 2];
             urlData[0, 0] = "name";
@@ -463,6 +468,110 @@ namespace postApiTools.lib
             urlData[1, 1] = hash;
             string urlStr = Url + "/index/role/getProjectList";
             return getHttpData(urlStr, urlData);
+        }
+
+        /// <summary>
+        /// 删除一个项目（包含子项目）
+        /// </summary>
+        /// <param name="hash"></param>
+        /// <returns></returns>
+        public static JObject deleteProject(string hash)
+        {
+            string[,] urlData = new string[2, 2];
+            urlData[0, 0] = "token";
+            urlData[0, 1] = token;
+            urlData[1, 0] = "hash";
+            urlData[1, 1] = hash;
+            string urlStr = Url + "/index/Document/deleteProject";
+            return getHttpData(urlStr, urlData);
+        }
+
+        /// <summary>
+        ///获取子类列表
+        /// </summary>
+        /// <param name="hash"></param>
+        /// <returns></returns>
+        public static JObject getProjectPidList(string hash)
+        {
+            string[,] urlData = new string[2, 2];
+            urlData[0, 0] = "token";
+            urlData[0, 1] = token;
+            urlData[1, 0] = "hash";
+            urlData[1, 1] = hash;
+            string urlStr = Url + "/index/Document/getProjectPidList";
+            return getHttpData(urlStr, urlData);
+        }
+
+        /// <summary>
+        ///获取文章列表
+        /// </summary>
+        /// <param name="hash"></param>
+        /// <returns></returns>
+        public static JObject getDocumentList(string hash)
+        {
+            string[,] urlData = new string[2, 2];
+            urlData[0, 0] = "token";
+            urlData[0, 1] = token;
+            urlData[1, 0] = "hash";
+            urlData[1, 1] = hash;
+            string urlStr = Url + "/index/Document/getDocumentList";
+            return getHttpData(urlStr, urlData);
+        }
+
+        /// <summary>
+        ///编辑文档
+        /// </summary>
+        /// <param name="hash"></param>
+        /// <returns></returns>
+        public static JObject editDocument(string serverHash, string name, string desc, string url, string urldata, string method)
+        {
+            Dictionary<string, string> d = new Dictionary<string, string> { };
+            d.Add("token", token);
+            d.Add("hash", serverHash);
+            d.Add("name", name);
+            d.Add("desc", desc);
+            d.Add("url", url);
+            d.Add("urldata", urldata);
+            d.Add("method", method);
+            string urlStr = Url + "/index/Document/editDocument";
+            return getHttpData(urlStr, dicToStringArray(d));
+        }
+
+        /// <summary>
+        /// 字典转二维
+        /// </summary>
+        /// <param name="d"></param>
+        /// <returns></returns>
+        public static string[,] dicToStringArray(Dictionary<string, string> d)
+        {
+            int i = 0;
+            string[,] temp = new string[d.Count, 2];
+            if (d.Count <= 0)
+            {
+                return temp;
+            }
+            foreach (var item in d)
+            {
+                temp[i, 0] = item.Key;
+                temp[i, 1] = item.Value;
+                i++;
+            }
+            return temp;
+        }
+
+
+        /// <summary>
+        ///获取文档
+        /// </summary>
+        /// <param name="hash"></param>
+        /// <returns></returns>
+        public static JObject getDocument(string serverHash)
+        {
+            Dictionary<string, string> d = new Dictionary<string, string> { };
+            d.Add("token", token);
+            d.Add("hash", serverHash);
+            string urlStr = Url + "/index/Document/getDocument";
+            return getHttpData(urlStr, dicToStringArray(d));
         }
     }
 }

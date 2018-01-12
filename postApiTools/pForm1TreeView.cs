@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 /// </summary>
 namespace postApiTools
 {
+    using Newtonsoft.Json.Linq;
     using System.IO;
     using System.Windows.Forms;
     public class pForm1TreeView
@@ -54,6 +55,9 @@ namespace postApiTools
         {
             sqlite.executeNonQuery("CREATE TABLE IF NOT EXISTS " + table + "(hash varchar(200),project_id varchar(200),sort integer , name varchar(200), desc varchar(2000),url varchar(200),urldata varchar(20000),method varchar(200),server_hash varchar(200),server_update integer,addtime integer);");//创建详情表
             sqlite.executeNonQuery("CREATE TABLE IF NOT EXISTS " + tableSetting + "(hash varchar(200),pid varchar(200) ,sort integer , name varchar(200), desc varchar(2000),server_hash varchar(200),server_update integer,addtime integer);");//创建配置表
+            sqlite.executeNonQuery("CREATE UNIQUE INDEX IF Not Exists name_server_hash ON treeview_project (name, server_hash);");//index     
+            sqlite.executeNonQuery("CREATE UNIQUE INDEX IF Not Exists server_hash ON treeview_project_setting (name, server_hash);");//index
+
         }
         /// <summary>
         /// 插入主要项目名称
@@ -63,6 +67,7 @@ namespace postApiTools
         /// <returns></returns>
         public static bool insertMain(string name, string desc)
         {
+            error = "";
             create();//运行就进行判断
             Dictionary<string, string> result = sqlite.getOne("select *from " + tableSetting + " where pid=0 and name='" + name + "'");
             if (result.Count > 0)
@@ -82,6 +87,21 @@ namespace postApiTools
             }
             error = sqlite.error;
             return false;
+        }
+        /// <summary>
+        /// 创建主要项目方法sql
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="desc"></param>
+        /// <param name="serverHash"></param>
+        /// <returns></returns>
+        public static int insertMainSql(string name, string desc, string serverHash)
+        {
+            create();
+            string hash = lib.pBase.getHash();//生成hash
+            string sql = "insert into " + tableSetting + "(hash,pid,sort,name,desc,server_hash,server_update,addtime)values('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}')";
+            sql = string.Format(sql, hash, 0, 0, name, desc, serverHash, lib.pDate.getTimeStamp(), lib.pDate.getTimeStamp());
+            return sqlite.executeNonQuery(sql);
         }
 
 
@@ -187,6 +207,7 @@ namespace postApiTools
         /// <param name="name"></param>
         public static void insertPid(TreeView t, string name)
         {
+            error = "";
             string idHash = t.SelectedNode.Name;
             string getSql = string.Format("select *from {0} where hash='{1}' ", tableSetting, idHash);
             Dictionary<string, string> mainResult = sqlite.getOne(getSql);
@@ -212,6 +233,7 @@ namespace postApiTools
         /// <returns></returns>
         public static int updateProjectPidServerHash(string hash, string serverHash)
         {
+            create();
             string sql = string.Format("update {0} set server_hash='{1}' ,server_update='{2}' where hash='{3}'", tableSetting, serverHash, lib.pDate.getTimeStamp(), hash);
             return sqlite.executeNonQuery(sql);
         }
@@ -301,6 +323,11 @@ namespace postApiTools
             else
             {
                 sql = string.Format("delete from {0} where hash='{1}'", tableSetting, hash);//删除项目或子类
+                Dictionary<string, string> nowHash = sqlite.getOne(string.Format("select *from {0} where hash='{1}'", tableSetting, hash));
+                if (nowHash.Count > 0)
+                {
+                    lib.pApizlHttp.deleteProject(nowHash["server_hash"]);//删除远程项目
+                }
             }
             if (sqlite.executeNonQuery(sql) > 0)
             {
@@ -404,6 +431,19 @@ namespace postApiTools
             }
             return temNode;
         }
+
+        /// <summary>
+        /// 无刷新修改treeview
+        /// </summary>
+        /// <param name="tv"></param>
+        /// <param name="hash"></param>
+        /// <param name="text"></param>
+        public static void updateTreeViewText(TreeView tv, string hash, string text)
+        {
+            TreeNode tn = FindNodeByName(tv.Nodes, hash);
+            tn.Text = text;
+        }
+
         /// <summary>
         /// 判断文档是否存在
         /// </summary>
@@ -411,6 +451,7 @@ namespace postApiTools
         /// <returns></returns>
         public static bool isApiHash(string hash)
         {
+            create();
             if (hash == "")
             {
                 error = "hash error";
@@ -427,6 +468,7 @@ namespace postApiTools
         /// </summary>
         public static bool editApi(string hash, string name, string desc, string url, string urldata, string urlType)
         {
+            create();
             if (hash == "")
             {
                 error = "hash error";
@@ -443,10 +485,84 @@ namespace postApiTools
             sql = string.Format(sql, table, name, desc, url, urldata, urlType, hash);
             if (sqlite.executeNonQuery(sql) > 0)
             {
+                lib.pApizlHttp.editDocument(d["server_hash"], name, desc, url, urldata, urlType);//编辑线上
+                Config.websocket.sendServerHashUpdate(d["server_hash"]);//发送更新推送
                 return true;
             }
             error = sqlite.error;
             return false;
+        }
+
+        /// <summary>
+        /// pull判断是否存在文章
+        /// </summary>
+        /// <param name="serverHash"></param>
+        /// <param name="name"></param>
+        /// <param name="pid"></param>
+        /// <returns></returns>
+        public static bool getIsDocumentServer(string serverHash, string name, string pid)
+        {
+            Dictionary<string, string> d = sqlite.getOne(string.Format("select *from {0} where server_hash='{1}' and name='{2}'  and project_id = '{3}'", table, serverHash, name, pid));
+            return d.Count > 0 ? true : false;
+        }
+
+        /// <summary>
+        /// 创建子类列表
+        /// </summary>
+        /// <param name="jar"></param>
+        /// <param name="localHash"></param>
+        public static void createProjectPidList(JArray jar, string localHash)
+        {
+            create();
+            for (int i = 0; i < jar.Count; i++)
+            {
+                sqlite.executeNonQuery(string.Format("insert into {0} (hash,pid,sort,name,desc,server_hash,server_update,addtime)values('{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}')", pForm1TreeView.tableSetting, lib.pBase.getHash(), localHash, 0, jar[i]["name"], jar[i]["desc"], jar[i]["hash"], lib.pDate.getTimeStamp(), lib.pDate.getTimeStamp()));
+            }
+        }
+        /// <summary>
+        /// pull创建服务器文章列表
+        /// </summary>
+        /// <param name="jar"></param>
+        /// <param name="localHash"></param>
+        public static void createDocumentList(JArray jar, string localHash)
+        {
+            create();
+            for (int i = 0; i < jar.Count; i++)
+            {
+                if (getIsDocumentServer(jar[i]["hash"].ToString(), jar[i]["name"].ToString(), localHash)) { continue; }
+                sqlite.executeNonQuery(string.Format("insert into {0} (hash,project_id,sort,name,desc,url,urldata,method,server_hash,server_update,addtime)values('{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}')", pForm1TreeView.table, lib.pBase.getHash(), localHash, 0, jar[i]["name"], jar[i]["desc"], jar[i]["url"], jar[i]["urldata"], jar[i]["method"], jar[i]["hash"], lib.pDate.getTimeStamp(), lib.pDate.getTimeStamp()));
+            }
+        }
+        /// <summary>
+        /// 获取文档详情
+        /// </summary>
+        /// <param name="serverHash"></param>
+        /// <returns></returns>
+        public static Dictionary<string, string> getLocalDocumentInfo(string serverHash)
+        {
+            return sqlite.getOne(string.Format("select *from {0} where server_hash='{1}'", table, serverHash));
+        }
+
+        /// <summary>
+        /// 更新一个文档
+        /// </summary>
+        /// <param name="serverHash"></param>
+        /// <returns></returns>
+        public static bool updateDocument(string serverHash)
+        {
+            JObject job = lib.pApizlHttp.getDocument(serverHash);
+            if (job == null)
+            {
+                error = lib.pApizlHttp.error;
+                return false;
+            }
+            if (job["code"].ToString() != "0") { error = job["msg"].ToString(); return false; }
+            JObject result = (JObject)job["result"];
+            string sql = "update {0} set name='{1}' , desc='{2}',url='{3}',urldata='{4}',method='{5}',server_update='{6}' where saver_hash='{7}'";
+            sql = string.Format(sql, table, result["name"].ToString(), result["desc"].ToString(), result["url"].ToString(), result["urldata"].ToString(), result["method"].ToString(), lib.pDate.getTimeStamp(), serverHash);
+            int rows = sqlite.executeNonQuery(sql);
+            error = sqlite.error;
+            return rows > 0 ? true : false;
         }
     }
 }

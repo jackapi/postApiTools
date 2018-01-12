@@ -107,6 +107,7 @@ namespace postApiTools
         /// 服务器URL
         /// </summary>
         public static string web_url = lib.pIni.read("setting", "web_url");
+
         /// <summary>
         /// 服务器用户名
         /// </summary>
@@ -134,6 +135,18 @@ namespace postApiTools
             lib.pIni.write("setting", "web_password", password);
             lib.pIni.write("setting", "web_update", c.ToString());
             lib.pIni.write("setting", "web_agreed", agreed.ToString());
+        }
+
+        /// <summary>
+        /// socket 保存
+        /// </summary>
+        /// <param name="ip"></param>
+        /// <param name="port"></param>
+        /// <param name="force"></param>
+        public static void saveSocket(string ip, string port, CheckState force) {
+            lib.pIni.write("setting", "web_socket_ip", ip);
+            lib.pIni.write("setting", "web_socket_port", port);
+            lib.pIni.write("setting", "web_force", force.ToString());
         }
         /// <summary>
         /// 服务器更新服务配置
