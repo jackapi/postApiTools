@@ -213,7 +213,7 @@
             this.skinButton_create.Name = "skinButton_create";
             this.skinButton_create.NormlBack = null;
             this.skinButton_create.Size = new System.Drawing.Size(75, 23);
-            this.skinButton_create.TabIndex = 2;
+            this.skinButton_create.TabIndex = 4;
             this.skinButton_create.Text = "注册";
             this.skinButton_create.UseVisualStyleBackColor = false;
             this.skinButton_create.Click += new System.EventHandler(this.skinButton_create_Click);
@@ -228,7 +228,7 @@
             this.skinButton_close.Name = "skinButton_close";
             this.skinButton_close.NormlBack = null;
             this.skinButton_close.Size = new System.Drawing.Size(75, 23);
-            this.skinButton_close.TabIndex = 2;
+            this.skinButton_close.TabIndex = 5;
             this.skinButton_close.Text = "关闭";
             this.skinButton_close.UseVisualStyleBackColor = false;
             this.skinButton_close.Click += new System.EventHandler(this.skinButton_close_Click);
@@ -248,11 +248,14 @@
             this.Controls.Add(this.skinLabel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.KeyPreview = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "pRegister";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "用户注册";
+            this.Load += new System.EventHandler(this.pRegister_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.pRegister_KeyDown);
             this.ResumeLayout(false);
             this.PerformLayout();
 

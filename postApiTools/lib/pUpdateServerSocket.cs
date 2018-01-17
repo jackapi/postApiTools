@@ -13,6 +13,8 @@ namespace postApiTools.lib
     using Newtonsoft.Json.Linq;
     using System.Threading;
     using System.Threading.Tasks;
+    using System.Windows.Forms;
+
     /// <summary>
     /// socket 更新服务
     /// </summary>
@@ -36,6 +38,12 @@ namespace postApiTools.lib
         /// 心跳锁
         /// </summary>
         public int pongLook = 0;
+
+
+        /// <summary>
+        /// 判断是否启用
+        /// </summary>
+        public bool isStart = true;
 
         /// <summary>
         /// 心跳json
@@ -63,16 +71,33 @@ namespace postApiTools.lib
 
         public pUpdateServerSocket()
         {
-            if (socket == null)
+            //if (socket == null)
+            //{
+            //    start();
+            //}
+        }
+
+
+        /// <summary>
+        /// 开启
+        /// </summary>
+        public void start()
+        {
+            if (th == null)
             {
-                start();
+                isStart = true;
+                th = new Thread(startFun);
+                th.Start();
             }
         }
+
         /// <summary>
         /// socket主线程方法
         /// </summary>
         public void startFun()
         {
+            Thread.Sleep(1000);//一秒后连接
+            Form1.f.TextShowlogs("连接服务器...");
             try
             {
                 if (socket == null)
@@ -80,26 +105,35 @@ namespace postApiTools.lib
                     if (Config.openServerWebSocketIp != "" && Config.openServerWebSocketPort != "")
                     {
                         socket = new WebSocket(string.Format("ws://{0}:{1}", Config.openServerWebSocketIp, Config.openServerWebSocketPort));
+                        Form1.f.TextShowlogs("连接成功...");
                     }
                     else
                     {
                         return;
                     }
+                    socket.OnOpen += (sender, e) => { };//打开
+                    socket.Connect();
+                    socket.OnError += (sender, e) => { };//错误
+                    socket.OnClose += (sender, e) => { };//远程关闭
+                    login();//登录
+                    getContent();//接收信息
                 }
-                socket.OnOpen += (sender, e) => { };//打开
-                socket.Connect();
-                socket.OnError += (sender, e) => { };//错误
-                socket.OnClose += (sender, e) => { };//远程关闭
-                login();//登录
+                else
+                {
+                }
             }
             catch
             {
+                Thread.Sleep(500);
+                Form1.f.TextShowlogs("重试连接...");
                 startFun();
             }
             while (true)
             {
+                if (isStart == false) { return; }
                 try
                 {
+                    if (socket == null) { Form1.f.TextShowlogs("服务端未开启！"); }
                     if (pongTh == null)
                     {
                         pongTh = new Thread(pongFun); //心跳线程
@@ -114,8 +148,7 @@ namespace postApiTools.lib
                         }
                     }
                     sendMessage();//发送方法
-                    getContent();//接收信息
-                    Thread.Sleep(100);
+                    Thread.Sleep(400);
                 }
                 catch { }
 
@@ -168,6 +201,84 @@ namespace postApiTools.lib
             d.Add("token", Config.userToken);
             socketSend(pJson.objectToJsonStr(d));
         }
+
+        /// <summary>
+        /// 发送文档创建消息
+        /// </summary>
+        /// <param name="serverHash"></param>
+        public void sendServerHashCreate(string serverHash)
+        {
+            Dictionary<string, string> d = new Dictionary<string, string> { };
+            d.Add("type", "document_hash_create");
+            d.Add("room_id", "1");
+            d.Add("client_name", Config.openServerName);
+            d.Add("hash", serverHash);
+            d.Add("token", Config.userToken);
+            socketSend(pJson.objectToJsonStr(d));
+        }
+
+        /// <summary>
+        /// 发送文档删除消息
+        /// </summary>
+        /// <param name="serverHash"></param>
+        public void sendServerHashDelete(string serverHash, string docServerHash)
+        {
+            Dictionary<string, string> d = new Dictionary<string, string> { };
+            d.Add("type", "document_hash_delete");
+            d.Add("room_id", "1");
+            d.Add("client_name", Config.openServerName);
+            d.Add("hash", serverHash);
+            d.Add("docHash", docServerHash);
+            d.Add("token", Config.userToken);
+            socketSend(pJson.objectToJsonStr(d));
+        }
+
+        /// <summary>
+        /// 发送项目创建消息
+        /// </summary>
+        /// <param name="serverHash"></param>
+        public void sendServerProjectHashCreate(string serverHash)
+        {
+            Dictionary<string, string> d = new Dictionary<string, string> { };
+            d.Add("type", "project_hash_create");
+            d.Add("room_id", "1");
+            d.Add("client_name", Config.openServerName);
+            d.Add("hash", serverHash);
+            d.Add("token", Config.userToken);
+            socketSend(pJson.objectToJsonStr(d));
+        }
+
+        /// <summary>
+        /// 发送项目修改消息
+        /// </summary>
+        /// <param name="serverHash"></param>
+        public void sendServerProjectHashUpdate(string serverHash)
+        {
+            Dictionary<string, string> d = new Dictionary<string, string> { };
+            d.Add("type", "project_hash_update");
+            d.Add("room_id", "1");
+            d.Add("client_name", Config.openServerName);
+            d.Add("hash", serverHash);
+            d.Add("token", Config.userToken);
+            socketSend(pJson.objectToJsonStr(d));
+        }
+
+        /// <summary>
+        /// 发送项目删除消息
+        /// </summary>
+        /// <param name="serverHash"></param>
+        public void sendServerProjectHashDelete(string serverHash)
+        {
+            Dictionary<string, string> d = new Dictionary<string, string> { };
+            d.Add("type", "project_hash_delete");
+            d.Add("room_id", "1");
+            d.Add("client_name", Config.openServerName);
+            d.Add("hash", serverHash);
+            d.Add("token", Config.userToken);
+            socketSend(pJson.objectToJsonStr(d));
+        }
+
+
         public void sendServerHashMessage(string serverHash)
         {
             Dictionary<string, string> d = new Dictionary<string, string> { };
@@ -195,15 +306,16 @@ namespace postApiTools.lib
                 {
                     JObject job = pJson.jsonToJobject(e.Data);
                     if (job == null) { return; }
-                    if (job["type"]==null) { return; }
+                    if (job["type"] == null) { return; }
                     if (job["type"].ToString() == "ping") { return; }
-                    if (job["messageHash"]==null)
+                    if (job["messageHash"] == null)
                     {
                         return;
                     }
-                    if (!messageList.ContainsKey(job["messageHash"].ToString()))//判断消息是否接收存在
+                    string messageHash = job["messageHash"].ToString();
+                    if (!messageList.ContainsKey(messageHash))//判断消息是否接收存在
                     {
-                        messageList.Add(job["messageHash"].ToString(), e.Data);
+                        messageList.Add(messageHash, e.Data);
                     }
                 };//返回信息
             }
@@ -232,7 +344,10 @@ namespace postApiTools.lib
         {
             try
             {
-                socket.Send(content);
+                if (Config.openServerUpdate != CheckState.Checked.ToString())//判断是否关闭自动更新
+                {
+                }
+                else { socket.Send(content); }
             }
             catch
             {
@@ -241,27 +356,23 @@ namespace postApiTools.lib
         }
 
         /// <summary>
-        /// 开启
-        /// </summary>
-        public void start()
-        {
-            if (th == null)
-            {
-                th = new Thread(startFun);
-                th.Start();
-            }
-        }
-
-        /// <summary>
         /// 关闭
         /// </summary>
         public void stop()
         {
+            Thread p = new Thread(stopFun);
+            p.Start();
+        }
+
+        public void stopFun()
+        {
             if (th != null)
             {
-                th.Join();
+                isStart = false;
+                Form1.f.TextShowlogs("关闭服务器连接！");
                 socket.Close();
                 socket = null;
+                th = null;
             }
         }
 

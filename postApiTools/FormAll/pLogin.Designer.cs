@@ -69,8 +69,8 @@
             this.skinTextBox_password.Icon = null;
             this.skinTextBox_password.IconIsButton = false;
             this.skinTextBox_password.IconMouseState = CCWin.SkinClass.ControlState.Normal;
-            this.skinTextBox_password.IsPasswordChat = '\0';
-            this.skinTextBox_password.IsSystemPasswordChar = false;
+            this.skinTextBox_password.IsPasswordChat = '●';
+            this.skinTextBox_password.IsSystemPasswordChar = true;
             this.skinTextBox_password.Lines = new string[0];
             this.skinTextBox_password.Location = new System.Drawing.Point(84, 94);
             this.skinTextBox_password.Margin = new System.Windows.Forms.Padding(0);
@@ -93,8 +93,10 @@
             this.skinTextBox_password.SkinTxt.Font = new System.Drawing.Font("微软雅黑", 9.75F);
             this.skinTextBox_password.SkinTxt.Location = new System.Drawing.Point(5, 5);
             this.skinTextBox_password.SkinTxt.Name = "BaseText";
+            this.skinTextBox_password.SkinTxt.PasswordChar = '●';
             this.skinTextBox_password.SkinTxt.Size = new System.Drawing.Size(175, 18);
             this.skinTextBox_password.SkinTxt.TabIndex = 0;
+            this.skinTextBox_password.SkinTxt.UseSystemPasswordChar = true;
             this.skinTextBox_password.SkinTxt.WaterColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(127)))), ((int)(((byte)(127)))));
             this.skinTextBox_password.SkinTxt.WaterText = "";
             this.skinTextBox_password.TabIndex = 1;
@@ -159,11 +161,13 @@
             this.Controls.Add(this.skinLabel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.KeyPreview = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "pLogin";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "用户登录";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.pLogin_KeyDown);
             this.ResumeLayout(false);
             this.PerformLayout();
 

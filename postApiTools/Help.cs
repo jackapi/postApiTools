@@ -27,7 +27,7 @@ namespace postApiTools
         public void supplyAdd()
         {
             supply.Add("MaterialSkin", "https://github.com/IgnaceMaes/MaterialSkin");
-            supply.Add("cskin", "https://www.cskin.net");
+            supply.Add("cskin", "http://www.cskin.net");
             supply.Add("Newtonsoft.Json", "https://www.newtonsoft.com/json");
             supply.Add("websocket-sharp", "https://github.com/sta/websocket-sharp");
             supply.Add("mysql", "https://dev.mysql.com/");

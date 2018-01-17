@@ -108,14 +108,14 @@ namespace postApiTools
         /// 加载错误
         /// </summary>
         public static string start = Start();
-
         public static string Start()
         {
+            ConfigReadWrite rw = new ConfigReadWrite();
             try
             {
                 openServerUrl = lib.pIni.read("setting", "web_url");
                 openServerName = lib.pIni.read("setting", "web_name");
-                openServerPassword = lib.pIni.read("setting", "web_password");
+                openServerPassword = rw.openServerPassword();
                 openServerAgreed = lib.pIni.read("setting", "web_agreed");
                 openServerWebSocketIp = lib.pIni.read("setting", "web_socket_ip");
                 openServerWebSocketPort = lib.pIni.read("setting", "web_socket_port");

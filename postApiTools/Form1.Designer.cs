@@ -43,6 +43,7 @@
             this.Column13 = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.Column12 = new System.Windows.Forms.DataGridViewButtonColumn();
             this.contextMenuStrip_urldata_dataview = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.ToolStripMenuItem_stringToUrlData = new System.Windows.Forms.ToolStripMenuItem();
             this.清空ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage4 = new System.Windows.Forms.TabPage();
@@ -81,6 +82,7 @@
             this.textBox_api_name = new System.Windows.Forms.TextBox();
             this.tabControl3 = new System.Windows.Forms.TabControl();
             this.tabPage8 = new System.Windows.Forms.TabPage();
+            this.label_show_user_name = new System.Windows.Forms.Label();
             this.button_pull = new System.Windows.Forms.Button();
             this.button_search = new System.Windows.Forms.Button();
             this.textBox_search = new System.Windows.Forms.TextBox();
@@ -94,6 +96,8 @@
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.tabPage7 = new System.Windows.Forms.TabPage();
             this.button_delete_history = new System.Windows.Forms.Button();
+            this.tabPage_logs = new System.Windows.Forms.TabPage();
+            this.skinChatRichTextBox_logs = new CCWin.SkinControl.SkinChatRichTextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.label7 = new System.Windows.Forms.Label();
@@ -107,16 +111,24 @@
             this.操作ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.退出ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItem_tools = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItem_dataManage = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItem_websocket_tools = new System.Windows.Forms.ToolStripMenuItem();
+            this.项目管理ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItem_stop_server = new System.Windows.Forms.ToolStripMenuItem();
+            this.拉取ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.用户管理ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.用户登录ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.用户注册ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.清除登录ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.帮助ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.帮助说明ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.关于ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.检测更新ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.项目管理ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.拉取ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.关于ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.skinContextMenuStrip_user_name = new CCWin.SkinControl.SkinContextMenuStrip();
+            this.用户登录ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.清理登录ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItem_out_urldata = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_http_data)).BeginInit();
@@ -134,7 +146,9 @@
             this.tabPage8.SuspendLayout();
             this.contextMenuStrip_save_list.SuspendLayout();
             this.tabPage7.SuspendLayout();
+            this.tabPage_logs.SuspendLayout();
             this.skinMenuStrip1.SuspendLayout();
+            this.skinContextMenuStrip_user_name.SuspendLayout();
             this.SuspendLayout();
             // 
             // button_test
@@ -267,15 +281,24 @@
             // contextMenuStrip_urldata_dataview
             // 
             this.contextMenuStrip_urldata_dataview.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ToolStripMenuItem_stringToUrlData,
+            this.ToolStripMenuItem_out_urldata,
             this.清空ToolStripMenuItem});
             this.contextMenuStrip_urldata_dataview.Name = "contextMenuStrip_urldata_dataview";
-            this.contextMenuStrip_urldata_dataview.Size = new System.Drawing.Size(101, 26);
+            this.contextMenuStrip_urldata_dataview.Size = new System.Drawing.Size(153, 92);
             this.contextMenuStrip_urldata_dataview.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuStrip_urldata_dataview_ItemClicked);
+            // 
+            // ToolStripMenuItem_stringToUrlData
+            // 
+            this.ToolStripMenuItem_stringToUrlData.Name = "ToolStripMenuItem_stringToUrlData";
+            this.ToolStripMenuItem_stringToUrlData.Size = new System.Drawing.Size(152, 22);
+            this.ToolStripMenuItem_stringToUrlData.Text = "参数导入";
+            this.ToolStripMenuItem_stringToUrlData.Click += new System.EventHandler(this.ToolStripMenuItem_stringToUrlData_Click);
             // 
             // 清空ToolStripMenuItem
             // 
             this.清空ToolStripMenuItem.Name = "清空ToolStripMenuItem";
-            this.清空ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.清空ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.清空ToolStripMenuItem.Text = "清空";
             // 
             // tabControl2
@@ -659,6 +682,7 @@
             | System.Windows.Forms.AnchorStyles.Left)));
             this.tabControl3.Controls.Add(this.tabPage8);
             this.tabControl3.Controls.Add(this.tabPage7);
+            this.tabControl3.Controls.Add(this.tabPage_logs);
             this.tabControl3.Location = new System.Drawing.Point(3, 80);
             this.tabControl3.Name = "tabControl3";
             this.tabControl3.SelectedIndex = 0;
@@ -667,6 +691,7 @@
             // 
             // tabPage8
             // 
+            this.tabPage8.Controls.Add(this.label_show_user_name);
             this.tabPage8.Controls.Add(this.button_pull);
             this.tabPage8.Controls.Add(this.button_search);
             this.tabPage8.Controls.Add(this.textBox_search);
@@ -680,6 +705,16 @@
             this.tabPage8.TabIndex = 1;
             this.tabPage8.Text = "保存";
             this.tabPage8.UseVisualStyleBackColor = true;
+            // 
+            // label_show_user_name
+            // 
+            this.label_show_user_name.AutoSize = true;
+            this.label_show_user_name.Location = new System.Drawing.Point(191, 8);
+            this.label_show_user_name.Name = "label_show_user_name";
+            this.label_show_user_name.Size = new System.Drawing.Size(47, 12);
+            this.label_show_user_name.TabIndex = 24;
+            this.label_show_user_name.Text = "loading";
+            this.label_show_user_name.Click += new System.EventHandler(this.label_show_user_name_Click);
             // 
             // button_pull
             // 
@@ -739,7 +774,6 @@
             this.treeView_save_list.Size = new System.Drawing.Size(251, 521);
             this.treeView_save_list.TabIndex = 2;
             this.treeView_save_list.DoubleClick += new System.EventHandler(this.treeView_save_list_DoubleClick);
-            this.treeView_save_list.MouseClick += new System.Windows.Forms.MouseEventHandler(this.treeView_save_list_MouseClick);
             // 
             // contextMenuStrip_save_list
             // 
@@ -797,6 +831,28 @@
             this.button_delete_history.Text = "清理";
             this.button_delete_history.UseVisualStyleBackColor = true;
             this.button_delete_history.Click += new System.EventHandler(this.button_delete_history_Click);
+            // 
+            // tabPage_logs
+            // 
+            this.tabPage_logs.Controls.Add(this.skinChatRichTextBox_logs);
+            this.tabPage_logs.Location = new System.Drawing.Point(4, 22);
+            this.tabPage_logs.Name = "tabPage_logs";
+            this.tabPage_logs.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage_logs.Size = new System.Drawing.Size(246, 578);
+            this.tabPage_logs.TabIndex = 2;
+            this.tabPage_logs.Text = "日志";
+            this.tabPage_logs.UseVisualStyleBackColor = true;
+            // 
+            // skinChatRichTextBox_logs
+            // 
+            this.skinChatRichTextBox_logs.Location = new System.Drawing.Point(0, 0);
+            this.skinChatRichTextBox_logs.Name = "skinChatRichTextBox_logs";
+            this.skinChatRichTextBox_logs.SelectControl = null;
+            this.skinChatRichTextBox_logs.SelectControlIndex = 0;
+            this.skinChatRichTextBox_logs.SelectControlPoint = new System.Drawing.Point(0, 0);
+            this.skinChatRichTextBox_logs.Size = new System.Drawing.Size(250, 582);
+            this.skinChatRichTextBox_logs.TabIndex = 1;
+            this.skinChatRichTextBox_logs.Text = "";
             // 
             // label6
             // 
@@ -923,6 +979,7 @@
             this.skinMenuStrip1.ItemRadiusStyle = CCWin.SkinClass.RoundStyle.All;
             this.skinMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.操作ToolStripMenuItem,
+            this.ToolStripMenuItem_tools,
             this.项目管理ToolStripMenuItem,
             this.用户管理ToolStripMenuItem,
             this.帮助ToolStripMenuItem});
@@ -960,6 +1017,52 @@
             this.退出ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
             this.退出ToolStripMenuItem.Text = "退出";
             this.退出ToolStripMenuItem.Click += new System.EventHandler(this.退出ToolStripMenuItem_Click);
+            // 
+            // ToolStripMenuItem_tools
+            // 
+            this.ToolStripMenuItem_tools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ToolStripMenuItem_dataManage,
+            this.ToolStripMenuItem_websocket_tools});
+            this.ToolStripMenuItem_tools.Name = "ToolStripMenuItem_tools";
+            this.ToolStripMenuItem_tools.Size = new System.Drawing.Size(44, 21);
+            this.ToolStripMenuItem_tools.Text = "工具";
+            // 
+            // ToolStripMenuItem_dataManage
+            // 
+            this.ToolStripMenuItem_dataManage.Name = "ToolStripMenuItem_dataManage";
+            this.ToolStripMenuItem_dataManage.Size = new System.Drawing.Size(186, 22);
+            this.ToolStripMenuItem_dataManage.Text = "数据库管理";
+            this.ToolStripMenuItem_dataManage.Click += new System.EventHandler(this.ToolStripMenuItem_dataManage_Click);
+            // 
+            // ToolStripMenuItem_websocket_tools
+            // 
+            this.ToolStripMenuItem_websocket_tools.Name = "ToolStripMenuItem_websocket_tools";
+            this.ToolStripMenuItem_websocket_tools.Size = new System.Drawing.Size(186, 22);
+            this.ToolStripMenuItem_websocket_tools.Text = "websocket测试工具";
+            this.ToolStripMenuItem_websocket_tools.Click += new System.EventHandler(this.ToolStripMenuItem_websocket_tools_Click);
+            // 
+            // 项目管理ToolStripMenuItem
+            // 
+            this.项目管理ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ToolStripMenuItem_stop_server,
+            this.拉取ToolStripMenuItem});
+            this.项目管理ToolStripMenuItem.Name = "项目管理ToolStripMenuItem";
+            this.项目管理ToolStripMenuItem.Size = new System.Drawing.Size(68, 21);
+            this.项目管理ToolStripMenuItem.Text = "项目管理";
+            // 
+            // ToolStripMenuItem_stop_server
+            // 
+            this.ToolStripMenuItem_stop_server.Name = "ToolStripMenuItem_stop_server";
+            this.ToolStripMenuItem_stop_server.Size = new System.Drawing.Size(124, 22);
+            this.ToolStripMenuItem_stop_server.Text = "停止更新";
+            this.ToolStripMenuItem_stop_server.Click += new System.EventHandler(this.ToolStripMenuItem_stop_server_Click);
+            // 
+            // 拉取ToolStripMenuItem
+            // 
+            this.拉取ToolStripMenuItem.Name = "拉取ToolStripMenuItem";
+            this.拉取ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.拉取ToolStripMenuItem.Text = "拉取";
+            this.拉取ToolStripMenuItem.Click += new System.EventHandler(this.拉取ToolStripMenuItem_Click);
             // 
             // 用户管理ToolStripMenuItem
             // 
@@ -1005,38 +1108,72 @@
             // 帮助说明ToolStripMenuItem
             // 
             this.帮助说明ToolStripMenuItem.Name = "帮助说明ToolStripMenuItem";
-            this.帮助说明ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.帮助说明ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.帮助说明ToolStripMenuItem.Text = "帮助说明";
             this.帮助说明ToolStripMenuItem.Click += new System.EventHandler(this.帮助说明ToolStripMenuItem_Click);
-            // 
-            // 关于ToolStripMenuItem
-            // 
-            this.关于ToolStripMenuItem.Name = "关于ToolStripMenuItem";
-            this.关于ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.关于ToolStripMenuItem.Text = "关于";
-            this.关于ToolStripMenuItem.Click += new System.EventHandler(this.关于ToolStripMenuItem_Click);
             // 
             // 检测更新ToolStripMenuItem
             // 
             this.检测更新ToolStripMenuItem.Name = "检测更新ToolStripMenuItem";
-            this.检测更新ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.检测更新ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.检测更新ToolStripMenuItem.Text = "检测更新";
             this.检测更新ToolStripMenuItem.Click += new System.EventHandler(this.检测更新ToolStripMenuItem_Click);
             // 
-            // 项目管理ToolStripMenuItem
+            // 关于ToolStripMenuItem
             // 
-            this.项目管理ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.拉取ToolStripMenuItem});
-            this.项目管理ToolStripMenuItem.Name = "项目管理ToolStripMenuItem";
-            this.项目管理ToolStripMenuItem.Size = new System.Drawing.Size(68, 21);
-            this.项目管理ToolStripMenuItem.Text = "项目管理";
+            this.关于ToolStripMenuItem.Name = "关于ToolStripMenuItem";
+            this.关于ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.关于ToolStripMenuItem.Text = "关于";
+            this.关于ToolStripMenuItem.Click += new System.EventHandler(this.关于ToolStripMenuItem_Click);
             // 
-            // 拉取ToolStripMenuItem
+            // skinContextMenuStrip_user_name
             // 
-            this.拉取ToolStripMenuItem.Name = "拉取ToolStripMenuItem";
-            this.拉取ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.拉取ToolStripMenuItem.Text = "拉取";
-            this.拉取ToolStripMenuItem.Click += new System.EventHandler(this.拉取ToolStripMenuItem_Click);
+            this.skinContextMenuStrip_user_name.Arrow = System.Drawing.Color.Black;
+            this.skinContextMenuStrip_user_name.Back = System.Drawing.Color.White;
+            this.skinContextMenuStrip_user_name.BackRadius = 4;
+            this.skinContextMenuStrip_user_name.Base = System.Drawing.Color.FromArgb(((int)(((byte)(105)))), ((int)(((byte)(200)))), ((int)(((byte)(254)))));
+            this.skinContextMenuStrip_user_name.DropDownImageSeparator = System.Drawing.Color.FromArgb(((int)(((byte)(197)))), ((int)(((byte)(197)))), ((int)(((byte)(197)))));
+            this.skinContextMenuStrip_user_name.Fore = System.Drawing.Color.Black;
+            this.skinContextMenuStrip_user_name.HoverFore = System.Drawing.Color.White;
+            this.skinContextMenuStrip_user_name.ItemAnamorphosis = true;
+            this.skinContextMenuStrip_user_name.ItemBorder = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(148)))), ((int)(((byte)(212)))));
+            this.skinContextMenuStrip_user_name.ItemBorderShow = true;
+            this.skinContextMenuStrip_user_name.ItemHover = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(148)))), ((int)(((byte)(212)))));
+            this.skinContextMenuStrip_user_name.ItemPressed = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(148)))), ((int)(((byte)(212)))));
+            this.skinContextMenuStrip_user_name.ItemRadius = 4;
+            this.skinContextMenuStrip_user_name.ItemRadiusStyle = CCWin.SkinClass.RoundStyle.All;
+            this.skinContextMenuStrip_user_name.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.用户登录ToolStripMenuItem1,
+            this.清理登录ToolStripMenuItem});
+            this.skinContextMenuStrip_user_name.ItemSplitter = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(148)))), ((int)(((byte)(212)))));
+            this.skinContextMenuStrip_user_name.Name = "skinContextMenuStrip_user_name";
+            this.skinContextMenuStrip_user_name.RadiusStyle = CCWin.SkinClass.RoundStyle.All;
+            this.skinContextMenuStrip_user_name.Size = new System.Drawing.Size(125, 48);
+            this.skinContextMenuStrip_user_name.SkinAllColor = true;
+            this.skinContextMenuStrip_user_name.TitleAnamorphosis = true;
+            this.skinContextMenuStrip_user_name.TitleColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(228)))), ((int)(((byte)(236)))));
+            this.skinContextMenuStrip_user_name.TitleRadius = 4;
+            this.skinContextMenuStrip_user_name.TitleRadiusStyle = CCWin.SkinClass.RoundStyle.All;
+            this.skinContextMenuStrip_user_name.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.skinContextMenuStrip_user_name_ItemClicked);
+            // 
+            // 用户登录ToolStripMenuItem1
+            // 
+            this.用户登录ToolStripMenuItem1.Name = "用户登录ToolStripMenuItem1";
+            this.用户登录ToolStripMenuItem1.Size = new System.Drawing.Size(124, 22);
+            this.用户登录ToolStripMenuItem1.Text = "用户登录";
+            // 
+            // 清理登录ToolStripMenuItem
+            // 
+            this.清理登录ToolStripMenuItem.Name = "清理登录ToolStripMenuItem";
+            this.清理登录ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.清理登录ToolStripMenuItem.Text = "清理登录";
+            // 
+            // ToolStripMenuItem_out_urldata
+            // 
+            this.ToolStripMenuItem_out_urldata.Name = "ToolStripMenuItem_out_urldata";
+            this.ToolStripMenuItem_out_urldata.Size = new System.Drawing.Size(152, 22);
+            this.ToolStripMenuItem_out_urldata.Text = "参数导出";
+            this.ToolStripMenuItem_out_urldata.Click += new System.EventHandler(this.ToolStripMenuItem_out_urldata_Click);
             // 
             // Form1
             // 
@@ -1099,8 +1236,10 @@
             this.tabPage8.PerformLayout();
             this.contextMenuStrip_save_list.ResumeLayout(false);
             this.tabPage7.ResumeLayout(false);
+            this.tabPage_logs.ResumeLayout(false);
             this.skinMenuStrip1.ResumeLayout(false);
             this.skinMenuStrip1.PerformLayout();
+            this.skinContextMenuStrip_user_name.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1195,6 +1334,18 @@
         private System.Windows.Forms.ToolStripMenuItem 检测更新ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 项目管理ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 拉取ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItem_tools;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItem_websocket_tools;
+        private System.Windows.Forms.Label label_show_user_name;
+        private CCWin.SkinControl.SkinContextMenuStrip skinContextMenuStrip_user_name;
+        private System.Windows.Forms.ToolStripMenuItem 用户登录ToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem 清理登录ToolStripMenuItem;
+        private System.Windows.Forms.TabPage tabPage_logs;
+        private CCWin.SkinControl.SkinChatRichTextBox skinChatRichTextBox_logs;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItem_dataManage;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItem_stop_server;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItem_stringToUrlData;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItem_out_urldata;
     }
 }
 

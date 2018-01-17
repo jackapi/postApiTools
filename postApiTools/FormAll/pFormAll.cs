@@ -14,7 +14,20 @@ namespace postApiTools.FormAll
 {
     public class pFormAll
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        public static string Url = Config.openServerUrl;
+
+        /// <summary>
+        /// error
+        /// </summary>
         public static string error = "";
+
+        /// <summary>
+        /// token
+        /// </summary>
+        public static string token = pApizlHttp.getToken();
         /// <summary>
         /// 通用请求接口方法
         /// </summary>
@@ -52,7 +65,26 @@ namespace postApiTools.FormAll
         /// <returns></returns>
         public static JObject login(string name, string password)
         {
-            return null;
+            Dictionary<string, string> d = new Dictionary<string, string> { };
+            d.Add("name", name);
+            d.Add("password", password);
+            string urlStr = Url + "/index/register/ajaxLoginToken";
+            return getHttpData(urlStr, pBase.dicToStringArray(d));
+        }
+
+        /// <summary>
+        /// 用户注册
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public static JObject Register(string name, string password)
+        {
+            Dictionary<string, string> d = new Dictionary<string, string> { };
+            d.Add("name", name);
+            d.Add("password", password);
+            string urlStr = Url + "/index/register/ajaxIndex";
+            return getHttpData(urlStr, pBase.dicToStringArray(d));
         }
     }
 }

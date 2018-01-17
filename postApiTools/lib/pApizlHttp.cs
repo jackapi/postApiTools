@@ -445,13 +445,8 @@ namespace postApiTools.lib
                 error = "服务器异常";
                 return null;
             }
-            if (job["code"].ToString() == "1")
-            {
-                error = job["msg"].ToString();
-                return job;
-            }
             error = job["msg"].ToString();
-            return null;
+            return job;
         }
 
         /// <summary>
@@ -483,6 +478,22 @@ namespace postApiTools.lib
             urlData[1, 0] = "hash";
             urlData[1, 1] = hash;
             string urlStr = Url + "/index/Document/deleteProject";
+            return getHttpData(urlStr, urlData);
+        }
+
+        /// <summary>
+        /// 删除文档
+        /// </summary>
+        /// <param name="hash"></param>
+        /// <returns></returns>
+        public static JObject deleteDocument(string hash)
+        {
+            string[,] urlData = new string[2, 2];
+            urlData[0, 0] = "token";
+            urlData[0, 1] = token;
+            urlData[1, 0] = "hash";
+            urlData[1, 1] = hash;
+            string urlStr = Url + "/index/Document/deleteDocument";
             return getHttpData(urlStr, urlData);
         }
 
@@ -570,7 +581,38 @@ namespace postApiTools.lib
             Dictionary<string, string> d = new Dictionary<string, string> { };
             d.Add("token", token);
             d.Add("hash", serverHash);
-            string urlStr = Url + "/index/Document/getDocument";
+            string urlStr = Url + "/index/Document/getDocumentInfo";
+            return getHttpData(urlStr, dicToStringArray(d));
+        }
+
+        /// <summary>
+        ///获取项目详情
+        /// </summary>
+        /// <param name="hash"></param>
+        /// <returns></returns>
+        public static JObject getProjectInfo(string serverHash)
+        {
+            Dictionary<string, string> d = new Dictionary<string, string> { };
+            d.Add("token", token);
+            d.Add("hash", serverHash);
+            string urlStr = Url + "/index/Document/getProjectInfo";
+            return getHttpData(urlStr, dicToStringArray(d));
+        }
+
+        /// <summary>
+        ///修改项目详情
+        /// </summary>
+        /// <param name="hash"></param>
+        /// <returns></returns>
+        public static JObject editProjectInfo(string serverHash, string name, string desc, string sort)
+        {
+            Dictionary<string, string> d = new Dictionary<string, string> { };
+            d.Add("token", token);
+            d.Add("hash", serverHash);
+            d.Add("name", name);
+            d.Add("desc", desc);
+            d.Add("sort", sort);
+            string urlStr = Url + "/index/Document/updateProject";
             return getHttpData(urlStr, dicToStringArray(d));
         }
     }

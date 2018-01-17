@@ -79,6 +79,10 @@ namespace postApiTools.lib
         /// <returns></returns>
         public static string HttpUploadFile(string url, string[,] valuesList = null, string[,] pathList = null, string encodingString = "utf-8")
         {
+            HttpWebResponse response;
+            string content;
+            Stream postStreamStart = null;
+            StreamReader sr;
             try
             {
                 // 设置参数
@@ -88,11 +92,13 @@ namespace postApiTools.lib
                 request.AllowAutoRedirect = true;
                 request.Method = "POST";
                 request.Timeout = Timeout;
+                request.UserAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)";
+                request.ProtocolVersion = HttpVersion.Version10;
 
                 if (RequestHeaders.Accept != null) { request.Accept = RequestHeaders.Accept; }
                 if (RequestHeaders.Connection != null) { request.Connection = RequestHeaders.Connection; }
                 if (RequestHeaders.ContentLength != null) { request.ContentLength = Convert.ToInt32(RequestHeaders.ContentLength); }
-                if (RequestHeaders.ContentType!=null) { request.ContentType = RequestHeaders.ContentType; }
+                if (RequestHeaders.ContentType != null) { request.ContentType = RequestHeaders.ContentType; }
                 if (RequestHeaders.Expect != null) { request.Expect = RequestHeaders.Expect; }
                 try
                 {
@@ -118,7 +124,7 @@ namespace postApiTools.lib
                 request.ContentType = "multipart/form-data;charset=utf-8;boundary=" + boundary;
                 byte[] itemBoundaryBytes = Encoding.UTF8.GetBytes("\r\n--" + boundary + "\r\n");//开始头
                 byte[] endBoundaryBytes = Encoding.UTF8.GetBytes("\r\n--" + boundary + "--\r\n");//结束尾
-                Stream postStreamStart = request.GetRequestStream();//添加数据
+                postStreamStart = request.GetRequestStream();//添加数据
                 postStreamStart.Write(itemBoundaryBytes, 0, itemBoundaryBytes.Length);//开始
                 if (valuesList != null)
                 {
@@ -145,17 +151,14 @@ namespace postApiTools.lib
                 }
                 postStreamStart.Write(endBoundaryBytes, 0, endBoundaryBytes.Length);//结尾
                                                                                     //发送请求并获取相应回应数据
-                HttpWebResponse response = request.GetResponse() as HttpWebResponse;
+                response = request.GetResponse() as HttpWebResponse;
                 HttpCustom_Response_Headers_Object = response.Headers;//写入数据到WebHeaderCollection
                 HttpCustom_code = lib.pBase.enumToValueInt(typeof(pHttpCode.HttpStatusCode), response.StatusCode.ToString()).ToString();//赋值状态码
                                                                                                                                         //直到request.GetResponse()程序才开始向目标网页发送Post请求
                 Stream instream = response.GetResponseStream();
-                StreamReader sr = new StreamReader(instream, Encoding.GetEncoding(encodingString));
+                sr = new StreamReader(instream, Encoding.GetEncoding(encodingString));
                 //返回结果网页（html）代码
-                string content = sr.ReadToEnd();
-                postStreamStart.Close();//关闭
-                response.Close();//关闭
-                return content;
+                content = sr.ReadToEnd();
             }
             catch (WebException ex)
             {
@@ -163,20 +166,22 @@ namespace postApiTools.lib
                 {
                     return ex.Message + " " + errorDataShow;
                 }
-                HttpWebResponse response = (HttpWebResponse)ex.Response;
+                response = (HttpWebResponse)ex.Response;
                 if (response == null)
                 {
-                    return errorDataShow;
+                    HttpCustom_code = "500";
+                    return ex.Message;
                 }
-                HttpCustom_Response_Headers_Object = response.Headers;//写入数据到WebHeaderCollection
                 HttpCustom_code = lib.pBase.enumToValueInt(typeof(pHttpCode.HttpStatusCode), response.StatusCode.ToString()).ToString();//赋值状态码
-                StreamReader sr = new StreamReader(response.GetResponseStream(), Encoding.GetEncoding(encodingString));//读取流
+                HttpCustom_Response_Headers_Object = response.Headers;//写入数据到WebHeaderCollection
+                sr = new StreamReader(response.GetResponseStream(), Encoding.GetEncoding(encodingString));//读取流
                 pLogs.logs(ex.ToString());//写入日志
-                string str = sr.ReadToEnd();
-                response.Close();
-                sr.Close();
-                return str;
+                content = sr.ReadToEnd();
             }
+
+            postStreamStart.Close();//关闭
+            response.Close();//关闭
+            return content;
         }
 
         /// <summary>
@@ -317,6 +322,8 @@ namespace postApiTools.lib
                 request.Method = "GET";
                 request.ContentType = "text/html;charset=UTF-8";
                 request.Timeout = Timeout;
+                request.ProtocolVersion = HttpVersion.Version10;
+
                 if (HttpCustom_Request_Headers_Object != null)
                 {
                     request.Headers = HttpCustom_Request_Headers_Object;//请求报文头
@@ -349,7 +356,11 @@ namespace postApiTools.lib
                 HttpCustom_code = lib.pBase.enumToValueInt(typeof(pHttpCode.HttpStatusCode), response.StatusCode.ToString()).ToString();//赋值状态码
                 StreamReader sr = new StreamReader(response.GetResponseStream(), Encoding.GetEncoding(encodingString));//读取流
                 pLogs.logs(ex.ToString());//写入日志
-                return sr.ReadToEnd();
+                string content = sr.ReadToEnd();
+
+                response.Close();
+                sr.Close();
+                return content;
             }
         }
 

@@ -130,9 +130,13 @@ namespace postApiTools
         /// <param name="password"></param>
         public static void saveUrlNamePassword(string url, string name, string password, CheckState c, CheckState agreed)
         {
-            lib.pIni.write("setting", "web_url", url);
-            lib.pIni.write("setting", "web_name", name);
-            lib.pIni.write("setting", "web_password", password);
+            ConfigReadWrite rw = new ConfigReadWrite();
+            rw.openServerUrl(url);
+            rw.openServerName(name);
+            rw.openServerPassword(password);
+            //lib.pIni.write("setting", "web_url", url);
+            //lib.pIni.write("setting", "web_name", name);
+            //lib.pIni.write("setting", "web_password", password);
             lib.pIni.write("setting", "web_update", c.ToString());
             lib.pIni.write("setting", "web_agreed", agreed.ToString());
         }
@@ -143,10 +147,15 @@ namespace postApiTools
         /// <param name="ip"></param>
         /// <param name="port"></param>
         /// <param name="force"></param>
-        public static void saveSocket(string ip, string port, CheckState force) {
-            lib.pIni.write("setting", "web_socket_ip", ip);
-            lib.pIni.write("setting", "web_socket_port", port);
-            lib.pIni.write("setting", "web_force", force.ToString());
+        public static void saveSocket(string ip, string port, CheckState force)
+        {
+            ConfigReadWrite rw = new ConfigReadWrite();
+            rw.openServerWebSocketIp(ip);
+            rw.openServerWebSocketPort(port);
+            rw.openServerWebForce(force.ToString());
+            //lib.pIni.write("setting", "web_socket_ip", ip);
+            //lib.pIni.write("setting", "web_socket_port", port);
+            //lib.pIni.write("setting", "web_force", force.ToString());
         }
         /// <summary>
         /// 服务器更新服务配置

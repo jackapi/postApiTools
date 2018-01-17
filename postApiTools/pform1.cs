@@ -19,25 +19,6 @@ namespace postApiTools
     public class pform1
     {
         /// <summary>
-        /// 右下角提示框
-        /// </summary>
-        /// <param name="hwnd"></param>
-        /// <param name="dwTime"></param>
-        /// <param name="dwFlags"></param>
-        /// <returns></returns>
-        [DllImport("user32")]
-        private static extern bool AnimateWindow(IntPtr hwnd, int dwTime, int dwFlags);
-        const int AW_HOR_POSITIVE = 0x0001;
-        const int AW_HOR_NEGATIVE = 0x0002;
-        const int AW_VER_POSITIVE = 0x0004;
-        const int AW_VER_NEGATIVE = 0x0008;
-        const int AW_CENTER = 0x0010;
-        const int AW_HIDE = 0x10000;
-        const int AW_ACTIVATE = 0x20000;
-        const int AW_SLIDE = 0x40000;
-        const int AW_BLEND = 0x80000;
-
-        /// <summary>
         /// 格式化输出源码结果
         /// </summary>
         /// <param name="html"></param>
@@ -261,6 +242,7 @@ namespace postApiTools
         /// <returns></returns>
         public static string[,] dataViewToStringArray(DataGridView dd)
         {
+            dd.EndEdit();
             int row = dd.RowCount - 1;
             int line = dd.ColumnCount;
             string[,] array = new string[row, line];
@@ -268,6 +250,7 @@ namespace postApiTools
             {
                 for (int g = 0; g < line; g++)
                 {
+                    //array[i, g] = dd.Rows[i].Cells[g].Value.ToString();
                     if (dd.Rows[i].Cells[g].Value != null)
                     {
                         //list.Add(dd.Rows[i].Cells[0].Value.ToString());
@@ -755,59 +738,5 @@ namespace postApiTools
             }
         }
 
-
-        /// <summary>
-        /// 启动消息循环检测
-        /// </summary>
-        public static void message()
-        {
-            Thread th = new Thread(messageTh);
-            th.Start();
-        }
-
-        /// <summary>
-        /// 消息循环线程检测
-        /// </summary>
-        public static void messageTh()
-        {
-            while (true)
-            {
-                Thread.Sleep(200);
-                if (Config.websocket.messageList.Count <= 0) { continue; }
-                try
-                {
-                    foreach (var item in Config.websocket.messageList)
-                    {
-                        JObject job = pJson.jsonToJobject(item.Value);
-                        if (job.Count <= 0) { continue; }
-                        if (job["type"].ToString() == "document_hash_update")
-                        {
-                            Config.websocket.messageList.Remove(item.Key);
-                            Thread th = new Thread(message_document_hash_update);
-                            th.Start(job);
-                        }
-
-                    }
-                }
-                catch { }
-
-            }
-        }
-
-        /// <summary>
-        /// document_hash_update提示线程
-        /// </summary>
-        /// <param name="obj"></param>
-        public static void message_document_hash_update(object obj)
-        {
-            JObject job = (JObject)obj;
-            pForm1TreeView.updateDocument(job["hash"].ToString());//更新一个线上文档
-            Dictionary<string, string> d = pForm1TreeView.getLocalDocumentInfo(job["hash"].ToString());
-            FormAll.pLower pLower = new FormAll.pLower();
-            pLower.title = "文档更新通知！ 已推送相关人员！";
-            pLower.mssage = d.Count > 0 ? d["name"] : "没有相关消息";
-            AnimateWindow(pLower.Handle, 1000, AW_VER_NEGATIVE | AW_ACTIVATE);//从下到上且不占其它程序焦点  
-            pLower.Show();
-        }
     }
 }

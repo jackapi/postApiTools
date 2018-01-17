@@ -175,7 +175,7 @@ namespace postApiTools.FormRole
             d.Add("all", all);
             d.Add("read", read);
             d.Add("write", write);
-            string urlStr = Url + "/index/role/createRoleProject?XDEBUG_SESSION_START=netbeans-xdebug";
+            string urlStr = Url + "/index/role/createRoleProject";
             return getHttpData(urlStr, pBase.dicToStringArray(d));
         }
 

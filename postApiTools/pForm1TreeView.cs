@@ -11,6 +11,7 @@ namespace postApiTools
 {
     using Newtonsoft.Json.Linq;
     using System.IO;
+    using System.Threading;
     using System.Windows.Forms;
     public class pForm1TreeView
     {
@@ -78,6 +79,7 @@ namespace postApiTools
             string hash = lib.pBase.getHash();//生成hash
             if (lib.pApizlHttp.createProject(lib.pApizlHttp.token, name, desc, "0")) //创建在线
             {
+                Config.websocket.sendServerProjectHashCreate(lib.pApizlHttp.project_hash);//项目创建消息推送
                 string sql = "insert into " + tableSetting + "(hash,pid,sort,name,desc,server_hash,server_update,addtime)values('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}')";
                 sql = string.Format(sql, hash, 0, 0, name, desc, lib.pApizlHttp.project_hash, lib.pDate.getTimeStamp(), lib.pDate.getTimeStamp());
                 if (sqlite.executeNonQuery(sql) > 0)
@@ -161,8 +163,9 @@ namespace postApiTools
                 Dictionary<string, string> row = (Dictionary<string, string>)data[i];
                 temp[i, 0] = row["name"];
                 temp[i, 1] = row["hash"];
-                TreeNode tp = tn.Nodes.Add(temp[i, 1], "文档-" + temp[i, 0]);
+                TreeNode tp = tn.Nodes.Add(temp[i, 1], "" + temp[i, 0]);
                 tp.ImageIndex = 1;
+                tp.SelectedImageIndex = 1;
                 getPidResultToStringArray(row["hash"], tp);
 
             }
@@ -184,6 +187,7 @@ namespace postApiTools
                     TreeNode pidNode = t.Nodes.Add(data[i, 1], data[i, 0]);
                     //t.ImageList.Images.Add(data[i, 1], image.Images[0]);
                     pidNode.ImageIndex = 0;
+                    pidNode.SelectedImageIndex = 0;
                     string[,] pidResult = getPidResultToStringArray(data[i, 1], pidNode);//递归刷新树
                     getApiPidAll(pidNode, data[i, 1]);//查询接口
                 }
@@ -215,6 +219,8 @@ namespace postApiTools
             string hash = lib.pBase.getHash();
             if (lib.pApizlHttp.createProjectPid(lib.pApizlHttp.token, mainResult["server_hash"], name, "", "0"))
             {
+
+                Config.websocket.sendServerProjectHashCreate(lib.pApizlHttp.project_hash);//项目创建消息推送
                 string mainHash = mainResult["hash"];
                 insertPidData(name, hash, mainHash, lib.pApizlHttp.project_hash);
                 //string sql = "insert into " + tableSetting + "(hash,pid,sort,name,desc,server_hash,server_update,addtime)values('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}')";
@@ -276,6 +282,8 @@ namespace postApiTools
                 string sql = string.Format("insert into {0} (hash,project_id,sort,name,desc,url,urldata,method,server_hash,server_update,addtime)values('{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}')", table, hash, project_id, 0, name, desc, url, urlDataStr, urlType, lib.pApizlHttp.project_hash, lib.pDate.getTimeStamp(), lib.pDate.getTimeStamp());
                 if (sqlite.executeNonQuery(sql) > 0)
                 {
+
+                    Config.websocket.sendServerHashCreate(lib.pApizlHttp.project_hash);//发送文档创建推送
                     return true;
                 }
                 else
@@ -305,7 +313,7 @@ namespace postApiTools
             return sqlite.executeNonQuery(sql);
         }
         /// <summary>
-        /// 删除树
+        /// 删除项目和文档 树
         /// </summary>
         /// <param name="t"></param>
         /// <returns></returns>
@@ -319,6 +327,28 @@ namespace postApiTools
             if (dApi.Count > 0)
             {
                 sql = string.Format("delete from {0} where hash='{1}'", table, hash);//删除api
+                Dictionary<string, string> nowHash = sqlite.getOne(string.Format("select *from {0} where hash='{1}'", table, hash));
+                if (nowHash.Count > 0)
+                {
+                    if (nowHash["server_hash"] != null || nowHash["server_hash"].Length > 0)
+                    {
+                        Dictionary<string, string> nowProjectHash = sqlite.getOne(string.Format("select *from {0} where hash='{1}'", tableSetting, nowHash["project_id"]));//获取栏目id
+
+                        JObject job = lib.pApizlHttp.deleteDocument(nowHash["server_hash"]);//删除远程文档
+                        if (job != null)
+                        {
+                            if (job["code"].ToString() != "1")
+                            {
+                                error = "删除失败:" + job["msg"].ToString();
+                                return false;
+                            }
+                            else
+                            {
+                                Config.websocket.sendServerHashDelete(nowProjectHash["server_hash"], nowHash["server_hash"]);//发送删除消息通知 }
+                            }
+                        }
+                    }
+                }
             }
             else
             {
@@ -326,6 +356,7 @@ namespace postApiTools
                 Dictionary<string, string> nowHash = sqlite.getOne(string.Format("select *from {0} where hash='{1}'", tableSetting, hash));
                 if (nowHash.Count > 0)
                 {
+                    Config.websocket.sendServerProjectHashDelete(nowHash["server_hash"]);//项目删除消息推送
                     lib.pApizlHttp.deleteProject(nowHash["server_hash"]);//删除远程项目
                 }
             }
@@ -340,7 +371,7 @@ namespace postApiTools
             }
         }
         /// <summary>
-        /// 重命名树
+        /// 重命名项目名树
         /// </summary>
         /// <param name="t"></param>
         /// <param name="name"></param>
@@ -348,9 +379,22 @@ namespace postApiTools
         public static bool updateNameTreeViewSetting(TreeView t, string name)
         {
             string hash = t.SelectedNode.Name;
+            if (isApiHash(hash))//判断是否为文档
+            {
+                error = "此处无法重命名文档";
+                return false;
+            }
+            Dictionary<string, string> nowHash = getOneProjectSettingHash(hash);//当项目详情
+            if (nowHash == null) { error = "项目不存在无法修改"; return false; }
             string sql = string.Format("update  {0} set name='{1}'  where hash='{2}'", tableSetting, name, hash);
             if (sqlite.executeNonQuery(sql) > 0)
             {
+                if (nowHash["server_hash"].Length > 0)
+                {
+                    lib.pApizlHttp.editProjectInfo(nowHash["server_hash"], name, "", "0");//远程项目修改 
+                    Config.websocket.sendServerProjectHashUpdate(nowHash["server_hash"]);//发送修改项目推送消息
+                }
+
                 return true;
             }
             else
@@ -369,13 +413,18 @@ namespace postApiTools
         /// <returns></returns>
         public static bool openApiDataShow(TreeView t, TextBox url, ComboBox urlType, DataGridView dd, TextBox textBox_api_name, TextBox doc)
         {
+            if (t.SelectedNode == null) { return false; }
             string idHash = t.SelectedNode.Name;
-            string sql = string.Format("select *from {0} where hash='{1}' ", table, idHash);
-            Dictionary<string, string> list = sqlite.getOne(sql);
+            Dictionary<string, string> list = sqlite.getOne(string.Format("select *from {0} where hash='{1}' ", table, idHash));
             if (list.Count <= 0)
             {
                 //error = "没有数据";
                 return false;
+            }
+            if (list["server_hash"] != "" || list["server_hash"] != null)//直接读取线上最新
+            {
+                updateDocument(list["server_hash"]);
+                list = sqlite.getOne(string.Format("select *from {0} where hash='{1}' ", table, idHash));
             }
             url.Text = list["url"];
             urlType.Text = list["method"];
@@ -442,6 +491,19 @@ namespace postApiTools
         {
             TreeNode tn = FindNodeByName(tv.Nodes, hash);
             tn.Text = text;
+        }
+
+        /// <summary>
+        /// 刷新重新节点文档显示
+        /// </summary>
+        /// <param name="tv"></param>
+        /// <param name="serverHash"></param>
+        public static void refreshTreeViewText(TreeView tv, string serverHash)
+        {
+            Dictionary<string, string> d = sqlite.getOne(string.Format("select *from {0} where server_hash='{1}'", table, serverHash));
+            if (d.Count <= 0) { return; }
+            TreeNode tn = FindNodeByName(tv.Nodes, d["hash"]);
+            tn.Text = d["name"];
         }
 
         /// <summary>
@@ -554,13 +616,190 @@ namespace postApiTools
             if (job == null)
             {
                 error = lib.pApizlHttp.error;
+                Form1.f.TextShowlogs("自动更新文档失败:" + error, "error");
                 return false;
             }
-            if (job["code"].ToString() != "0") { error = job["msg"].ToString(); return false; }
+            if (job["code"].ToString() == "0") { error = job["msg"].ToString(); return false; }
             JObject result = (JObject)job["result"];
-            string sql = "update {0} set name='{1}' , desc='{2}',url='{3}',urldata='{4}',method='{5}',server_update='{6}' where saver_hash='{7}'";
+            string sql = "update {0} set name='{1}' , desc='{2}',url='{3}',urldata='{4}',method='{5}',server_update='{6}' where server_hash='{7}'";
             sql = string.Format(sql, table, result["name"].ToString(), result["desc"].ToString(), result["url"].ToString(), result["urldata"].ToString(), result["method"].ToString(), lib.pDate.getTimeStamp(), serverHash);
             int rows = sqlite.executeNonQuery(sql);
+            error = sqlite.error;
+            return rows > 0 ? true : false;
+        }
+
+        /// <summary>
+        /// 线上推送创建文档
+        /// </summary>
+        /// <param name="serverHash"></param>
+        /// <returns></returns>
+        public static bool webSocketDocumentCreate(string serverHash)
+        {
+            JObject job = lib.pApizlHttp.getDocument(serverHash);
+            if (job == null)
+            {
+                error = lib.pApizlHttp.error;
+                Form1.f.TextShowlogs("自动创建文档失败:" + error, "error");
+                return false;
+            }
+            if (job["code"].ToString() == "0") { error = job["msg"].ToString(); return false; }
+            JObject result = (JObject)job["result"];
+
+            Dictionary<string, string> d = sqlite.getOne(string.Format("select *from {0} where server_hash='{1}'", tableSetting, result["project_id"].ToString()));
+            if (d.Count <= 0) { return false; }
+
+            int rows = addApiSql(lib.pBase.getHash(), d["hash"], result["name"].ToString(), result["desc"].ToString(), result["url"].ToString(), result["urldata"].ToString(), result["method"].ToString(), serverHash);
+            error = sqlite.error;
+            return rows > 0 ? true : false;
+        }
+        /// <summary>
+        /// 删除文档前数据
+        /// </summary>
+        public static Dictionary<string, string> webSocketDocumentDeleteResult = null;
+        /// <summary>
+        /// 删除文档
+        /// </summary>
+        /// <param name="serverHash"></param>
+        /// <returns></returns>
+        public static bool webSocketDocumentDelete(string serverHash)
+        {
+            webSocketDocumentDeleteResult = sqlite.getOne(string.Format("select *from {0} where server_hash='{1}'", table, serverHash));//输出删除前数据
+            int rows = sqlite.executeNonQuery(string.Format("delete from {0} where server_hash='{1}'", table, serverHash));//删除文档
+            if (rows <= 0)
+            {
+                Form1.f.TextShowlogs("自动删除文档失败:" + serverHash, "error");
+            }
+            error = sqlite.error;
+            return rows > 0 ? true : false;
+        }
+
+        /// <summary>
+        /// 通过服务器hash获取项目或子项目
+        /// </summary>
+        /// <param name="serverHash"></param>
+        /// <returns></returns>
+        public static Dictionary<string, string> getOneProjectSettingServerHash(string serverHash)
+        {
+            return sqlite.getOne(string.Format("select * from {0} where server_hash='{1}'", tableSetting, serverHash));
+        }
+
+
+        /// <summary>
+        /// 通过hash获取项目或子项目
+        /// </summary>
+        /// <param name="serverHash"></param>
+        /// <returns></returns>
+        public static Dictionary<string, string> getOneProjectSettingHash(string hash)
+        {
+            return sqlite.getOne(string.Format("select * from {0} where hash='{1}'", tableSetting, hash));
+        }
+
+        /// <summary>
+        /// 判断projectSetting serverHash是否存在
+        /// </summary>
+        /// <param name="serverHash"></param>
+        /// <returns></returns>
+        public static bool isOneProjectSettingServerHash(string serverHash)
+        {
+            Dictionary<string, string> d = getOneProjectSettingServerHash(serverHash);
+            if (d == null) { return false; }
+            if (d.Count <= 0) { return false; }
+            return true;
+        }
+
+        public static JObject webSocketProjectCreateResult = null;
+
+        /// <summary>
+        /// 推送消息创建项目
+        /// </summary>
+        /// <param name="serverHash"></param>
+        /// <returns></returns>
+        public static bool webSocketProjectCreate(string serverHash)
+        {
+            JObject job = lib.pApizlHttp.getProjectInfo(serverHash);
+            if (job == null) { error = lib.pApizlHttp.error; return false; }
+            if (job["result"] == null) { error = lib.pApizlHttp.error; return false; }
+            if (job["code"].ToString() != "1")
+            {
+                error = lib.pApizlHttp.error;
+                Form1.f.TextShowlogs("自动创建项目失败:" + error, "error");
+                return false;
+            }
+            string nowHash = job["result"]["hash"].ToString();
+            string pidHash = job["result"]["pid"].ToString();
+            JObject result = (JObject)job["result"];
+            webSocketProjectCreateResult = result;
+            if (pidHash != "0")
+            {
+                Dictionary<string, string> d = getOneProjectSettingServerHash(pidHash);
+                if (d == null) { error = "远程项目错误"; return false; }
+                if (!isOneProjectSettingServerHash(nowHash))//判断是否存在  存在就不进行创建操作
+                {
+                    sqlite.executeNonQuery(string.Format("insert into {0} (hash,pid,sort,name,desc,server_hash,server_update,addtime)values('{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}')", tableSetting, lib.pBase.getHash(), d["hash"], 0, result["name"].ToString(), result["desc"].ToString(), result["hash"].ToString(), lib.pDate.getTimeStamp(), lib.pDate.getTimeStamp()));
+                }
+            }
+            else
+            {
+
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// 推送消息修改项目
+        /// </summary>
+        /// <param name="serverHash"></param>
+        /// <returns></returns>
+        public static bool webSocketProjectUpdate(string serverHash)
+        {
+            JObject job = lib.pApizlHttp.getProjectInfo(serverHash);
+            if (job == null) { error = lib.pApizlHttp.error; return false; }
+            if (job["result"] == null) { error = lib.pApizlHttp.error; return false; }
+            if (job["code"].ToString() != "1")
+            {
+                error = lib.pApizlHttp.error;
+                Form1.f.TextShowlogs("自动修改项目失败:" + error, "error");
+                return false;
+            }
+            string nowHash = job["result"]["hash"].ToString();
+            string pidHash = job["result"]["pid"].ToString();
+            JObject result = (JObject)job["result"];
+            webSocketProjectCreateResult = result;
+            if (pidHash != "0")
+            {
+                Dictionary<string, string> d = getOneProjectSettingServerHash(pidHash);
+                if (d == null) { error = "远程项目错误"; return false; }
+                if (isOneProjectSettingServerHash(nowHash))//判断是否存在  存在就不进行创建操作
+                {
+                    sqlite.executeNonQuery(string.Format("update {0} set name='{1}',desc='{2}',sort='{3}' ,server_update='{4}' where server_hash='{5}'", tableSetting, result["name"].ToString(), result["desc"].ToString(), result["sort"].ToString(), lib.pDate.getTimeStamp(), serverHash));
+                }
+                else
+                {
+                    error = "更新项目出错！";
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public static Dictionary<string, string> webSocketProjectDeleteResult;
+
+        /// <summary>
+        /// 推送消息删除项目
+        /// </summary>
+        /// <param name="serverHash"></param>
+        /// <returns></returns>
+        public static bool webSocketProjectDelete(string serverHash)
+        {
+            Dictionary<string, string> d = getOneProjectSettingServerHash(serverHash);
+            webSocketProjectDeleteResult = d;
+            if (d == null)
+            {
+                error = "项目错误";
+                Form1.f.TextShowlogs("自动删除项目失败:" + error, "error");
+                return false;
+            }
+            int rows = sqlite.executeNonQuery(string.Format("delete from {0} where server_hash='{1}'", tableSetting, serverHash));
             error = sqlite.error;
             return rows > 0 ? true : false;
         }

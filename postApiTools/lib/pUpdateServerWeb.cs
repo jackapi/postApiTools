@@ -134,17 +134,15 @@ namespace postApiTools.lib
                         }
                         if (serverList[i]["name"].ToString() != temp["name"] && serverList[i]["hash"].ToString() != temp["server_hash"])
                         {
-                            if (nowList.ContainsKey(serverList[i]["hash"].ToString()))
+                            string serverHash = serverList[i]["hash"].ToString();
+                            if (nowList.ContainsKey(serverHash))
                             {
-                                continue;
+                                nowList.Remove(serverHash);
                             }
                             addTemp.Add("type", "insert");
                             addTemp.Add("server", serverList[i]);
-                            if (nowList.ContainsKey(serverList[i]["hash"].ToString()))
-                            {
-                                nowList.Remove(serverList[i]["hash"].ToString());
-                                nowList.Add(serverList[i]["hash"].ToString(), addTemp);//需要新增
-                            }
+                            nowList.Remove(serverList[i]["hash"].ToString());
+                            nowList.Add(serverList[i]["hash"].ToString(), addTemp);//需要新增
                         }
                     }
                 }
@@ -161,7 +159,7 @@ namespace postApiTools.lib
                     {
                         JObject serverUpdate = (JObject)t["server"];
                         pForm1TreeView.insertMainSql(serverUpdate["name"].ToString(), serverUpdate["desc"].ToString(), serverUpdate["hash"].ToString());//新增项目}
-                                                                                                                                                        //pForm1TreeView.insertMain(serverUpdate["name"].ToString(), serverUpdate                    ;//新增项目}
+                        //pForm1TreeView.insertMain(serverUpdate["name"].ToString(), serverUpdate                    ;//新增项目}
                     }
                 }
                 startEnd--;
@@ -169,7 +167,8 @@ namespace postApiTools.lib
                 pullDocumentListTh();//创建文档
                 return;
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 buttonPull.Enabled = true;
                 pLogs.logs(ex.ToString()); startEnd--; return;
             }

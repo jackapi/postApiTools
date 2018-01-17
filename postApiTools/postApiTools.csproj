@@ -93,17 +93,24 @@
       <DependentUpon>AddProject.cs</DependentUpon>
     </Compile>
     <Compile Include="Config.cs" />
+    <Compile Include="ConfigReadWrite.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormAll\openApiForm.cs">
+    <Compile Include="FormAll\getDocumentContent.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormAll\openApiForm.Designer.cs">
-      <DependentUpon>openApiForm.cs</DependentUpon>
+    <Compile Include="FormAll\getDocumentContent.Designer.cs">
+      <DependentUpon>getDocumentContent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormAll\getProjectContent.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormAll\getProjectContent.Designer.cs">
+      <DependentUpon>getProjectContent.cs</DependentUpon>
     </Compile>
     <Compile Include="FormAll\pFormAll.cs" />
     <Compile Include="FormAll\pLogin.cs">
@@ -118,18 +125,42 @@
     <Compile Include="FormAll\pLower.Designer.cs">
       <DependentUpon>pLower.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormAll\pOutUrlData.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormAll\pOutUrlData.Designer.cs">
+      <DependentUpon>pOutUrlData.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormAll\pRegister.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormAll\pRegister.Designer.cs">
       <DependentUpon>pRegister.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormClass\pMemo.cs" />
-    <Compile Include="FormPHPMore\pMysqlManage.cs">
+    <Compile Include="FormAll\pStringUrlDataTo.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormPHPMore\pMysqlManage.Designer.cs">
-      <DependentUpon>pMysqlManage.cs</DependentUpon>
+    <Compile Include="FormAll\pStringUrlDataTo.Designer.cs">
+      <DependentUpon>pStringUrlDataTo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormClass\pMemo.cs" />
+    <Compile Include="FormPHPMore\CreateTpMigrate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPHPMore\CreateTpMigrate.Designer.cs">
+      <DependentUpon>CreateTpMigrate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormPHPMore\CreateYiiMigrate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPHPMore\CreateYiiMigrate.Designer.cs">
+      <DependentUpon>CreateYiiMigrate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormPHPMore\pDataManage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPHPMore\pDataManage.Designer.cs">
+      <DependentUpon>pDataManage.cs</DependentUpon>
     </Compile>
     <Compile Include="FormRole\addUserToRole.cs">
       <SubType>Form</SubType>
@@ -222,6 +253,12 @@
     <Compile Include="Support.Designer.cs">
       <DependentUpon>Support.cs</DependentUpon>
     </Compile>
+    <Compile Include="WebSocket\pMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WebSocket\pMain.Designer.cs">
+      <DependentUpon>pMain.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="AddPid.resx">
       <DependentUpon>AddPid.cs</DependentUpon>
     </EmbeddedResource>
@@ -231,8 +268,11 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormAll\openApiForm.resx">
-      <DependentUpon>openApiForm.cs</DependentUpon>
+    <EmbeddedResource Include="FormAll\getDocumentContent.resx">
+      <DependentUpon>getDocumentContent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormAll\getProjectContent.resx">
+      <DependentUpon>getProjectContent.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormAll\pLogin.resx">
       <DependentUpon>pLogin.cs</DependentUpon>
@@ -240,11 +280,23 @@
     <EmbeddedResource Include="FormAll\pLower.resx">
       <DependentUpon>pLower.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormAll\pOutUrlData.resx">
+      <DependentUpon>pOutUrlData.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormAll\pRegister.resx">
       <DependentUpon>pRegister.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormPHPMore\pMysqlManage.resx">
-      <DependentUpon>pMysqlManage.cs</DependentUpon>
+    <EmbeddedResource Include="FormAll\pStringUrlDataTo.resx">
+      <DependentUpon>pStringUrlDataTo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormPHPMore\CreateTpMigrate.resx">
+      <DependentUpon>CreateTpMigrate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormPHPMore\CreateYiiMigrate.resx">
+      <DependentUpon>CreateYiiMigrate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormPHPMore\pDataManage.resx">
+      <DependentUpon>pDataManage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormRole\addUserToRole.resx">
       <DependentUpon>addUserToRole.cs</DependentUpon>
@@ -285,6 +337,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Support.resx">
       <DependentUpon>Support.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WebSocket\pMain.resx">
+      <DependentUpon>pMain.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">

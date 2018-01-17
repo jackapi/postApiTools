@@ -21,13 +21,36 @@ namespace postApiTools
     using System.Net;
     using System.Runtime.InteropServices;
     using CCWin;
+    using Newtonsoft.Json.Linq;
+
     public partial class Form1 : CCSkinMain
     {
+
+        public static Form1 f;
+        /// <summary>
+        /// 右下角提示框
+        /// </summary>
+        /// <param name="hwnd"></param>
+        /// <param name="dwTime"></param>
+        /// <param name="dwFlags"></param>
+        /// <returns></returns>
+        [DllImport("user32")]
+        private static extern bool AnimateWindow(IntPtr hwnd, int dwTime, int dwFlags);
+        const int AW_HOR_POSITIVE = 0x0001;
+        const int AW_HOR_NEGATIVE = 0x0002;
+        const int AW_VER_POSITIVE = 0x0004;
+        const int AW_VER_NEGATIVE = 0x0008;
+        const int AW_CENTER = 0x0010;
+        const int AW_HIDE = 0x10000;
+        const int AW_ACTIVATE = 0x20000;
+        const int AW_SLIDE = 0x40000;
+        const int AW_BLEND = 0x80000;
 
 
         public Form1()
         {
             InitializeComponent();
+            f = this;
             System.Windows.Forms.Control.CheckForIllegalCrossThreadCalls = false;
             this.dataGridView_http_data.EditMode = DataGridViewEditMode.EditOnEnter;
         }
@@ -68,8 +91,17 @@ namespace postApiTools
             pForm1TreeView.showMainData(treeView_save_list, imageList_treeview);//显示项目列表树
             pform1.toRnShow(checkBox_to_rn);//自动转换选中显示
             Config.websocket.start();//启动websocket
-            pform1.message();//启动消息检测
+            message();//启动消息检测
             loadInt = 0;
+            UpdateFun();///更新
+            label_show_user_name.Text = Config.openServerName;//用户名显示
+        }
+
+        /// <summary>
+        /// 更新方法
+        /// </summary>
+        public void UpdateFun(bool message = false)
+        {
             if (update.isUpdate())//判断更新
             {
                 if (MessageBox.Show("确认更新,将关闭当前软件！", "操作提示", MessageBoxButtons.YesNo) == DialogResult.No)
@@ -86,6 +118,13 @@ namespace postApiTools
                     this.Close();
                 }
             }
+            else
+            {
+                if (message)
+                {
+                    MessageBox.Show("当前软件是最新", "提示", MessageBoxButtons.OK, MessageBoxIcon.None);
+                }
+            }
         }
 
         Thread testTh = null;
@@ -96,7 +135,7 @@ namespace postApiTools
         /// <param name="e"></param>
         private void button_test_Click(object sender, EventArgs e)
         {
-            if (loadInt != 0) { MessageBox.Show("数据没有加载完成！无法进行操作！"); return; }
+            if (loadInt != 0) { MessageBox.Show("数据没有加载完成！无法进行操作！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; }
             if (button_test.Text == "提交测试")
             {
                 this.testTh = new Thread(testButton);
@@ -105,7 +144,6 @@ namespace postApiTools
             }
             else
             {
-                this.testTh.Suspend();
                 this.testTh = null;
                 button_test.Text = "提交测试";
             }
@@ -117,6 +155,7 @@ namespace postApiTools
         public void testButton()
         {
             string encoding = comboBox_bm.Text;
+            dataGridView_http_data.EndEdit();//编辑完成
             if (encoding == "")
             {
                 encoding = "utf-8";
@@ -127,7 +166,7 @@ namespace postApiTools
             string url = textBox_url.Text;
             if (url == "")
             {
-                MessageBox.Show("url不能为空");
+                MessageBox.Show("url不能为空", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             lib.pRunTimeNumber.start();
@@ -217,7 +256,7 @@ namespace postApiTools
         /// <param name="e"></param>
         private void button_setting_Click(object sender, EventArgs e)
         {
-            if (loadInt != 0) { MessageBox.Show("数据没有加载完成！无法进行操作！"); return; }
+            if (loadInt != 0) { MessageBox.Show("数据没有加载完成！无法进行操作！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; }
             Setting setting = new Setting();
             setting.ShowDialog();
             formLoadTh = new Thread(formLoadFun);
@@ -322,6 +361,7 @@ namespace postApiTools
                 pHistory.fillData(dataGridView_http_data, hash, comboBox_url_type, textBox_url, textBox_html);//填充数据
             }
         }
+
         /// <summary>
         /// api接口保存
         /// </summary>
@@ -342,10 +382,10 @@ namespace postApiTools
                     if (pForm1TreeView.editApi(editApiHash, name, desc, url, urlDataStr, urlType))
                     {
                         pForm1TreeView.updateTreeViewText(treeView_save_list, editApiHash, name);//无刷新修改
-                        MessageBox.Show("编辑成功");
+                        MessageBox.Show("编辑成功", "提示", MessageBoxButtons.OK);
                         return;
                     }
-                    MessageBox.Show("编辑失败:" + pForm1TreeView.error);
+                    MessageBox.Show("编辑失败:" + pForm1TreeView.error, "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
                 else
@@ -369,28 +409,7 @@ namespace postApiTools
         /// <param name="e"></param>
         private void dataGridView_http_data_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            //textBox_html.Text = e.RowIndex.ToString() + " " + e.ColumnIndex.ToString();
-            //if (e.ColumnIndex == 3 && e.RowIndex != -1 && loadInt == 0)//列内容改变事件
-            //{
-            //    if (dataGridView_http_data.Rows[e.RowIndex].Cells[3].Value.ToString() == "文件")//改变为文件
-            //    {
-            //        //DataGridViewCheckBoxColumn colDel = new DataGridViewCheckBoxColumn();
-            //        DataGridViewButtonColumn button = new DataGridViewButtonColumn();
-            //        button.Name = "Column2";
-            //        button.HeaderText = "值(文件)";
-            //        dataGridView_http_data.Columns.RemoveAt(1);
-            //        dataGridView_http_data.Columns.Insert(1, button);
-            //        //dataGridView_http_data.Rows[e.RowIndex].Cells[0].
-            //    }
-            //    else if (dataGridView_http_data.Rows[e.RowIndex].Cells[3].Value.ToString() == "字符串")//改变为字符串
-            //    {
-            //        DataGridViewTextBoxColumn clumn = new DataGridViewTextBoxColumn();
-            //        clumn.Name = "Column2";
-            //        clumn.HeaderText = "值(字符串)";
-            //        dataGridView_http_data.Columns.RemoveAt(1);
-            //        dataGridView_http_data.Columns.Insert(1, clumn);
-            //    }
-            //}
+            dataGridView_http_data.EndEdit();
         }
 
         /// <summary>
@@ -466,7 +485,7 @@ namespace postApiTools
             }
             else
             {
-                MessageBox.Show("创建项目失败:" + pForm1TreeView.error);
+                MessageBox.Show("创建项目失败:" + pForm1TreeView.error, "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
         }
@@ -492,7 +511,7 @@ namespace postApiTools
                 pForm1TreeView.insertPid(treeView_save_list, name);
                 if (pForm1TreeView.error != "")
                 {
-                    MessageBox.Show(pForm1TreeView.error);
+                    MessageBox.Show(pForm1TreeView.error, "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
             }
@@ -500,7 +519,7 @@ namespace postApiTools
             {
                 if (!pForm1TreeView.deleteTreeViewSetting(treeView_save_list))
                 {
-                    MessageBox.Show(pForm1TreeView.error);
+                    MessageBox.Show(pForm1TreeView.error, "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 pForm1TreeView.showMainData(treeView_save_list, imageList_treeview);//显示项目列表树
             }
@@ -517,8 +536,19 @@ namespace postApiTools
             }
             if (e.ClickedItem.Text == "查看")
             {
-                openApiForm open = new openApiForm();
-                open.Show();
+                string hash = treeView_save_list.SelectedNode.Name;//hash
+                string text = treeView_save_list.SelectedNode.Text;//text
+                if (pForm1TreeView.isApiHash(hash))
+                {
+                    getDocumentContent document = new getDocumentContent(hash, text);
+                    document.Show();
+                }
+                else
+                {
+                    getProjectContent project = new getProjectContent(hash, text);
+                    project.Show();
+                }
+
             }
         }
         /// <summary>
@@ -544,6 +574,23 @@ namespace postApiTools
         /// <param name="e"></param>
         private void treeView_save_list_DoubleClick(object sender, EventArgs e)
         {
+
+            if (treeView_save_list.SelectedNode == null) { return; }
+            if (treeView_save_list.SelectedNode.Name == null) { return; }
+            string hash = treeView_save_list.SelectedNode.Name;
+            string name = treeView_save_list.SelectedNode.Text;
+            if (pForm1TreeView.isApiHash(hash))
+            {
+                editApiHash = hash;
+            }
+            pForm1TreeView.openApiDataShow(treeView_save_list, textBox_url, comboBox_url_type, dataGridView_http_data, textBox_api_name, textBox_doc);
+            //Thread th = new Thread(treeView_save_list_DoubleClickFun);
+            //th.Start();
+        }
+        private void treeView_save_list_DoubleClickFun()
+        {
+            if (treeView_save_list.SelectedNode == null) { return; }
+            if (treeView_save_list.SelectedNode.Name == null) { return; }
             string hash = treeView_save_list.SelectedNode.Name;
             string name = treeView_save_list.SelectedNode.Text;
             if (pForm1TreeView.isApiHash(hash))
@@ -552,7 +599,11 @@ namespace postApiTools
             }
             pForm1TreeView.openApiDataShow(treeView_save_list, textBox_url, comboBox_url_type, dataGridView_http_data, textBox_api_name, textBox_doc);
         }
-
+        /// <summary>
+        /// 错误
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void dataGridView_http_data_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
             return;
@@ -585,7 +636,7 @@ namespace postApiTools
         {
             int rows = pHistory.historyAllDelete();
             pHistory.dataViewRefresh(dataGridView_history);//刷新历史
-            MessageBox.Show(string.Format("成功清理历史{0}个！", rows));
+            MessageBox.Show(string.Format("成功清理历史{0}个！", rows), "提示", MessageBoxButtons.OK, MessageBoxIcon.None);
 
         }
 
@@ -726,7 +777,7 @@ namespace postApiTools
         {
             if (this.Enabled == false)
             {
-                MessageBox.Show("请耐心等待更新结束！");
+                MessageBox.Show("请耐心等待更新结束！", "提示", MessageBoxButtons.OK, MessageBoxIcon.None);
             }
         }
 
@@ -756,28 +807,12 @@ namespace postApiTools
         /// <param name="e"></param>
         private void button_pull_Click(object sender, EventArgs e)
         {
+            if (Config.openServerUrl.Length <= 0) { MessageError("没有配置服务器URL无法进行操作!", "提示"); return; }
             button_pull.Enabled = false;
             pUpdateServerWeb.t = treeView_save_list;
             pUpdateServerWeb.image = imageList_treeview;
             pUpdateServerWeb.buttonPull = button_pull;
             pUpdateServerWeb.pullProjectMainTh();
-        }
-
-        private void treeView_save_list_MouseClick(object sender, MouseEventArgs e)
-        {
-            TreeView tv = (TreeView)sender;
-            if (tv.SelectedNode == null) { return; }
-            tv.Focus();
-            string Text = tv.SelectedNode.Text;
-            string hash = tv.SelectedNode.Name;
-            if (pForm1TreeView.isApiHash(hash))
-            {
-                tv.SelectedImageIndex = 1;
-            }
-            else
-            {
-                tv.SelectedImageIndex = 0;
-            }
         }
 
         /// <summary>
@@ -787,6 +822,7 @@ namespace postApiTools
         /// <param name="e"></param>
         private void button_role_Click(object sender, EventArgs e)
         {
+            if (Config.userToken.Length <= 0) { MessageError("没有配置服务器无法进行操作!", "提示"); return; }
             using (FormRole.pRoleManage manage = new FormRole.pRoleManage())
             {
                 manage.ShowDialog();
@@ -809,7 +845,6 @@ namespace postApiTools
         /// <param name="e"></param>
         private void 用户登录ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (Config.openServerUrl == "") { MessageBox.Show("没有设置服务器URL！","提示",MessageBoxButtons.OK,MessageBoxIcon.Error); return; }
             FormAll.pLogin login = new pLogin();
             login.ShowDialog();
         }
@@ -832,7 +867,6 @@ namespace postApiTools
         /// <param name="e"></param>
         private void 用户注册ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (Config.openServerUrl == "") { MessageBox.Show("没有设置服务器URL！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error); return; }
             FormAll.pRegister register = new pRegister();
             register.ShowDialog();
         }
@@ -844,9 +878,9 @@ namespace postApiTools
         /// <param name="e"></param>
         private void 清除登录ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (Config.openServerUrl == "") { MessageBox.Show("没有设置服务器URL！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error); return; }
             if (MessageBox.Show("确认清理登录状态!", "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
             {
+                Config.websocket.stop();
                 Config.userToken = "";
                 pIni.write("apizlHttp", "usertoken", "");
                 return;
@@ -882,12 +916,323 @@ namespace postApiTools
         /// <param name="e"></param>
         private void 检测更新ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            UpdateFun(true);
         }
 
+        /// <summary>
+        /// 拉取
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void 拉取ToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            button_pull_Click(null, null);
+        }
 
+        /// <summary>
+        /// websocket 测试工具
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ToolStripMenuItem_websocket_tools_Click(object sender, EventArgs e)
+        {
+            WebSocket.pMain main = new WebSocket.pMain();
+            main.Show();
+        }
+
+
+
+        /// <summary>
+        /// 启动消息循环检测
+        /// </summary>
+        public void message()
+        {
+            Thread th = new Thread(messageTh);
+            th.Start();
+        }
+
+        /// <summary>
+        /// 消息循环线程检测
+        /// </summary>
+        public void messageTh()
+        {
+            while (true)
+            {
+                Thread.Sleep(500);
+                if (Config.websocket.messageList.Count <= 0) { continue; }
+                try
+                {
+                    foreach (var item in Config.websocket.messageList)
+                    {
+                        JObject job = pJson.jsonToJobject(item.Value);
+                        if (job.Count <= 0) { continue; }
+                        if (job["type"].ToString() == "document_hash_update")//文档更新线程
+                        {
+                            Config.websocket.messageList.Remove(item.Key);
+                            Thread th = new Thread(message_document_hash_update);
+                            th.Start(job);
+                        }
+                        if (job["type"].ToString() == "document_hash_create")//文档创建线程
+                        {
+                            Config.websocket.messageList.Remove(item.Key);
+                            Thread th = new Thread(message_document_hash_create);
+                            th.Start(job);
+                        }
+                        if (job["type"].ToString() == "document_hash_delete")//文档删除线程
+                        {
+                            Config.websocket.messageList.Remove(item.Key);
+                            Thread th = new Thread(message_document_hash_delete);
+                            th.Start(job);
+                        }
+
+                        if (job["type"].ToString() == "project_hash_create")//创建项目线程
+                        {
+                            Config.websocket.messageList.Remove(item.Key);
+                            Thread th = new Thread(message_project_hash_create);
+                            th.Start(job);
+                        }
+                        if (job["type"].ToString() == "project_hash_update")//修改项目线程
+                        {
+                            Config.websocket.messageList.Remove(item.Key);
+                            Thread th = new Thread(message_project_hash_update);
+                            th.Start(job);
+                        }
+                        if (job["type"].ToString() == "project_hash_delete")//项目删除线程
+                        {
+                            Config.websocket.messageList.Remove(item.Key);
+                            Thread th = new Thread(message_project_hash_delete);
+                            th.Start(job);
+                        }
+
+                    }
+                }
+                catch { }
+
+            }
+        }
+
+
+        /// <summary>
+        /// project_hash_create提示线程
+        /// </summary>
+        /// <param name="obj"></param>
+        public void message_project_hash_create(object obj)
+        {
+            if (obj == null) { return; }
+            JObject job = (JObject)obj;
+            bool resultBool = pForm1TreeView.webSocketProjectCreate(job["hash"].ToString());//推送创建项目
+            if (!resultBool) { return; }
+            pForm1TreeView.showMainData(treeView_save_list, imageList_treeview);//刷新
+            JObject result = pForm1TreeView.webSocketProjectCreateResult;
+            if (result == null) { MessageError(pForm1TreeView.error, "提示"); return; }
+            if (result.Count <= 0) { return; }
+            FormAll.pLower pLower = new FormAll.pLower();
+            pLower.title = "项目创建通知！ 已推送相关人员！";
+            pLower.mssage = result.Count > 0 ? result["name"].ToString() : "没有相关消息";
+            AnimateWindow(pLower.Handle, 1000, AW_VER_NEGATIVE | AW_ACTIVATE);//从下到上且不占其它程序焦点  
+            pLower.ShowDialog();
+        }
+
+        /// <summary>
+        /// project_hash_update提示线程
+        /// </summary>
+        /// <param name="obj"></param>
+        public void message_project_hash_update(object obj)
+        {
+            JObject job = (JObject)obj;
+            bool resultBool = pForm1TreeView.webSocketProjectUpdate(job["hash"].ToString());//推送修改项目
+            if (!resultBool) { return; }
+            pForm1TreeView.showMainData(treeView_save_list, imageList_treeview);//刷新树
+            JObject result = pForm1TreeView.webSocketProjectCreateResult;
+            if (result == null) { MessageError(pForm1TreeView.error, "提示"); return; }
+            if (result.Count <= 0) { return; }
+            FormAll.pLower pLower = new FormAll.pLower();
+            pLower.title = "项目修改通知！ 已推送相关人员！";
+            pLower.mssage = result.Count > 0 ? result["name"].ToString() : "没有相关消息";
+            AnimateWindow(pLower.Handle, 1000, AW_VER_NEGATIVE | AW_ACTIVATE);//从下到上且不占其它程序焦点  
+            pLower.ShowDialog();
+        }
+
+        /// <summary>
+        /// project_hash_delete提示线程
+        /// </summary>
+        /// <param name="obj"></param>
+        public void message_project_hash_delete(object obj)
+        {
+            JObject job = (JObject)obj;
+            pForm1TreeView.webSocketProjectDelete(job["hash"].ToString());//推送删除项目
+            pForm1TreeView.showMainData(treeView_save_list, imageList_treeview);//刷新树
+            Dictionary<string, string> d = pForm1TreeView.webSocketProjectDeleteResult;
+            if (d == null) { return; }
+            if (d.Count <= 0) { return; }
+            FormAll.pLower pLower = new FormAll.pLower();
+            pLower.title = "项目删除通知！ 已推送相关人员！";
+            pLower.mssage = d.Count > 0 ? d["name"] : "没有相关消息";
+            AnimateWindow(pLower.Handle, 1000, AW_VER_NEGATIVE | AW_ACTIVATE);//从下到上且不占其它程序焦点  
+            pLower.ShowDialog();
+        }
+
+
+        /// <summary>
+        /// document_hash_delete提示线程
+        /// </summary>
+        /// <param name="obj"></param>
+        public void message_document_hash_delete(object obj)
+        {
+            JObject job = (JObject)obj;
+            pForm1TreeView.webSocketDocumentDelete(job["docHash"].ToString());//推送删除文档
+            pForm1TreeView.showMainData(treeView_save_list, imageList_treeview);//显示项目列表树
+            Dictionary<string, string> d = pForm1TreeView.webSocketDocumentDeleteResult;
+            if (d.Count <= 0) { return; }
+            FormAll.pLower pLower = new FormAll.pLower();
+            pLower.title = "文档删除通知！ 已推送相关人员！";
+            pLower.mssage = d.Count > 0 ? d["name"] : "没有相关消息";
+            AnimateWindow(pLower.Handle, 1000, AW_VER_NEGATIVE | AW_ACTIVATE);//从下到上且不占其它程序焦点  
+            pLower.ShowDialog();
+        }
+
+        /// <summary>
+        /// document_hash_create提示线程
+        /// </summary>
+        /// <param name="obj"></param>
+        public void message_document_hash_create(object obj)
+        {
+            JObject job = (JObject)obj;
+            pForm1TreeView.webSocketDocumentCreate(job["hash"].ToString());//推送创建一个线上文档
+            pForm1TreeView.showMainData(treeView_save_list, imageList_treeview);//显示项目列表树
+            Dictionary<string, string> d = pForm1TreeView.getLocalDocumentInfo(job["hash"].ToString());
+            FormAll.pLower pLower = new FormAll.pLower();
+            pLower.title = "文档创建通知！ 已推送相关人员！";
+            pLower.mssage = d.Count > 0 ? d["name"] : "没有相关消息";
+            AnimateWindow(pLower.Handle, 1000, AW_VER_NEGATIVE | AW_ACTIVATE);//从下到上且不占其它程序焦点  
+            pLower.ShowDialog();
+        }
+
+        /// <summary>
+        /// document_hash_update提示线程
+        /// </summary>
+        /// <param name="obj"></param>
+        public void message_document_hash_update(object obj)
+        {
+            JObject job = (JObject)obj;
+            pForm1TreeView.updateDocument(job["hash"].ToString());//更新一个线上文档
+            pForm1TreeView.refreshTreeViewText(treeView_save_list, job["hash"].ToString());
+            Dictionary<string, string> d = pForm1TreeView.getLocalDocumentInfo(job["hash"].ToString());
+            FormAll.pLower pLower = new FormAll.pLower();
+            pLower.title = "文档更新通知！ 已推送相关人员！";
+            pLower.mssage = d.Count > 0 ? d["name"] : "没有相关消息";
+            AnimateWindow(pLower.Handle, 1000, AW_VER_NEGATIVE | AW_ACTIVATE);//从下到上且不占其它程序焦点  
+            pLower.ShowDialog();
+        }
+
+        /// <summary>
+        /// 用户名点击事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void label_show_user_name_Click(object sender, EventArgs e)
+        {
+            this.skinContextMenuStrip_user_name.Show(MousePosition);
+        }
+
+        /// <summary>
+        /// 用户名右键菜单
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void skinContextMenuStrip_user_name_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            this.skinContextMenuStrip_user_name.Close();
+            if (e.ClickedItem.ToString() == "用户登录")
+            {
+                用户登录ToolStripMenuItem_Click(null, null);
+            }
+            if (e.ClickedItem.ToString() == "清理登录")
+            {
+                清除登录ToolStripMenuItem_Click(null, null);
+            }
+        }
+
+        /// <summary>
+        /// 显示日志输出
+        /// </summary>
+        /// <param name="text"></param>
+        public void TextShowlogs(string text, string type = "")
+        {
+            skinChatRichTextBox_logs.Invoke(new Action(() =>
+            {
+                string content = skinChatRichTextBox_logs.Text;
+                string newString = DateTime.Now.ToLongTimeString().ToString() + ":" + text + "\r\n";
+                skinChatRichTextBox_logs.AppendText(newString);
+                if (type == "error")
+                {
+                    skinChatRichTextBox_logs.Select(content.Length, newString.Length);
+                    skinChatRichTextBox_logs.SelectionColor = Color.Red;
+                }
+                this.skinChatRichTextBox_logs.SelectionStart = this.skinChatRichTextBox_logs.TextLength;
+                this.skinChatRichTextBox_logs.ScrollToCaret();
+            }));
+        }
+
+        /// <summary>
+        /// 显示错误的提示框
+        /// </summary>
+        /// <param name="content"></param>
+        /// <param name="title"></param>
+        public void MessageError(string content, string title)
+        {
+            MessageBox.Show(content, title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        /// <summary>
+        /// 数据库管理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ToolStripMenuItem_dataManage_Click(object sender, EventArgs e)
+        {
+            FormPHPMore.pDataManage manage = new FormPHPMore.pDataManage();
+            manage.Show();
+        }
+
+        /// <summary>
+        /// 停止服务器更新
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ToolStripMenuItem_stop_server_Click(object sender, EventArgs e)
+        {
+            if (ToolStripMenuItem_stop_server.Text == "停止更新")
+            {
+                Config.websocket.stop();
+                ToolStripMenuItem_stop_server.Text = "启动更新";
+            }
+            else if (ToolStripMenuItem_stop_server.Text == "启动更新")
+            {
+                Config.websocket.start();
+                ToolStripMenuItem_stop_server.Text = "停止更新";
+            }
+        }
+        /// <summary>
+        /// 字符串快速转换参数
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ToolStripMenuItem_stringToUrlData_Click(object sender, EventArgs e)
+        {
+            FormAll.pStringUrlDataTo p = new pStringUrlDataTo();
+            p.ShowDialog();
+        }
+
+        /// <summary>
+        /// 参数导出
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ToolStripMenuItem_out_urldata_Click(object sender, EventArgs e)
+        {
+            FormAll.pOutUrlData p = new pOutUrlData();
+            p.ShowDialog();
         }
     }
 }
