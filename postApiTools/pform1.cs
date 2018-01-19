@@ -474,27 +474,51 @@ namespace postApiTools
             }));
         }
         private static Thread webViewShowTh = null;
+
+        private static Thread webShow = null;
+
+
+        private static void Delay(int Millisecond) //延迟系统时间，但系统又能同时能执行其它任务；
+        {
+            DateTime current = DateTime.Now;
+            while (current.AddMilliseconds(Millisecond) > DateTime.Now)
+            {
+                Application.DoEvents();//转让控制权            
+            }
+            return;
+        }
+        private static void webShowFun(object objectData)
+        {
+            string html = (string)objectData;
+            Form1.f.webkitShowOpenLocal(html);
+            //w.Invoke(new Action(() =>
+            //{
+            //    string path = Config.exePath + "/runtime/";
+            //    if (!Directory.Exists(path))//判断文件夹是否存在
+            //    {
+            //        Directory.CreateDirectory(path);
+            //    }
+            //    string pathHtml = path + lib.pBase.CreateMD5Hash(DateTime.Now.ToLocalTime().ToString()) + ".html";
+            //    lib.pFile.Write(pathHtml, html);
+
+
+            //    //w.ScriptErrorsSuppressed = true;
+            //    //w.Url = new Uri(pathHtml);
+
+            //    webViewShowTh = new Thread(new ParameterizedThreadStart(webViewShowFileDelete));
+            //    webViewShowTh.Start(pathHtml);
+            //}));
+
+        }
         /// <summary>
         /// 浏览器显示本地HTML
         /// </summary>
         /// <param name="w"></param>
         /// <param name="html"></param>
-        public static void webViewShow(WebBrowser w, string html)
+        public static void webViewShow(string html)
         {
-            w.Invoke(new Action(() =>
-            {
-                string path = Config.exePath + "/runtime/";
-                if (!Directory.Exists(path))//判断文件夹是否存在
-                {
-                    Directory.CreateDirectory(path);
-                }
-                string pathHtml = path + lib.pBase.CreateMD5Hash(DateTime.Now.ToLocalTime().ToString()) + ".html";
-                lib.pFile.Write(pathHtml, html);
-                w.ScriptErrorsSuppressed = true;
-                w.Url = new Uri(pathHtml);
-                webViewShowTh = new Thread(new ParameterizedThreadStart(webViewShowFileDelete));
-                webViewShowTh.Start(pathHtml);
-            }));
+            webShow = new Thread(new ParameterizedThreadStart(webShowFun));
+            webShow.Start(html);
         }
         /// <summary>
         /// 开启线程删除文件

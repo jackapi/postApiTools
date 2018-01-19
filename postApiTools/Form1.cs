@@ -22,9 +22,13 @@ namespace postApiTools
     using System.Runtime.InteropServices;
     using CCWin;
     using Newtonsoft.Json.Linq;
+    using WebKit;
 
     public partial class Form1 : CCSkinMain
     {
+        /// <summary>
+        /// 浏览器
+        /// </summary>
 
         public static Form1 f;
         /// <summary>
@@ -70,6 +74,22 @@ namespace postApiTools
             //timer_server.Start();//启动定时器 不能再线程中使用
             this.Text = this.Text + " 开发助手 v" + update.version + " (测试接口、生成文档) 作者:apiziliao@gmail.com  qq群:616318658";
         }
+
+        /// <summary>
+        /// 显示浏览器
+        /// </summary>
+        /// <param name="html"></param>
+        public void webkitShowOpenLocal(string html = "")
+        {
+            this.tabPage5.Invoke(new Action(() =>
+            {
+                this.tabPage5.Controls.Clear();
+                WebKit.WebKitBrowser browser = new WebKit.WebKitBrowser();
+                browser.Dock = DockStyle.Fill;
+                this.tabPage5.Controls.Add(browser);
+                browser.DocumentText = html;
+            }));
+        }
         /// <summary>
         /// 使用线程加载
         /// </summary>
@@ -94,7 +114,19 @@ namespace postApiTools
             message();//启动消息检测
             loadInt = 0;
             UpdateFun();///更新
-            label_show_user_name.Text = Config.openServerName;//用户名显示
+            showUserName();//显示用户名
+        }
+
+        /// <summary>
+        /// 判断是否登录
+        /// </summary>
+        public void showUserName()
+        {
+            label_show_user_name.Text = "";
+            if (lib.pApizlHttp.isLogin(Config.userToken))
+            {
+                label_show_user_name.Text = Config.openServerName;//用户名显示
+            }
         }
 
         /// <summary>
@@ -166,6 +198,7 @@ namespace postApiTools
             string url = textBox_url.Text;
             if (url == "")
             {
+                button_test.Text = "提交测试";
                 MessageBox.Show("url不能为空", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
@@ -181,7 +214,7 @@ namespace postApiTools
                 html = pform1.postFile(url, dataGridView_http_data, dataGridView_header, encoding);//post文件
             }
             pform1.dataViewResponseShow(dataGridView_Response);//显示返回报文头
-            pform1.webViewShow(webBrowser1, html);//浏览器显示
+            pform1.webViewShow(html);//浏览器显示
             this.testHtml = html;
             lib.pRunTimeNumber.end();
             pform1.labelShowStatusRunTime(label_code, label_runtime, lib.phttp.HttpCustom_code, lib.pRunTimeNumber.result());//显示运行时间和状态
@@ -397,9 +430,8 @@ namespace postApiTools
             {
                 editApiHash = "";
             }
-            SavePostApi api = new SavePostApi(urlData, url, urlType, textBox_doc.Text);
+            SavePostApi api = new SavePostApi(urlData, url, urlType, textBox_doc.Text, treeView_save_list);
             api.ShowDialog();
-            pForm1TreeView.showMainData(treeView_save_list, imageList_treeview);//显示项目列表树
         }
 
         /// <summary>
@@ -479,9 +511,9 @@ namespace postApiTools
             }
             desc = add.projectDesc;
             add.Close();
-            if (pForm1TreeView.insertMain(name, desc))
+            if (pForm1TreeView.insertMain(name, desc, treeView_save_list))
             {
-                pForm1TreeView.showMainData(treeView_save_list, imageList_treeview);//刷新树
+                //pForm1TreeView.showMainData(treeView_save_list, imageList_treeview);//刷新树
             }
             else
             {
@@ -519,9 +551,10 @@ namespace postApiTools
             {
                 if (!pForm1TreeView.deleteTreeViewSetting(treeView_save_list))
                 {
+                    if (pForm1TreeView.error == "") { return; }
                     MessageBox.Show(pForm1TreeView.error, "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                pForm1TreeView.showMainData(treeView_save_list, imageList_treeview);//显示项目列表树
+                //pForm1TreeView.showMainData(treeView_save_list, imageList_treeview);//显示项目列表树
             }
             if (e.ClickedItem.Text == "重命名")
             {
@@ -532,7 +565,7 @@ namespace postApiTools
                 pid.Close();
                 if (name == "") { return; }
                 pForm1TreeView.updateNameTreeViewSetting(treeView_save_list, name);
-                pForm1TreeView.showMainData(treeView_save_list, imageList_treeview);//显示项目列表树
+                //pForm1TreeView.showMainData(treeView_save_list, imageList_treeview);//显示项目列表树
             }
             if (e.ClickedItem.Text == "查看")
             {
@@ -597,7 +630,17 @@ namespace postApiTools
             {
                 editApiHash = hash;
             }
+            showHtml("");
             pForm1TreeView.openApiDataShow(treeView_save_list, textBox_url, comboBox_url_type, dataGridView_http_data, textBox_api_name, textBox_doc);
+        }
+
+        /// <summary>
+        ///显示源码
+        /// </summary>
+        /// <param name="html"></param>
+        public void showHtml(string html)
+        {
+            textBox_html.Text = html;
         }
         /// <summary>
         /// 错误
@@ -729,7 +772,7 @@ namespace postApiTools
             textBox_api_name.Text = "";
             textBox_doc.Text = "";
             textBox_html.Text = "";
-            webBrowser1.Navigate("about:blank");
+            webkitShowOpenLocal();
         }
         /// <summary>
         /// 便签界面
@@ -1020,9 +1063,8 @@ namespace postApiTools
         {
             if (obj == null) { return; }
             JObject job = (JObject)obj;
-            bool resultBool = pForm1TreeView.webSocketProjectCreate(job["hash"].ToString());//推送创建项目
+            bool resultBool = pForm1TreeView.webSocketProjectCreate(job["hash"].ToString(), treeView_save_list);//推送创建项目
             if (!resultBool) { return; }
-            pForm1TreeView.showMainData(treeView_save_list, imageList_treeview);//刷新
             JObject result = pForm1TreeView.webSocketProjectCreateResult;
             if (result == null) { MessageError(pForm1TreeView.error, "提示"); return; }
             if (result.Count <= 0) { return; }
@@ -1040,9 +1082,8 @@ namespace postApiTools
         public void message_project_hash_update(object obj)
         {
             JObject job = (JObject)obj;
-            bool resultBool = pForm1TreeView.webSocketProjectUpdate(job["hash"].ToString());//推送修改项目
+            bool resultBool = pForm1TreeView.webSocketProjectUpdate(job["hash"].ToString(), treeView_save_list);//推送修改项目
             if (!resultBool) { return; }
-            pForm1TreeView.showMainData(treeView_save_list, imageList_treeview);//刷新树
             JObject result = pForm1TreeView.webSocketProjectCreateResult;
             if (result == null) { MessageError(pForm1TreeView.error, "提示"); return; }
             if (result.Count <= 0) { return; }
@@ -1080,8 +1121,7 @@ namespace postApiTools
         public void message_document_hash_delete(object obj)
         {
             JObject job = (JObject)obj;
-            pForm1TreeView.webSocketDocumentDelete(job["docHash"].ToString());//推送删除文档
-            pForm1TreeView.showMainData(treeView_save_list, imageList_treeview);//显示项目列表树
+            pForm1TreeView.webSocketDocumentDelete(job["docHash"].ToString(), treeView_save_list);//推送删除文档
             Dictionary<string, string> d = pForm1TreeView.webSocketDocumentDeleteResult;
             if (d.Count <= 0) { return; }
             FormAll.pLower pLower = new FormAll.pLower();
@@ -1098,8 +1138,7 @@ namespace postApiTools
         public void message_document_hash_create(object obj)
         {
             JObject job = (JObject)obj;
-            pForm1TreeView.webSocketDocumentCreate(job["hash"].ToString());//推送创建一个线上文档
-            pForm1TreeView.showMainData(treeView_save_list, imageList_treeview);//显示项目列表树
+            pForm1TreeView.webSocketDocumentCreate(job["hash"].ToString(), treeView_save_list);//推送创建一个线上文档
             Dictionary<string, string> d = pForm1TreeView.getLocalDocumentInfo(job["hash"].ToString());
             FormAll.pLower pLower = new FormAll.pLower();
             pLower.title = "文档创建通知！ 已推送相关人员！";
@@ -1159,19 +1198,23 @@ namespace postApiTools
         /// <param name="text"></param>
         public void TextShowlogs(string text, string type = "")
         {
-            skinChatRichTextBox_logs.Invoke(new Action(() =>
+            try
             {
-                string content = skinChatRichTextBox_logs.Text;
-                string newString = DateTime.Now.ToLongTimeString().ToString() + ":" + text + "\r\n";
-                skinChatRichTextBox_logs.AppendText(newString);
-                if (type == "error")
+                skinChatRichTextBox_logs.Invoke(new Action(() =>
                 {
-                    skinChatRichTextBox_logs.Select(content.Length, newString.Length);
-                    skinChatRichTextBox_logs.SelectionColor = Color.Red;
-                }
-                this.skinChatRichTextBox_logs.SelectionStart = this.skinChatRichTextBox_logs.TextLength;
-                this.skinChatRichTextBox_logs.ScrollToCaret();
-            }));
+                    string content = skinChatRichTextBox_logs.Text;
+                    string newString = DateTime.Now.ToLongTimeString().ToString() + ":" + text + "\r\n";
+                    skinChatRichTextBox_logs.AppendText(newString);
+                    if (type == "error")
+                    {
+                        skinChatRichTextBox_logs.Select(content.Length, newString.Length);
+                        skinChatRichTextBox_logs.SelectionColor = Color.Red;
+                    }
+                    this.skinChatRichTextBox_logs.SelectionStart = this.skinChatRichTextBox_logs.TextLength;
+                    this.skinChatRichTextBox_logs.ScrollToCaret();
+                }));
+            }
+            catch { }
         }
 
         /// <summary>
@@ -1221,7 +1264,7 @@ namespace postApiTools
         private void ToolStripMenuItem_stringToUrlData_Click(object sender, EventArgs e)
         {
             FormAll.pStringUrlDataTo p = new pStringUrlDataTo();
-            p.ShowDialog();
+            p.Show();
         }
 
         /// <summary>
@@ -1233,6 +1276,60 @@ namespace postApiTools
         {
             FormAll.pOutUrlData p = new pOutUrlData();
             p.ShowDialog();
+        }
+
+
+        /// <summary>
+        /// 输出urldata显示
+        /// </summary>
+        /// <param name="d"></param>
+        public void outUrlDataView(Dictionary<string, string> d)
+        {
+            DataGridView dataview = dataGridView_http_data;
+            if (d.Count <= 0) { dataview.Rows.Clear(); return; }
+            dataview.Invoke(new Action(() =>
+            {
+                dataview.Rows.Clear();
+                dataview.Rows.Add(d.Count);
+                int i = 0;
+                foreach (var item in d)
+                {
+                    dataview.Rows[i].Cells[0].Value = item.Key;
+                    dataview.Rows[i].Cells[1].Value = item.Value;
+                    dataview.Rows[i].Cells[2].Value = "";
+                    dataview.Rows[i].Cells[3].Value = "字符串";
+                    dataview.Rows[i].Cells[4].Value = "删除";
+                    i++;
+                }
+            }));
+        }
+        /// <summary>
+        /// yii相关
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ToolStripMenuItem_yii_Click(object sender, EventArgs e)
+        {
+
+        }
+        /// <summary>
+        /// tp相关
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ToolStripMenuItem_tp_Click(object sender, EventArgs e)
+        {
+
+        }
+        /// <summary>
+        /// yii模型功能
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void 模型功能ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FormPHPMore.pYiiModel p = new FormPHPMore.pYiiModel();
+            p.Show();
         }
     }
 }

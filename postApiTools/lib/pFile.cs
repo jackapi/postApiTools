@@ -72,7 +72,8 @@ namespace postApiTools.lib
             }
             catch (Exception ex)
             {
-                return ex.ToString();
+                pLogs.logs("path:" + path + " " + ex.ToString());
+                return "";
             }
 
         }

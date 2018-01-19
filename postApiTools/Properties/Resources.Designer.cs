@@ -61,42 +61,42 @@ namespace postApiTools.Properties {
         }
         
         /// <summary>
-        ///   查找类似 
-        ///    
-        ///**简要描述：** 
+        ///   查找类似 **简要描述：** 
         ///
-        ///- 用户注册接口
+        ///- {$name}
         ///
         ///**请求URL：** 
-        ///- ` http://xx.com/api/user/register `
+        ///- ` {$url} `
         ///  
         ///**请求方式：**
-        ///- POST 
+        ///- {$method} 
         ///
         ///**参数：** 
         ///
         ///|参数名|必选|类型|说明|
         ///|:----    |:---|:----- |-----   |
-        ///|username |是  |string |用户名   |
-        ///|password |是  |string | 密码    |
-        ///|name     |否  |string | 昵称    |
+        ///{$urldata} 
+        ///
+        ///
         ///
         /// **返回示例**
         ///
         ///``` 
-        ///  {
-        ///    &quot;error_code&quot;: 0,
-        ///    &quot;data&quot;: {
-        ///      &quot;uid&quot;: &quot;1&quot;,
-        ///      &quot;username&quot;: &quot;12154545&quot;,
-        ///      &quot;name&quot;: &quot;吴系挂&quot;,
-        ///      &quot;groupid&quot;: 2 ,
-        ///      &quot;reg_time&quot;: &quot;1436864169&quot;,
-        ///      &quot;last_login_time&quot;: &quot;0&quot;,
-        ///    }
-        ///  }
+        ///{$html}
+        ///
         ///```
-        ///        /// [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///
+        /// **返回参数说明** 
+        ///
+        ///|参数名|类型|说明|
+        ///|:-----  |:-----|-----                           |
+        ///
+        /// **备注** 
+        ///
+        ///- 更多返回错误代码请看首页的错误代码描述
+        ///
+        ///
+        /// 的本地化字符串。
         /// </summary>
         public static string template {
             get {

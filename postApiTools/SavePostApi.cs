@@ -29,14 +29,15 @@ namespace postApiTools
         /// 接口文档
         /// </summary>
         private string desc = "";
-
-        public SavePostApi(string[,] urlData, string url, string urlType, string desc)
+        private TreeView tv = null;
+        public SavePostApi(string[,] urlData, string url, string urlType, string desc, TreeView tv)
         {
             InitializeComponent();
             this.urlData = urlData;
             this.url = url;
             this.urlType = urlType;
             this.desc = desc;
+            this.tv = tv;
         }
 
         /// <summary>
@@ -75,12 +76,16 @@ namespace postApiTools
             }
             if (pForm1TreeView.addApi(treeView, name, desc, url, urlType, urlData))
             {
+                TreeNode tn = pForm1TreeView.FindNodeByName(tv.Nodes, treeView.SelectedNode.Name);//返回节点
+                TreeNode addtn = tn.Nodes.Add(pForm1TreeView.addApiHash, name);//无刷新显示添加
+                addtn.ImageIndex = 1; //设置显示图片
+                addtn.SelectedImageIndex = 1;//设置显示图片
                 MessageBox.Show("添加成功");
                 this.Close();
             }
             else
             {
-                MessageBox.Show("添加失败 请重试");
+                MessageBox.Show("添加失败 请重试：" + pForm1TreeView.error);
             }
         }
 

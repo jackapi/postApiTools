@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 /// </summary>
 namespace postApiTools.lib
 {
-
+    using System.Data;
     using System.Data.SQLite;
     public class pSqlite
     {
@@ -28,22 +28,37 @@ namespace postApiTools.lib
         /// <param name="path"></param>
         public pSqlite(string path = "")
         {
-            if (path == "")
+            try
             {
-                link();
+                if (path == "")
+                {
+                    link();
+                }
+                else
+                {
+                    conn = null;
+                    string dbPath = path;
+                    conn = new SQLiteConnection("data source=" + dbPath);
+                    conn.Open();
+                }
+
             }
-            else
+            catch (Exception ex)
             {
+                error = "打开数据库失败!";
                 conn = null;
-                string dbPath = path;
-                conn = new SQLiteConnection("data source=" + dbPath);
-                conn.Open();
+                pLogs.logs(ex.ToString());
             }
         }
 
         public void link(string path = "")
         {
             if (path == "")
+            {
+                conn = new SQLiteConnection("data source=" + path);
+                conn.Open();
+            }
+            else
             {
                 conn = new SQLiteConnection("data source=" + path);
                 conn.Open();
@@ -77,6 +92,36 @@ namespace postApiTools.lib
             }
 
         }
+
+        /// <summary>
+        /// 获取所有表
+        /// </summary>
+        /// <returns></returns>
+        public DataTable getTable(string path = "")
+        {
+            try
+            {
+                if (path == "")
+                {
+                    return conn.GetSchema("TABLES");
+                }
+                if (conn != null) { conn.Close(); conn = null; }
+                link(path);
+                return conn.GetSchema("TABLES");
+            }
+            catch (Exception ex)
+            {
+                error = "错误:" + ex.ToString();
+                pLogs.logs(ex.ToString());
+                return null;
+            }
+        }
+
+        public void close()
+        {
+            if (conn != null) { conn.Close(); conn = null; }
+        }
+
         /// <summary>
         /// 插入数据
         /// </summary>
@@ -160,6 +205,19 @@ namespace postApiTools.lib
                 pLogs.logs("sql:" + sql + " " + ex.ToString());
                 return rowsList;
             }
+        }
+
+        /// <summary>
+        /// 获取查询指定表
+        /// </summary>
+        /// <param name="table"></param>
+        /// <param name="page"></param>
+        /// <param name="size"></param>
+        /// <returns></returns>
+        public Dictionary<int, object> getTableListData(string table, string page = "0", string size = "1000")
+        {
+            string sql = string.Format("select *from {0} limit {1},{2}", table, page, size);
+            return getRows(sql);
         }
     }
 }

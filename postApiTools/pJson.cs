@@ -22,7 +22,15 @@ namespace postApiTools
         /// <returns></returns>
         public static JObject jsonToJobject(string jsonString)
         {
-            try { return (JObject)JsonConvert.DeserializeObject(jsonString); } catch { return null; }
+            try
+            {
+                return (JObject)JsonConvert.DeserializeObject(jsonString);
+            }
+            catch (Exception ex)
+            {
+                pLogs.logs("json:" + jsonString + " " + ex.ToString());
+                return null;
+            }
 
         }
         /// <summary>

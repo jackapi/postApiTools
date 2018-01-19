@@ -34,34 +34,34 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(pStringUrlDataTo));
-            this.skinChatRichTextBox1 = new CCWin.SkinControl.SkinChatRichTextBox();
+            this.skinChatRichTextBox_content = new CCWin.SkinControl.SkinChatRichTextBox();
             this.skinContextMenuStrip_text = new CCWin.SkinControl.SkinContextMenuStrip();
             this.ToolStripMenuItem_paste = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItem_empty = new System.Windows.Forms.ToolStripMenuItem();
             this.skinDataGridView1 = new CCWin.SkinControl.SkinDataGridView();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.skinButton_save = new CCWin.SkinControl.SkinButton();
             this.skinButton_close = new CCWin.SkinControl.SkinButton();
             this.skinLabel1 = new CCWin.SkinControl.SkinLabel();
             this.skinLabel2 = new CCWin.SkinControl.SkinLabel();
             this.skinComboBox1 = new CCWin.SkinControl.SkinComboBox();
             this.skinButton_create = new CCWin.SkinControl.SkinButton();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.skinContextMenuStrip_text.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.skinDataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
-            // skinChatRichTextBox1
+            // skinChatRichTextBox_content
             // 
-            this.skinChatRichTextBox1.ContextMenuStrip = this.skinContextMenuStrip_text;
-            this.skinChatRichTextBox1.Location = new System.Drawing.Point(22, 65);
-            this.skinChatRichTextBox1.Name = "skinChatRichTextBox1";
-            this.skinChatRichTextBox1.SelectControl = null;
-            this.skinChatRichTextBox1.SelectControlIndex = 0;
-            this.skinChatRichTextBox1.SelectControlPoint = new System.Drawing.Point(0, 0);
-            this.skinChatRichTextBox1.Size = new System.Drawing.Size(522, 144);
-            this.skinChatRichTextBox1.TabIndex = 0;
-            this.skinChatRichTextBox1.Text = "";
+            this.skinChatRichTextBox_content.ContextMenuStrip = this.skinContextMenuStrip_text;
+            this.skinChatRichTextBox_content.Location = new System.Drawing.Point(22, 65);
+            this.skinChatRichTextBox_content.Name = "skinChatRichTextBox_content";
+            this.skinChatRichTextBox_content.SelectControl = null;
+            this.skinChatRichTextBox_content.SelectControlIndex = 0;
+            this.skinChatRichTextBox_content.SelectControlPoint = new System.Drawing.Point(0, 0);
+            this.skinChatRichTextBox_content.Size = new System.Drawing.Size(522, 144);
+            this.skinChatRichTextBox_content.TabIndex = 0;
+            this.skinChatRichTextBox_content.Text = "";
             // 
             // skinContextMenuStrip_text
             // 
@@ -91,6 +91,7 @@
             this.skinContextMenuStrip_text.TitleColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(228)))), ((int)(((byte)(236)))));
             this.skinContextMenuStrip_text.TitleRadius = 4;
             this.skinContextMenuStrip_text.TitleRadiusStyle = CCWin.SkinClass.RoundStyle.All;
+            this.skinContextMenuStrip_text.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.skinContextMenuStrip_text_ItemClicked);
             // 
             // ToolStripMenuItem_paste
             // 
@@ -152,18 +153,6 @@
             this.skinDataGridView1.TitleBack = null;
             this.skinDataGridView1.TitleBackColorBegin = System.Drawing.Color.White;
             this.skinDataGridView1.TitleBackColorEnd = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(196)))), ((int)(((byte)(242)))));
-            // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "参数";
-            this.Column1.Name = "Column1";
-            this.Column1.Width = 200;
-            // 
-            // Column2
-            // 
-            this.Column2.HeaderText = "值";
-            this.Column2.Name = "Column2";
-            this.Column2.Width = 200;
             // 
             // skinButton_save
             // 
@@ -248,6 +237,18 @@
             this.skinButton_create.UseVisualStyleBackColor = false;
             this.skinButton_create.Click += new System.EventHandler(this.skinButton_create_Click);
             // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "参数";
+            this.Column1.Name = "Column1";
+            this.Column1.Width = 220;
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "值";
+            this.Column2.Name = "Column2";
+            this.Column2.Width = 220;
+            // 
             // pStringUrlDataTo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -260,7 +261,7 @@
             this.Controls.Add(this.skinButton_close);
             this.Controls.Add(this.skinButton_save);
             this.Controls.Add(this.skinDataGridView1);
-            this.Controls.Add(this.skinChatRichTextBox1);
+            this.Controls.Add(this.skinChatRichTextBox_content);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
@@ -269,6 +270,7 @@
             this.Name = "pStringUrlDataTo";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "字符串参数快速转换";
+            this.Load += new System.EventHandler(this.pStringUrlDataTo_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.pStringUrlDataTo_KeyDown);
             this.skinContextMenuStrip_text.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.skinDataGridView1)).EndInit();
@@ -279,18 +281,18 @@
 
         #endregion
 
-        private CCWin.SkinControl.SkinChatRichTextBox skinChatRichTextBox1;
+        private CCWin.SkinControl.SkinChatRichTextBox skinChatRichTextBox_content;
         private CCWin.SkinControl.SkinDataGridView skinDataGridView1;
         private CCWin.SkinControl.SkinButton skinButton_save;
         private CCWin.SkinControl.SkinButton skinButton_close;
         private CCWin.SkinControl.SkinLabel skinLabel1;
         private CCWin.SkinControl.SkinLabel skinLabel2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private CCWin.SkinControl.SkinContextMenuStrip skinContextMenuStrip_text;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItem_paste;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItem_empty;
         private CCWin.SkinControl.SkinComboBox skinComboBox1;
         private CCWin.SkinControl.SkinButton skinButton_create;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
     }
 }

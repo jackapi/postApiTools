@@ -66,7 +66,7 @@ namespace postApiTools
         /// <param name="name">名称</param>
         /// <param name="desc">描述</param>
         /// <returns></returns>
-        public static bool insertMain(string name, string desc)
+        public static bool insertMain(string name, string desc, TreeView tv)
         {
             error = "";
             create();//运行就进行判断
@@ -84,6 +84,13 @@ namespace postApiTools
                 sql = string.Format(sql, hash, 0, 0, name, desc, lib.pApizlHttp.project_hash, lib.pDate.getTimeStamp(), lib.pDate.getTimeStamp());
                 if (sqlite.executeNonQuery(sql) > 0)
                 {
+                    //无刷新添加
+                    tv.Invoke(new Action(() =>
+                    {
+                        TreeNode tn = tv.Nodes.Add(hash, name);
+                        tn.ImageIndex = 0;
+                        tn.SelectedImageIndex = 0;
+                    }));
                     return true;
                 }
             }
@@ -257,6 +264,12 @@ namespace postApiTools
             sql = string.Format(sql, hash, projectHash, 0, name, "", serverHash, lib.pDate.getTimeStamp(), lib.pDate.getTimeStamp());
             sqlite.executeNonQuery(sql);
         }
+
+        /// <summary>
+        /// 添加文档创建果
+        /// </summary>
+        public static string addApiHash = "";
+
         /// <summary>
         /// 添加接口文档
         /// </summary>
@@ -268,7 +281,9 @@ namespace postApiTools
         /// <param name="urlData"></param>
         public static bool addApi(TreeView t, string name, string desc, string url, string urlType, string[,] urlData)
         {
+            addApiHash = "";
             string hash = lib.pBase.getHash();
+            if (t.SelectedNode == null) { error = "选择节点保存！"; return false; }
             string project_id = t.SelectedNode.Name;
             string urlDataStr = lib.pBase64.stringToBase64(pJson.objectToJsonStr(urlData));
             Dictionary<string, string> d = sqlite.getOne(string.Format("select *from {0} where hash='{1}'", tableSetting, project_id));
@@ -283,6 +298,7 @@ namespace postApiTools
                 if (sqlite.executeNonQuery(sql) > 0)
                 {
 
+                    addApiHash = hash;//返回id
                     Config.websocket.sendServerHashCreate(lib.pApizlHttp.project_hash);//发送文档创建推送
                     return true;
                 }
@@ -319,6 +335,7 @@ namespace postApiTools
         /// <returns></returns>
         public static bool deleteTreeViewSetting(TreeView t)
         {
+            if (t.SelectedNode == null) { return false; }
             string hash = t.SelectedNode.Name;
             Dictionary<string, string> d = sqlite.getOne(string.Format("select *from {0} where pid='{1}'", tableSetting, hash));
             Dictionary<string, string> dApi = sqlite.getOne(string.Format("select *from {0} where hash='{1}'", table, hash));
@@ -362,6 +379,7 @@ namespace postApiTools
             }
             if (sqlite.executeNonQuery(sql) > 0)
             {
+                t.SelectedNode.Remove();//删除当前
                 return true;
             }
             else
@@ -378,6 +396,7 @@ namespace postApiTools
         /// <returns></returns>
         public static bool updateNameTreeViewSetting(TreeView t, string name)
         {
+            if (t.SelectedNode == null) { error = "请选中在修改"; return false; }
             string hash = t.SelectedNode.Name;
             if (isApiHash(hash))//判断是否为文档
             {
@@ -389,6 +408,7 @@ namespace postApiTools
             string sql = string.Format("update  {0} set name='{1}'  where hash='{2}'", tableSetting, name, hash);
             if (sqlite.executeNonQuery(sql) > 0)
             {
+                t.SelectedNode.Text = name;
                 if (nowHash["server_hash"].Length > 0)
                 {
                     lib.pApizlHttp.editProjectInfo(nowHash["server_hash"], name, "", "0");//远程项目修改 
@@ -464,7 +484,7 @@ namespace postApiTools
         /// <param name="ParentNods">节点集合</param>
         /// <param name="name">要查找的名字</param>
         /// <returns>目标节点</returns>
-        private static TreeNode FindNodeByName(TreeNodeCollection ParentNods, string name)
+        public static TreeNode FindNodeByName(TreeNodeCollection ParentNods, string name)
         {
             TreeNode temNode = null;
             foreach (TreeNode tn in ParentNods)
@@ -629,12 +649,22 @@ namespace postApiTools
         }
 
         /// <summary>
+        /// 判断一个线上文章是否存在
+        /// </summary>
+        /// <param name="serverHash"></param>
+        /// <returns></returns>
+        public static bool isDocumentServerHash(string serverHash)
+        {
+            return sqlite.getOne(string.Format("select *from {0} where server_hash='{1}'", table, serverHash)).Count > 0 ? true : false;
+        }
+        /// <summary>
         /// 线上推送创建文档
         /// </summary>
         /// <param name="serverHash"></param>
         /// <returns></returns>
-        public static bool webSocketDocumentCreate(string serverHash)
+        public static bool webSocketDocumentCreate(string serverHash, TreeView tv)
         {
+            string hash = lib.pBase.getHash();
             JObject job = lib.pApizlHttp.getDocument(serverHash);
             if (job == null)
             {
@@ -645,10 +675,21 @@ namespace postApiTools
             if (job["code"].ToString() == "0") { error = job["msg"].ToString(); return false; }
             JObject result = (JObject)job["result"];
 
-            Dictionary<string, string> d = sqlite.getOne(string.Format("select *from {0} where server_hash='{1}'", tableSetting, result["project_id"].ToString()));
-            if (d.Count <= 0) { return false; }
+            if (isDocumentServerHash(serverHash)) { return true; }//判断文章是否存在
 
-            int rows = addApiSql(lib.pBase.getHash(), d["hash"], result["name"].ToString(), result["desc"].ToString(), result["url"].ToString(), result["urldata"].ToString(), result["method"].ToString(), serverHash);
+            Dictionary<string, string> d = sqlite.getOne(string.Format("select *from {0} where server_hash='{1}'", tableSetting, result["project_id"].ToString()));
+
+            if (d.Count <= 0) { error = "创建文档错误！请重新拉取！"; return false; }//判断上级是否为空
+
+            tv.Invoke(new Action(() =>
+            {
+                TreeNode tn = pForm1TreeView.FindNodeByName(tv.Nodes, d["hash"]);//返回节点
+                TreeNode addtn = tn.Nodes.Add(hash, result["name"].ToString());//无刷新显示添加
+                addtn.ImageIndex = 1; //设置显示图片
+                addtn.SelectedImageIndex = 1;//设置显示图片
+            }));
+
+            int rows = addApiSql(hash, d["hash"], result["name"].ToString(), result["desc"].ToString(), result["url"].ToString(), result["urldata"].ToString(), result["method"].ToString(), serverHash);
             error = sqlite.error;
             return rows > 0 ? true : false;
         }
@@ -661,13 +702,22 @@ namespace postApiTools
         /// </summary>
         /// <param name="serverHash"></param>
         /// <returns></returns>
-        public static bool webSocketDocumentDelete(string serverHash)
+        public static bool webSocketDocumentDelete(string serverHash, TreeView tv)
         {
             webSocketDocumentDeleteResult = sqlite.getOne(string.Format("select *from {0} where server_hash='{1}'", table, serverHash));//输出删除前数据
+            if (webSocketDocumentDeleteResult.Count <= 0) { error = "不存在文档"; return false; }
             int rows = sqlite.executeNonQuery(string.Format("delete from {0} where server_hash='{1}'", table, serverHash));//删除文档
             if (rows <= 0)
             {
                 Form1.f.TextShowlogs("自动删除文档失败:" + serverHash, "error");
+            }
+            if (rows > 0)
+            {
+                tv.Invoke(new Action(() =>
+                {
+                    TreeNode tn = pForm1TreeView.FindNodeByName(tv.Nodes, webSocketDocumentDeleteResult["hash"]);//返回节点
+                    tn.Remove();//删除节点
+                }));
             }
             error = sqlite.error;
             return rows > 0 ? true : false;
@@ -714,7 +764,7 @@ namespace postApiTools
         /// </summary>
         /// <param name="serverHash"></param>
         /// <returns></returns>
-        public static bool webSocketProjectCreate(string serverHash)
+        public static bool webSocketProjectCreate(string serverHash, TreeView tv)
         {
             JObject job = lib.pApizlHttp.getProjectInfo(serverHash);
             if (job == null) { error = lib.pApizlHttp.error; return false; }
@@ -725,6 +775,7 @@ namespace postApiTools
                 Form1.f.TextShowlogs("自动创建项目失败:" + error, "error");
                 return false;
             }
+            string hash = lib.pBase.getHash();
             string nowHash = job["result"]["hash"].ToString();
             string pidHash = job["result"]["pid"].ToString();
             JObject result = (JObject)job["result"];
@@ -735,7 +786,14 @@ namespace postApiTools
                 if (d == null) { error = "远程项目错误"; return false; }
                 if (!isOneProjectSettingServerHash(nowHash))//判断是否存在  存在就不进行创建操作
                 {
-                    sqlite.executeNonQuery(string.Format("insert into {0} (hash,pid,sort,name,desc,server_hash,server_update,addtime)values('{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}')", tableSetting, lib.pBase.getHash(), d["hash"], 0, result["name"].ToString(), result["desc"].ToString(), result["hash"].ToString(), lib.pDate.getTimeStamp(), lib.pDate.getTimeStamp()));
+                    sqlite.executeNonQuery(string.Format("insert into {0} (hash,pid,sort,name,desc,server_hash,server_update,addtime)values('{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}')", tableSetting, hash, d["hash"], 0, result["name"].ToString(), result["desc"].ToString(), result["hash"].ToString(), lib.pDate.getTimeStamp(), lib.pDate.getTimeStamp()));
+                    tv.Invoke(new Action(() =>
+                    {
+                        TreeNode tn = pForm1TreeView.FindNodeByName(tv.Nodes, d["hash"]);//返回节点
+                        TreeNode addtn = tn.Nodes.Add(hash, result["name"].ToString());//无刷新显示添加
+                        addtn.ImageIndex = 0; //设置显示图片
+                        addtn.SelectedImageIndex = 0;//设置显示图片
+                    }));
                 }
             }
             else
@@ -750,7 +808,7 @@ namespace postApiTools
         /// </summary>
         /// <param name="serverHash"></param>
         /// <returns></returns>
-        public static bool webSocketProjectUpdate(string serverHash)
+        public static bool webSocketProjectUpdate(string serverHash, TreeView tv)
         {
             JObject job = lib.pApizlHttp.getProjectInfo(serverHash);
             if (job == null) { error = lib.pApizlHttp.error; return false; }
@@ -772,6 +830,12 @@ namespace postApiTools
                 if (isOneProjectSettingServerHash(nowHash))//判断是否存在  存在就不进行创建操作
                 {
                     sqlite.executeNonQuery(string.Format("update {0} set name='{1}',desc='{2}',sort='{3}' ,server_update='{4}' where server_hash='{5}'", tableSetting, result["name"].ToString(), result["desc"].ToString(), result["sort"].ToString(), lib.pDate.getTimeStamp(), serverHash));
+                    tv.Invoke(new Action(() =>
+                    {
+                        Dictionary<string, string> nowResult = getOneProjectSettingServerHash(nowHash);
+                        TreeNode tn = pForm1TreeView.FindNodeByName(tv.Nodes, nowResult["hash"]);//返回节点
+                        tn.Text = result["name"].ToString();
+                    }));
                 }
                 else
                 {

@@ -23,8 +23,9 @@ namespace postApiTools.lib
                 JObject job = (JObject)JsonConvert.DeserializeObject(json);
                 return job;
             }
-            catch (Exception ex ) {
-                pLogs.logs(ex.ToString());
+            catch (Exception ex)
+            {
+                pLogs.logs("json:" + json + " " + ex.ToString());
                 return null;
             }
         }

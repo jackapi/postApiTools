@@ -11,6 +11,9 @@
     <AssemblyName>postApiTools</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -47,6 +50,48 @@
   <PropertyGroup>
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="CSkin">
       <HintPath>..\CSkin.dll</HintPath>
@@ -75,6 +120,10 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WebKitBrowser">
+      <HintPath>bin\webkit\WebKitBrowser.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="websocket-sharp">
       <HintPath>..\websocket-sharp.dll</HintPath>
     </Reference>
@@ -156,11 +205,25 @@
     <Compile Include="FormPHPMore\CreateYiiMigrate.Designer.cs">
       <DependentUpon>CreateYiiMigrate.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormPHPMore\Data\addSqlite.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPHPMore\Data\addSqlite.Designer.cs">
+      <DependentUpon>addSqlite.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormPHPMore\Data\DataBaseType.cs" />
+    <Compile Include="FormPHPMore\Data\pDataManageClass.cs" />
     <Compile Include="FormPHPMore\pDataManage.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormPHPMore\pDataManage.Designer.cs">
       <DependentUpon>pDataManage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormPHPMore\pYiiModel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPHPMore\pYiiModel.Designer.cs">
+      <DependentUpon>pYiiModel.cs</DependentUpon>
     </Compile>
     <Compile Include="FormRole\addUserToRole.cs">
       <SubType>Form</SubType>
@@ -295,8 +358,14 @@
     <EmbeddedResource Include="FormPHPMore\CreateYiiMigrate.resx">
       <DependentUpon>CreateYiiMigrate.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormPHPMore\Data\addSqlite.resx">
+      <DependentUpon>addSqlite.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormPHPMore\pDataManage.resx">
       <DependentUpon>pDataManage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormPHPMore\pYiiModel.resx">
+      <DependentUpon>pYiiModel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormRole\addUserToRole.resx">
       <DependentUpon>addUserToRole.cs</DependentUpon>
@@ -341,6 +410,45 @@
     <EmbeddedResource Include="WebSocket\pMain.resx">
       <DependentUpon>pMain.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="bin\webkit\CFLite.resources\CFCharacterSetBitmaps.bitmap">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="bin\webkit\CFLite.resources\CFUniCharPropertyDatabase.data">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="bin\webkit\CFLite.resources\CFUnicodeData-L.mapping">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="bin\webkit\CFLite.resources\Info.plist">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="bin\webkit\JavaScriptCore.resources\Info.plist">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="bin\webkit\WebKit.resources\certificates\cacert.pem">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="bin\webkit\WebKit.resources\en.lproj\Localizable.strings">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="bin\webkit\WebKit.resources\Info.plist">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="bin\webkit\WebKit.resources\inspector\SourceCSSTokenizer.re2js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="bin\webkit\WebKit.resources\inspector\SourceHTMLTokenizer.re2js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="bin\webkit\WebKit.resources\inspector\SourceJavaScriptTokenizer.re2js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="bin\webkit\WebKit.resources\inspector\WebKit.qrc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="bin\webkit\WebKitBrowser.dll.manifest">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -356,6 +464,837 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="bin\webkit\CFLite.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\icudt40.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\icuin40.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\icuuc40.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\JavaScriptCore.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\libcurl.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\libeay32.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\libexslt.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\libxml2.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\libxslt.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\objc.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\pthreadVC2.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\SQLite3.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\ssleay32.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.Interop.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\en.lproj\localizedStrings.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\AbstractTimelinePanel.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\ApplicationCacheItemsView.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\AuditCategories.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\AuditLauncherView.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\AuditResultView.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\AuditRules.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\audits.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\AuditsPanel.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\BottomUpProfileDataGridTree.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\BreakpointManager.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\BreakpointsSidebarPane.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Callback.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\CallStackSidebarPane.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\ChangesView.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Checkbox.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Color.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\ConsolePanel.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\ConsoleView.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\ContextMenu.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\CookieItemsView.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\CSSCompletions.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\CSSStyleModel.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Database.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\DatabaseQueryView.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\DatabaseTableView.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\DataGrid.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\DOMAgent.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\DOMStorage.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\DOMStorageItemsView.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\DOMSyntaxHighlighter.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Drawer.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\ElementsPanel.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\ElementsTreeOutline.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\EventListenersSidebarPane.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\FontView.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\HAREntry.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\helpScreen.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\HelpScreen.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\applicationCache.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\auditsIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\back.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\breakpointBorder.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\breakpointConditionalBorder.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\breakpointConditionalCounterBorder.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\breakpointCounterBorder.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\breakpointsActivateButtonGlyph.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\breakpointsDeactivateButtonGlyph.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\checker.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\clearConsoleButtonGlyph.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\closeButtons.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\consoleButtonGlyph.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\consoleIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\cookie.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\database.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\databaseTable.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\debuggerContinue.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\debuggerPause.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\debuggerStepInto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\debuggerStepOut.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\debuggerStepOver.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\disclosureTriangleSmallDown.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\disclosureTriangleSmallDownBlack.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\disclosureTriangleSmallDownWhite.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\disclosureTriangleSmallRight.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\disclosureTriangleSmallRightBlack.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\disclosureTriangleSmallRightDown.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\disclosureTriangleSmallRightDownBlack.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\disclosureTriangleSmallRightDownWhite.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\disclosureTriangleSmallRightWhite.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\dockButtonGlyph.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\elementsIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\enableOutlineButtonGlyph.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\enableSolidButtonGlyph.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\errorIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\errorMediumIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\errorRedDot.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\excludeButtonGlyph.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\focusButtonGlyph.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\forward.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\gearButtonGlyph.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\glossyHeader.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\glossyHeaderPressed.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\glossyHeaderSelected.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\glossyHeaderSelectedPressed.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\goArrow.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\graphLabelCalloutLeft.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\graphLabelCalloutRight.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\grayConnectorPoint.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\largerResourcesButtonGlyph.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\localStorage.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\nodeSearchButtonGlyph.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\paneBottomGrow.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\paneBottomGrowActive.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\paneGrowHandleLine.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\paneSettingsButtons.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\pauseOnExceptionButtonGlyph.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\percentButtonGlyph.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\popoverArrows.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\popoverBackground.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\profileGroupIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\profileIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\profilesIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\profileSmallIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\profilesSilhouette.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\programCounterBorder.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\radioDot.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\recordButtonGlyph.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\recordToggledButtonGlyph.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\reloadButtonGlyph.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\resourceCSSIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\resourceDocumentIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\resourceDocumentIconSmall.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\resourceJSIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\resourcePlainIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\resourcePlainIconSmall.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\resourcesIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\resourcesSilhouette.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\resourcesSizeGraphIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\resourcesTimeGraphIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\scriptsIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\scriptsSilhouette.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\searchSmallBlue.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\searchSmallBrightBlue.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\searchSmallGray.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\searchSmallWhite.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\segment.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\segmentEnd.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\segmentHover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\segmentHoverEnd.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\segmentSelected.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\segmentSelectedEnd.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\sessionStorage.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\spinner.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\splitviewDimple.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\splitviewDividerBackground.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\statusbarBackground.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\statusbarBottomBackground.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\statusbarButtons.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\statusbarMenuButton.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\statusbarMenuButtonSelected.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\statusbarResizerHorizontal.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\statusbarResizerVertical.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\storageIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\successGreenDot.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\thumbActiveHoriz.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\thumbActiveVert.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\thumbHoriz.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\thumbHoverHoriz.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\thumbHoverVert.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\thumbVert.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\timelineBarBlue.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\timelineBarGray.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\timelineBarGreen.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\timelineBarOrange.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\timelineBarPurple.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\timelineBarRed.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\timelineBarYellow.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\timelineCheckmarks.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\timelineDots.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\timelineHollowPillBlue.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\timelineHollowPillGray.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\timelineHollowPillGreen.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\timelineHollowPillOrange.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\timelineHollowPillPurple.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\timelineHollowPillRed.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\timelineHollowPillYellow.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\timelineIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\timelinePillBlue.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\timelinePillGray.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\timelinePillGreen.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\timelinePillOrange.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\timelinePillPurple.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\timelinePillRed.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\timelinePillYellow.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\toolbarItemSelected.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\trackHoriz.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\trackVert.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\treeDownTriangleBlack.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\treeDownTriangleWhite.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\treeRightTriangleBlack.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\treeRightTriangleWhite.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\treeUpTriangleBlack.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\treeUpTriangleWhite.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\undockButtonGlyph.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\userInputIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\userInputPreviousIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\userInputResultIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\warningIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\warningMediumIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\warningOrangeDot.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\warningsErrors.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Images\whiteConnectorPoint.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\ImageView.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\InjectedFakeWorker.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\InjectedScript.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\InjectedScriptAccess.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\inspector.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\inspector.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\inspector.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\InspectorBackendStub.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\InspectorFrontendHostStub.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\inspectorSyntaxHighlight.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\KeyboardShortcut.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\MetricsSidebarPane.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Object.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\ObjectPropertiesSection.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\ObjectProxy.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Panel.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\PanelEnablerView.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Placard.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\popover.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Popover.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\ProfileDataGridTree.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\ProfilesPanel.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\ProfileView.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\PropertiesSection.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\PropertiesSidebarPane.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Resource.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\ResourceCategory.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\ResourcesPanel.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\ResourceView.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\ScopeChainSidebarPane.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Script.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\ScriptsPanel.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\ScriptView.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Section.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\Settings.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\ShortcutsHelp.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\SidebarPane.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\SidebarTreeElement.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\SourceCSSTokenizer.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\SourceFrame.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\SourceHTMLTokenizer.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\SourceJavaScriptTokenizer.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\SourceTokenizer.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\SourceView.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\StatusBarButton.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\StoragePanel.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\StylesSidebarPane.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\SummaryBar.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\TabbedPane.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\TestController.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\TextEditorHighlighter.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\TextEditorModel.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\TextPrompt.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\textViewer.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\TextViewer.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\TimelineAgent.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\TimelineGrid.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\TimelineOverviewPane.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\TimelinePanel.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\TopDownProfileDataGridTree.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\treeoutline.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\utilities.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\View.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\WatchExpressionsSidebarPane.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\WelcomeView.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKit.resources\inspector\WorkersSidebarPane.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKitBrowser.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\webkit\WebKitBrowserTest.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="data\help.key.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -364,6 +1303,8 @@
     </Content>
     <Content Include="images\article_64px_1188314_easyicon.net.ico" />
     <Content Include="images\folder_64px_1207828_easyicon.net.ico" />
+    <Content Include="images\server_database_48px_572104_easyicon.net.png" />
+    <Content Include="images\Table_32px_1133058_easyicon.net.png" />
     <Content Include="license.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

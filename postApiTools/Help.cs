@@ -31,6 +31,7 @@ namespace postApiTools
             supply.Add("Newtonsoft.Json", "https://www.newtonsoft.com/json");
             supply.Add("websocket-sharp", "https://github.com/sta/websocket-sharp");
             supply.Add("mysql", "https://dev.mysql.com/");
+            supply.Add("WebKit .NET", "http://webkitdotnet.sourceforge.net/");
             int i = 1;
             foreach (var item in supply)
             {

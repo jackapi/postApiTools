@@ -153,16 +153,6 @@ namespace postApiTools
                 MessageBox.Show("请填写正确URL");
                 return;
             }
-            if (url == "")
-            {
-                MessageBox.Show("url不能为空");
-                return;
-            }
-            if (name == "" || password == "")
-            {
-                MessageBox.Show("账号密码不能为空!");
-                return;
-            }
             pSetting.saveUrlNamePassword(url, name, password, update, agreed);
             pSetting.saveSocket(ip, port, force);//socket
             MessageBox.Show("设置成功！");

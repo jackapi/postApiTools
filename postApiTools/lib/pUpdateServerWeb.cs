@@ -303,7 +303,7 @@ namespace postApiTools.lib
             for (int i = 0; i < noneList.Count; i++)//创建本地项目
             {
                 Dictionary<string, string> result = (Dictionary<string, string>)noneList[i];
-                pForm1TreeView.insertMain(result["name"], result["desc"]);
+                //pForm1TreeView.insertMain(result["name"], result["desc"]);
                 for (int g = 0; g < serverList.Count; g++)
                 {
                     if (serverList[i]["name"].ToString() == result["name"])

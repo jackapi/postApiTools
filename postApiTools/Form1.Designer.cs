@@ -44,6 +44,7 @@
             this.Column12 = new System.Windows.Forms.DataGridViewButtonColumn();
             this.contextMenuStrip_urldata_dataview = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.ToolStripMenuItem_stringToUrlData = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItem_out_urldata = new System.Windows.Forms.ToolStripMenuItem();
             this.清空ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage4 = new System.Windows.Forms.TabPage();
@@ -52,7 +53,6 @@
             this.comboBox_html_show_type = new System.Windows.Forms.ComboBox();
             this.textBox_html = new System.Windows.Forms.TextBox();
             this.tabPage5 = new System.Windows.Forms.TabPage();
-            this.webBrowser1 = new System.Windows.Forms.WebBrowser();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.dataGridView_header = new System.Windows.Forms.DataGridView();
             this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -114,6 +114,11 @@
             this.ToolStripMenuItem_tools = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItem_dataManage = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItem_websocket_tools = new System.Windows.Forms.ToolStripMenuItem();
+            this.pHP相关ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItem_yii = new System.Windows.Forms.ToolStripMenuItem();
+            this.模型功能ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.迁移生成ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItem_tp = new System.Windows.Forms.ToolStripMenuItem();
             this.项目管理ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItem_stop_server = new System.Windows.Forms.ToolStripMenuItem();
             this.拉取ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -128,14 +133,12 @@
             this.skinContextMenuStrip_user_name = new CCWin.SkinControl.SkinContextMenuStrip();
             this.用户登录ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.清理登录ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ToolStripMenuItem_out_urldata = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_http_data)).BeginInit();
             this.contextMenuStrip_urldata_dataview.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabPage4.SuspendLayout();
-            this.tabPage5.SuspendLayout();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_header)).BeginInit();
             this.tabPage3.SuspendLayout();
@@ -153,9 +156,10 @@
             // 
             // button_test
             // 
-            this.button_test.Location = new System.Drawing.Point(850, 54);
+            this.button_test.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button_test.Location = new System.Drawing.Point(889, 56);
             this.button_test.Name = "button_test";
-            this.button_test.Size = new System.Drawing.Size(75, 25);
+            this.button_test.Size = new System.Drawing.Size(99, 29);
             this.button_test.TabIndex = 0;
             this.button_test.Text = "提交测试";
             this.button_test.UseVisualStyleBackColor = true;
@@ -164,17 +168,18 @@
             // label1
             // 
             this.label1.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(232, 59);
+            this.label1.Location = new System.Drawing.Point(173, 57);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 18);
+            this.label1.Size = new System.Drawing.Size(42, 23);
             this.label1.TabIndex = 1;
             this.label1.Text = "URL";
             // 
             // textBox_url
             // 
-            this.textBox_url.Location = new System.Drawing.Point(273, 56);
+            this.textBox_url.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.textBox_url.Location = new System.Drawing.Point(221, 56);
             this.textBox_url.Name = "textBox_url";
-            this.textBox_url.Size = new System.Drawing.Size(571, 21);
+            this.textBox_url.Size = new System.Drawing.Size(657, 26);
             this.textBox_url.TabIndex = 2;
             this.textBox_url.WordWrap = false;
             this.textBox_url.TextChanged += new System.EventHandler(this.textBox_url_TextChanged);
@@ -183,13 +188,15 @@
             // comboBox_url_type
             // 
             this.comboBox_url_type.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox_url_type.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.comboBox_url_type.FormattingEnabled = true;
+            this.comboBox_url_type.ItemHeight = 16;
             this.comboBox_url_type.Items.AddRange(new object[] {
             "GET",
             "POST"});
-            this.comboBox_url_type.Location = new System.Drawing.Point(98, 56);
+            this.comboBox_url_type.Location = new System.Drawing.Point(46, 56);
             this.comboBox_url_type.Name = "comboBox_url_type";
-            this.comboBox_url_type.Size = new System.Drawing.Size(121, 20);
+            this.comboBox_url_type.Size = new System.Drawing.Size(121, 24);
             this.comboBox_url_type.TabIndex = 3;
             // 
             // tabControl1
@@ -201,10 +208,10 @@
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage6);
-            this.tabControl1.Location = new System.Drawing.Point(263, 112);
+            this.tabControl1.Location = new System.Drawing.Point(263, 140);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(993, 572);
+            this.tabControl1.Size = new System.Drawing.Size(993, 544);
             this.tabControl1.TabIndex = 4;
             // 
             // tabPage1
@@ -214,7 +221,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(985, 546);
+            this.tabPage1.Size = new System.Drawing.Size(985, 518);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "数据";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -285,20 +292,27 @@
             this.ToolStripMenuItem_out_urldata,
             this.清空ToolStripMenuItem});
             this.contextMenuStrip_urldata_dataview.Name = "contextMenuStrip_urldata_dataview";
-            this.contextMenuStrip_urldata_dataview.Size = new System.Drawing.Size(153, 92);
+            this.contextMenuStrip_urldata_dataview.Size = new System.Drawing.Size(125, 70);
             this.contextMenuStrip_urldata_dataview.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuStrip_urldata_dataview_ItemClicked);
             // 
             // ToolStripMenuItem_stringToUrlData
             // 
             this.ToolStripMenuItem_stringToUrlData.Name = "ToolStripMenuItem_stringToUrlData";
-            this.ToolStripMenuItem_stringToUrlData.Size = new System.Drawing.Size(152, 22);
+            this.ToolStripMenuItem_stringToUrlData.Size = new System.Drawing.Size(124, 22);
             this.ToolStripMenuItem_stringToUrlData.Text = "参数导入";
             this.ToolStripMenuItem_stringToUrlData.Click += new System.EventHandler(this.ToolStripMenuItem_stringToUrlData_Click);
+            // 
+            // ToolStripMenuItem_out_urldata
+            // 
+            this.ToolStripMenuItem_out_urldata.Name = "ToolStripMenuItem_out_urldata";
+            this.ToolStripMenuItem_out_urldata.Size = new System.Drawing.Size(124, 22);
+            this.ToolStripMenuItem_out_urldata.Text = "参数导出";
+            this.ToolStripMenuItem_out_urldata.Click += new System.EventHandler(this.ToolStripMenuItem_out_urldata_Click);
             // 
             // 清空ToolStripMenuItem
             // 
             this.清空ToolStripMenuItem.Name = "清空ToolStripMenuItem";
-            this.清空ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.清空ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.清空ToolStripMenuItem.Text = "清空";
             // 
             // tabControl2
@@ -311,7 +325,7 @@
             this.tabControl2.Location = new System.Drawing.Point(6, 157);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(976, 382);
+            this.tabControl2.Size = new System.Drawing.Size(976, 354);
             this.tabControl2.TabIndex = 0;
             // 
             // tabPage4
@@ -323,7 +337,7 @@
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(968, 356);
+            this.tabPage4.Size = new System.Drawing.Size(968, 328);
             this.tabPage4.TabIndex = 0;
             this.tabPage4.Text = "源码";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -377,31 +391,19 @@
             this.textBox_html.Multiline = true;
             this.textBox_html.Name = "textBox_html";
             this.textBox_html.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox_html.Size = new System.Drawing.Size(968, 326);
+            this.textBox_html.Size = new System.Drawing.Size(968, 298);
             this.textBox_html.TabIndex = 0;
             this.textBox_html.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_html_KeyPress);
             // 
             // tabPage5
             // 
-            this.tabPage5.Controls.Add(this.webBrowser1);
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(968, 356);
+            this.tabPage5.Size = new System.Drawing.Size(968, 328);
             this.tabPage5.TabIndex = 1;
             this.tabPage5.Text = "浏览器";
             this.tabPage5.UseVisualStyleBackColor = true;
-            // 
-            // webBrowser1
-            // 
-            this.webBrowser1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.webBrowser1.Location = new System.Drawing.Point(3, 0);
-            this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
-            this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(962, 353);
-            this.webBrowser1.TabIndex = 0;
             // 
             // tabPage2
             // 
@@ -409,7 +411,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(985, 546);
+            this.tabPage2.Size = new System.Drawing.Size(985, 518);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "提交报文";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -455,7 +457,7 @@
             this.tabPage3.Controls.Add(this.dataGridView_Response);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(985, 546);
+            this.tabPage3.Size = new System.Drawing.Size(985, 518);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "返回报文";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -501,7 +503,7 @@
             this.tabPage6.Location = new System.Drawing.Point(4, 22);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(985, 546);
+            this.tabPage6.Size = new System.Drawing.Size(985, 518);
             this.tabPage6.TabIndex = 3;
             this.tabPage6.Text = "文档";
             this.tabPage6.UseVisualStyleBackColor = true;
@@ -558,7 +560,7 @@
             // 
             // button_creation_doc
             // 
-            this.button_creation_doc.Location = new System.Drawing.Point(550, 84);
+            this.button_creation_doc.Location = new System.Drawing.Point(553, 98);
             this.button_creation_doc.Name = "button_creation_doc";
             this.button_creation_doc.Size = new System.Drawing.Size(75, 23);
             this.button_creation_doc.TabIndex = 5;
@@ -568,7 +570,7 @@
             // 
             // button_test_creation_doc
             // 
-            this.button_test_creation_doc.Location = new System.Drawing.Point(630, 84);
+            this.button_test_creation_doc.Location = new System.Drawing.Point(633, 98);
             this.button_test_creation_doc.Name = "button_test_creation_doc";
             this.button_test_creation_doc.Size = new System.Drawing.Size(75, 23);
             this.button_test_creation_doc.TabIndex = 5;
@@ -580,14 +582,14 @@
             // 
             this.comboBox_template.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox_template.FormattingEnabled = true;
-            this.comboBox_template.Location = new System.Drawing.Point(464, 86);
+            this.comboBox_template.Location = new System.Drawing.Point(467, 100);
             this.comboBox_template.Name = "comboBox_template";
             this.comboBox_template.Size = new System.Drawing.Size(79, 20);
             this.comboBox_template.TabIndex = 6;
             // 
             // button_setting
             // 
-            this.button_setting.Location = new System.Drawing.Point(766, 84);
+            this.button_setting.Location = new System.Drawing.Point(769, 98);
             this.button_setting.Name = "button_setting";
             this.button_setting.Size = new System.Drawing.Size(75, 23);
             this.button_setting.TabIndex = 7;
@@ -598,6 +600,7 @@
             // comboBox_bm
             // 
             this.comboBox_bm.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox_bm.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.comboBox_bm.FormattingEnabled = true;
             this.comboBox_bm.Items.AddRange(new object[] {
             "UTF-8",
@@ -605,15 +608,15 @@
             "GB2312",
             "GB18030",
             "Unicode"});
-            this.comboBox_bm.Location = new System.Drawing.Point(934, 56);
+            this.comboBox_bm.Location = new System.Drawing.Point(994, 57);
             this.comboBox_bm.Name = "comboBox_bm";
-            this.comboBox_bm.Size = new System.Drawing.Size(92, 20);
+            this.comboBox_bm.Size = new System.Drawing.Size(92, 24);
             this.comboBox_bm.TabIndex = 8;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(850, 88);
+            this.label2.Location = new System.Drawing.Point(853, 102);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(35, 12);
             this.label2.TabIndex = 9;
@@ -624,7 +627,7 @@
             this.label_code.AutoSize = true;
             this.label_code.Font = new System.Drawing.Font("宋体", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label_code.ForeColor = System.Drawing.Color.LimeGreen;
-            this.label_code.Location = new System.Drawing.Point(891, 82);
+            this.label_code.Location = new System.Drawing.Point(894, 96);
             this.label_code.Name = "label_code";
             this.label_code.Size = new System.Drawing.Size(43, 21);
             this.label_code.TabIndex = 10;
@@ -633,7 +636,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(944, 88);
+            this.label4.Location = new System.Drawing.Point(947, 102);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(35, 12);
             this.label4.TabIndex = 11;
@@ -645,7 +648,7 @@
             this.label_runtime.AutoSize = true;
             this.label_runtime.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label_runtime.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this.label_runtime.Location = new System.Drawing.Point(983, 85);
+            this.label_runtime.Location = new System.Drawing.Point(986, 99);
             this.label_runtime.Name = "label_runtime";
             this.label_runtime.Size = new System.Drawing.Size(16, 16);
             this.label_runtime.TabIndex = 12;
@@ -654,7 +657,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(425, 91);
+            this.label3.Location = new System.Drawing.Point(428, 105);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(29, 12);
             this.label3.TabIndex = 13;
@@ -663,7 +666,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(259, 91);
+            this.label5.Location = new System.Drawing.Point(262, 105);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(29, 12);
             this.label5.TabIndex = 14;
@@ -671,7 +674,7 @@
             // 
             // textBox_api_name
             // 
-            this.textBox_api_name.Location = new System.Drawing.Point(294, 85);
+            this.textBox_api_name.Location = new System.Drawing.Point(297, 99);
             this.textBox_api_name.Name = "textBox_api_name";
             this.textBox_api_name.Size = new System.Drawing.Size(125, 21);
             this.textBox_api_name.TabIndex = 15;
@@ -683,10 +686,10 @@
             this.tabControl3.Controls.Add(this.tabPage8);
             this.tabControl3.Controls.Add(this.tabPage7);
             this.tabControl3.Controls.Add(this.tabPage_logs);
-            this.tabControl3.Location = new System.Drawing.Point(3, 80);
+            this.tabControl3.Location = new System.Drawing.Point(3, 94);
             this.tabControl3.Name = "tabControl3";
             this.tabControl3.SelectedIndex = 0;
-            this.tabControl3.Size = new System.Drawing.Size(254, 604);
+            this.tabControl3.Size = new System.Drawing.Size(254, 590);
             this.tabControl3.TabIndex = 16;
             // 
             // tabPage8
@@ -701,7 +704,7 @@
             this.tabPage8.Location = new System.Drawing.Point(4, 22);
             this.tabPage8.Name = "tabPage8";
             this.tabPage8.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage8.Size = new System.Drawing.Size(246, 578);
+            this.tabPage8.Size = new System.Drawing.Size(246, 564);
             this.tabPage8.TabIndex = 1;
             this.tabPage8.Text = "保存";
             this.tabPage8.UseVisualStyleBackColor = true;
@@ -771,7 +774,7 @@
             this.treeView_save_list.ContextMenuStrip = this.contextMenuStrip_save_list;
             this.treeView_save_list.Location = new System.Drawing.Point(3, 61);
             this.treeView_save_list.Name = "treeView_save_list";
-            this.treeView_save_list.Size = new System.Drawing.Size(251, 521);
+            this.treeView_save_list.Size = new System.Drawing.Size(251, 507);
             this.treeView_save_list.TabIndex = 2;
             this.treeView_save_list.DoubleClick += new System.EventHandler(this.treeView_save_list_DoubleClick);
             // 
@@ -817,7 +820,7 @@
             this.tabPage7.Location = new System.Drawing.Point(4, 22);
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage7.Size = new System.Drawing.Size(246, 578);
+            this.tabPage7.Size = new System.Drawing.Size(246, 564);
             this.tabPage7.TabIndex = 0;
             this.tabPage7.Text = "历史";
             this.tabPage7.UseVisualStyleBackColor = true;
@@ -838,7 +841,7 @@
             this.tabPage_logs.Location = new System.Drawing.Point(4, 22);
             this.tabPage_logs.Name = "tabPage_logs";
             this.tabPage_logs.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage_logs.Size = new System.Drawing.Size(246, 578);
+            this.tabPage_logs.Size = new System.Drawing.Size(246, 564);
             this.tabPage_logs.TabIndex = 2;
             this.tabPage_logs.Text = "日志";
             this.tabPage_logs.UseVisualStyleBackColor = true;
@@ -892,7 +895,7 @@
             // 
             // button_save_api
             // 
-            this.button_save_api.Location = new System.Drawing.Point(1031, 83);
+            this.button_save_api.Location = new System.Drawing.Point(1092, 94);
             this.button_save_api.Name = "button_save_api";
             this.button_save_api.Size = new System.Drawing.Size(75, 23);
             this.button_save_api.TabIndex = 20;
@@ -914,9 +917,10 @@
             // 
             // button_new_url_http
             // 
-            this.button_new_url_http.Location = new System.Drawing.Point(1031, 55);
+            this.button_new_url_http.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button_new_url_http.Location = new System.Drawing.Point(1092, 56);
             this.button_new_url_http.Name = "button_new_url_http";
-            this.button_new_url_http.Size = new System.Drawing.Size(75, 23);
+            this.button_new_url_http.Size = new System.Drawing.Size(75, 28);
             this.button_new_url_http.TabIndex = 20;
             this.button_new_url_http.Tag = "ctrl+w";
             this.button_new_url_http.Text = "新建";
@@ -937,7 +941,7 @@
             // 
             // button_role
             // 
-            this.button_role.Location = new System.Drawing.Point(711, 84);
+            this.button_role.Location = new System.Drawing.Point(714, 98);
             this.button_role.Name = "button_role";
             this.button_role.Size = new System.Drawing.Size(49, 23);
             this.button_role.TabIndex = 22;
@@ -980,6 +984,7 @@
             this.skinMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.操作ToolStripMenuItem,
             this.ToolStripMenuItem_tools,
+            this.pHP相关ToolStripMenuItem,
             this.项目管理ToolStripMenuItem,
             this.用户管理ToolStripMenuItem,
             this.帮助ToolStripMenuItem});
@@ -1040,6 +1045,45 @@
             this.ToolStripMenuItem_websocket_tools.Size = new System.Drawing.Size(186, 22);
             this.ToolStripMenuItem_websocket_tools.Text = "websocket测试工具";
             this.ToolStripMenuItem_websocket_tools.Click += new System.EventHandler(this.ToolStripMenuItem_websocket_tools_Click);
+            // 
+            // pHP相关ToolStripMenuItem
+            // 
+            this.pHP相关ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ToolStripMenuItem_yii,
+            this.ToolStripMenuItem_tp});
+            this.pHP相关ToolStripMenuItem.Name = "pHP相关ToolStripMenuItem";
+            this.pHP相关ToolStripMenuItem.Size = new System.Drawing.Size(67, 21);
+            this.pHP相关ToolStripMenuItem.Text = "PHP相关";
+            // 
+            // ToolStripMenuItem_yii
+            // 
+            this.ToolStripMenuItem_yii.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.模型功能ToolStripMenuItem,
+            this.迁移生成ToolStripMenuItem});
+            this.ToolStripMenuItem_yii.Name = "ToolStripMenuItem_yii";
+            this.ToolStripMenuItem_yii.Size = new System.Drawing.Size(114, 22);
+            this.ToolStripMenuItem_yii.Text = "Yii相关";
+            this.ToolStripMenuItem_yii.Click += new System.EventHandler(this.ToolStripMenuItem_yii_Click);
+            // 
+            // 模型功能ToolStripMenuItem
+            // 
+            this.模型功能ToolStripMenuItem.Name = "模型功能ToolStripMenuItem";
+            this.模型功能ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.模型功能ToolStripMenuItem.Text = "模型功能";
+            this.模型功能ToolStripMenuItem.Click += new System.EventHandler(this.模型功能ToolStripMenuItem_Click);
+            // 
+            // 迁移生成ToolStripMenuItem
+            // 
+            this.迁移生成ToolStripMenuItem.Name = "迁移生成ToolStripMenuItem";
+            this.迁移生成ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.迁移生成ToolStripMenuItem.Text = "迁移生成";
+            // 
+            // ToolStripMenuItem_tp
+            // 
+            this.ToolStripMenuItem_tp.Name = "ToolStripMenuItem_tp";
+            this.ToolStripMenuItem_tp.Size = new System.Drawing.Size(114, 22);
+            this.ToolStripMenuItem_tp.Text = "TP相关";
+            this.ToolStripMenuItem_tp.Click += new System.EventHandler(this.ToolStripMenuItem_tp_Click);
             // 
             // 项目管理ToolStripMenuItem
             // 
@@ -1168,13 +1212,6 @@
             this.清理登录ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.清理登录ToolStripMenuItem.Text = "清理登录";
             // 
-            // ToolStripMenuItem_out_urldata
-            // 
-            this.ToolStripMenuItem_out_urldata.Name = "ToolStripMenuItem_out_urldata";
-            this.ToolStripMenuItem_out_urldata.Size = new System.Drawing.Size(152, 22);
-            this.ToolStripMenuItem_out_urldata.Text = "参数导出";
-            this.ToolStripMenuItem_out_urldata.Click += new System.EventHandler(this.ToolStripMenuItem_out_urldata_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1223,7 +1260,6 @@
             this.tabControl2.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
-            this.tabPage5.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_header)).EndInit();
             this.tabPage3.ResumeLayout(false);
@@ -1279,7 +1315,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
-        private System.Windows.Forms.WebBrowser webBrowser1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox textBox_api_name;
@@ -1346,6 +1381,11 @@
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItem_stop_server;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItem_stringToUrlData;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItem_out_urldata;
+        private System.Windows.Forms.ToolStripMenuItem pHP相关ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItem_yii;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItem_tp;
+        private System.Windows.Forms.ToolStripMenuItem 模型功能ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 迁移生成ToolStripMenuItem;
     }
 }
 
