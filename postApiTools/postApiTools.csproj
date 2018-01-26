@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>postApiTools</RootNamespace>
     <AssemblyName>postApiTools</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -95,6 +95,10 @@
   <ItemGroup>
     <Reference Include="CSkin">
       <HintPath>..\CSkin.dll</HintPath>
+    </Reference>
+    <Reference Include="FastColoredTextBox, Version=2.9.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\FastColoredTextBox.dll</HintPath>
     </Reference>
     <Reference Include="MaterialSkin">
       <HintPath>..\MaterialSkin.dll</HintPath>
@@ -205,6 +209,18 @@
     <Compile Include="FormPHPMore\CreateYiiMigrate.Designer.cs">
       <DependentUpon>CreateYiiMigrate.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormPHPMore\CreateYiiModel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPHPMore\CreateYiiModel.Designer.cs">
+      <DependentUpon>CreateYiiModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormPHPMore\Data\addMysql.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPHPMore\Data\addMysql.Designer.cs">
+      <DependentUpon>addMysql.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormPHPMore\Data\addSqlite.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -213,17 +229,24 @@
     </Compile>
     <Compile Include="FormPHPMore\Data\DataBaseType.cs" />
     <Compile Include="FormPHPMore\Data\pDataManageClass.cs" />
+    <Compile Include="FormPHPMore\Data\pRen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPHPMore\Data\pRen.Designer.cs">
+      <DependentUpon>pRen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormPHPMore\Data\pYiiMigrateType.cs" />
+    <Compile Include="FormPHPMore\pDataBaseInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPHPMore\pDataBaseInfo.Designer.cs">
+      <DependentUpon>pDataBaseInfo.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormPHPMore\pDataManage.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormPHPMore\pDataManage.Designer.cs">
       <DependentUpon>pDataManage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FormPHPMore\pYiiModel.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormPHPMore\pYiiModel.Designer.cs">
-      <DependentUpon>pYiiModel.cs</DependentUpon>
     </Compile>
     <Compile Include="FormRole\addUserToRole.cs">
       <SubType>Form</SubType>
@@ -265,6 +288,7 @@
     <Compile Include="lib\pApizlHttp.cs" />
     <Compile Include="lib\pBase.cs" />
     <Compile Include="lib\pBase64.cs" />
+    <Compile Include="lib\pDataGridView.cs" />
     <Compile Include="lib\pDate.cs" />
     <Compile Include="lib\pFile.cs" />
     <Compile Include="lib\phttp.cs" />
@@ -275,9 +299,13 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="lib\pMysql.cs" />
+    <Compile Include="lib\pProcess.cs" />
+    <Compile Include="lib\pReg.cs" />
     <Compile Include="lib\pRegex.cs" />
     <Compile Include="lib\pRunTimeNumber.cs" />
     <Compile Include="lib\pSqlite.cs" />
+    <Compile Include="lib\pSqlServer.cs" />
+    <Compile Include="lib\pWinApi.cs" />
     <Compile Include="lib\updateServer.cs" />
     <Compile Include="lib\pUpdateServerWeb.cs" />
     <Compile Include="lib\pUpdateServerSocket.cs" />
@@ -358,14 +386,23 @@
     <EmbeddedResource Include="FormPHPMore\CreateYiiMigrate.resx">
       <DependentUpon>CreateYiiMigrate.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormPHPMore\CreateYiiModel.resx">
+      <DependentUpon>CreateYiiModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormPHPMore\Data\addMysql.resx">
+      <DependentUpon>addMysql.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormPHPMore\Data\addSqlite.resx">
       <DependentUpon>addSqlite.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormPHPMore\Data\pRen.resx">
+      <DependentUpon>pRen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormPHPMore\pDataBaseInfo.resx">
+      <DependentUpon>pDataBaseInfo.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormPHPMore\pDataManage.resx">
       <DependentUpon>pDataManage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormPHPMore\pYiiModel.resx">
-      <DependentUpon>pYiiModel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormRole\addUserToRole.resx">
       <DependentUpon>addUserToRole.cs</DependentUpon>
@@ -1301,8 +1338,14 @@
     <Content Include="data\template.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="data\yii-models.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="images\article_64px_1188314_easyicon.net.ico" />
+    <Content Include="images\database.png" />
     <Content Include="images\folder_64px_1207828_easyicon.net.ico" />
+    <Content Include="images\server.png" />
+    <Content Include="images\Server_96px_1178595_easyicon.net.png" />
     <Content Include="images\server_database_48px_572104_easyicon.net.png" />
     <Content Include="images\Table_32px_1133058_easyicon.net.png" />
     <Content Include="license.txt">
@@ -1313,7 +1356,6 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>rd /s/q $(ProjectDir)\bin\install

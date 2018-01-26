@@ -26,7 +26,12 @@ namespace postApiTools.FormPHPMore
         /// <summary>
         /// 选中数据
         /// </summary>
-        public string treeviewSelect = "";
+        public string treeviewSelectHash = "";
+
+        /// <summary>
+        /// 输出数据
+        /// </summary>
+        Dictionary<int, object> tableListData = new Dictionary<int, object> { };
 
         /// <summary>
         /// 加载
@@ -91,38 +96,130 @@ namespace postApiTools.FormPHPMore
         /// <param name="e"></param>
         private void treeView_database_DoubleClick(object sender, EventArgs e)
         {
-            Data.pDataManageClass p = new Data.pDataManageClass();
-            TreeView tv = treeView_database;
-            this.treeviewSelect = "";
-            if (tv.SelectedNode == null) { return; }
-            string hash = tv.SelectedNode.Name;
-            this.treeviewSelect = hash;
-            Dictionary<string, string> database = p.getDataBaseHash(hash);
-            if (database.Count > 0)//是数据库
+            try
             {
-                if (database["type"] == Data.DataBaseType.Sqlite.ToString())
+                Data.pDataManageClass p = new Data.pDataManageClass();
+                TreeView tv = treeView_database;
+                this.treeviewSelectHash = "";
+                if (tv.SelectedNode == null) { return; }
+                string hash = tv.SelectedNode.Name;
+                this.treeviewSelectHash = hash;
+                Dictionary<string, string> database = p.getDataBaseHash(hash);
+                if (database.Count > 0)//是数据库
                 {
-                    if (!File.Exists(database["path"])) { MessageBox.Show("数据库不存在!", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error); return; }
-                    showTreeViewTableList(tv, hash, database);
-                    return;
+                    if (database["type"] == Data.DataBaseType.Sqlite.ToString())//sqlite
+                    {
+                        if (!File.Exists(database["path"])) { MessageBox.Show("数据库不存在!", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error); return; }
+                        showSqliteTreeViewTableList(tv, hash, database);
+                        return;
+                    }
+                    if (database["type"] == Data.DataBaseType.Mysql.ToString())//mysql
+                    {
+                        lib.pMysql mysql = new lib.pMysql(database["ip"], database["port"], database["username"], database["password"], "");
+                        if (!mysql.isConnOpen()) { MessageBox.Show("无法打开数据库!" + mysql.error, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error); return; }
+                        showMysqlTreeViewTableList(tv, hash, database, mysql);
+                        return;
+                    }
+                }
+                string[] array = hash.Split('|');
+                if (array.Length < 2) { return; }
+                if (array[1] == "table")//打开表
+                {
+                    Dictionary<string, string> list = p.getDataBaseHash(array[0]);
+                    if (list.Count <= 0) { return; }
+                    if (list["type"] == Data.DataBaseType.Sqlite.ToString())//sqlite
+                    {
+                        lib.pSqlite sqlite = new lib.pSqlite(list["path"]);
+                        Dictionary<int, object> tableList = sqlite.getTableListData(array[3]);
+                        showDataViewTableListData(tableList);
+                    }
+                }
+                if (array[1] == "mysql_database")//打开mysql数据库显示表
+                {
+                    database = p.getDataBaseHash(array[0]);
+                    string databaseName = array[3];//数据库
+                    lib.pMysql mysql = new lib.pMysql(database["ip"], database["port"], database["username"], database["password"], databaseName);
+                    showMysqlTableTreeViewTableList(treeView_database, array[0], database, mysql, databaseName);
+                    mysql.close();
+                }
+                if (array[1] == "mysql_table")//打开mysql表
+                {
+                    database = p.getDataBaseHash(array[0]);
+                    string databaseName = array[3];//数据库
+                    string table = array[4];//数据库
+                    lib.pMysql mysql = new lib.pMysql(database["ip"], database["port"], database["username"], database["password"], databaseName);
+                    if (!mysql.isConnOpen()) { MessageBox.Show("操作不正常"); return; }
+                    Dictionary<int, object> tableList = mysql.getTableListData(table);
+                    showDataViewTableListData(tableList);
                 }
             }
-            string[] array = hash.Split('|');
-            if (array.Length < 2) { return; }
-            if (array[1] == "table")//打开表
+            catch
             {
-                Dictionary<string, string> list = p.getDataBaseHash(array[0]);
-                if (list.Count <= 0) { return; }
-                if (list["type"] == Data.DataBaseType.Sqlite.ToString())//sqlite
-                {
-                    lib.pSqlite sqlite = new lib.pSqlite(list["path"]);
-                    Dictionary<int, object> tableList = sqlite.getTableListData(array[3]);
-                    showDataView(tableList);
-                }
             }
         }
 
-        public void showTreeViewTableList(TreeView tv, string hash, Dictionary<string, string> database)
+        /// <summary>
+        /// 输出mysql表到树
+        /// </summary>
+        /// <param name="tv"></param>
+        /// <param name="hash"></param>
+        /// <param name="database"></param>
+        /// 
+        public void showMysqlTableTreeViewTableList(TreeView tv, string hash, Dictionary<string, string> database, lib.pMysql mysql, string table)
+        {
+            Dictionary<int, object> list = mysql.getDataBaseTableList();
+            if (list.Count <= 0)
+            {
+                return;
+            }
+            TreeNode tn = tv.SelectedNode;
+            for (int i = 0; i < list.Count; i++)
+            {
+                Dictionary<string, string> d = new Dictionary<string, string> { };
+                d = (Dictionary<string, string>)list[i];
+                string pidHash = hash + "|mysql_table|" + Data.DataBaseType.Mysql.ToString() + "|" + table + "|" + d["Tables_in_" + table];
+                TreeNode pidTn = pForm1TreeView.FindNodeByName(tn.Nodes, pidHash);
+                if (pidTn != null) { return; }
+                TreeNode show = tn.Nodes.Add(pidHash, d["Tables_in_" + table]);
+                show.ImageIndex = 1;
+                show.SelectedImageIndex = 1;
+            }
+        }
+
+        /// <summary>
+        /// 输出mysql数据库的树
+        /// </summary>
+        /// <param name="tv"></param>
+        /// <param name="hash"></param>
+        /// <param name="database"></param>
+        public void showMysqlTreeViewTableList(TreeView tv, string hash, Dictionary<string, string> database, lib.pMysql mysql)
+        {
+            Dictionary<int, object> list = mysql.getDataBaseList();
+            if (list.Count <= 0)
+            {
+                return;
+            }
+            TreeNode tn = tv.SelectedNode;
+            for (int i = 0; i < list.Count; i++)
+            {
+                Dictionary<string, string> d = new Dictionary<string, string> { };
+                d = (Dictionary<string, string>)list[i];
+                string pidHash = hash + "|mysql_database|" + Data.DataBaseType.Mysql.ToString() + "|" + d["Database"];
+                TreeNode pidTn = pForm1TreeView.FindNodeByName(tn.Nodes, pidHash);
+                if (pidTn != null) { return; }
+                TreeNode show = tn.Nodes.Add(pidHash, d["Database"]);
+                show.ImageIndex = 2;
+                show.SelectedImageIndex = 2;
+            }
+        }
+
+        /// <summary>
+        /// 输出包含表的树
+        /// </summary>
+        /// <param name="tv"></param>
+        /// <param name="hash"></param>
+        /// <param name="database"></param>
+        public void showSqliteTreeViewTableList(TreeView tv, string hash, Dictionary<string, string> database)
         {
             Data.pDataManageClass p = new Data.pDataManageClass();
             Dictionary<int, object> list = p.getSqliteTable(database["path"]);
@@ -152,51 +249,133 @@ namespace postApiTools.FormPHPMore
         /// <param name="e"></param>
         private void skinContextMenuStrip_treeview_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
+            skinContextMenuStrip_treeview.Close();//关闭
             if (e.ClickedItem == null)
             {
                 return;
             }
             if (e.ClickedItem.ToString() == "删除数据库")
             {
+                string hash = treeView_database.SelectedNode.Name;
+                string[] array = hash.Split('|');
+                if (array.Length <= 1)
+                {
+                    return;
+                }
+                string database = treeView_database.SelectedNode.Text;
+                if (MessageBox.Show("删除" + database + "?", "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No) { return; }
+                Data.pDataManageClass p = new Data.pDataManageClass();
+                Dictionary<string, string> d = p.getDataBaseHash(hash);
+                if (d.Count <= 0) { return; }
+                if (p.deleteDataBaseHash(hash) > 0)
+                {
+                    treeView_database.SelectedNode.Remove();//删除节点
+                }
+                else
+                {
+                    MessageBox.Show(p.error, "提示");
+                    return;
+                }
+
+            }
+            else if (e.ClickedItem.ToString() == "重命名")
+            {
+                string hash = treeView_database.SelectedNode.Name;
+                string name = treeView_database.SelectedNode.Text;
+                string[] array = hash.Split('|');
+                if (array.Length == 1)
+                {
+                    string[] nameArray = name.Split(':');
+                    Data.pRen ren = new Data.pRen(hash, nameArray[1].Trim());
+                    ren.ShowDialog();//重命名
+                    if (ren.result)
+                    {
+                        treeView_database.SelectedNode.Text = nameArray[0] + ": " + ren.name;
+                    }
+                    else
+                    {
+                        MessageBox.Show(ren.error, "提示");
+                    }
+                }
             }
         }
 
-        public void showDataView(Dictionary<int, object> list)
+        /// <summary>
+        /// 动态输出
+        /// </summary>
+        /// <param name="list"></param>
+        public void showDataViewTableListData(Dictionary<int, object> list)
         {
             skinTabPage1.Controls.Clear();
             DataGridView dgv = new DataGridView();
-            if (list.Count <= 0) { return; }
-            Dictionary<string, string> d = (Dictionary<string, string>)list[0];
-            foreach (var item in d)
+            if (list.Count <= 0)
             {
-                dgv.Columns.Add(item.Value, item.Key);
             }
-            dgv.Rows.Clear();//清理行数
-            dgv.Rows.Add(list.Count);
-            for (int i = 0; i < list.Count; i++)
+            else
             {
-                Dictionary<string, string> item = (Dictionary<string, string>)list[i];
-                object[] arr = new object[item.Count];
-                int g = 0;
-                foreach (var value in item)
+                tableListData = list;
+                Dictionary<string, string> d = (Dictionary<string, string>)list[0];
+                foreach (var item in d)
                 {
-                    dgv.Rows[i].Cells[g].Value = value.Value;
-                    g++;
+                    dgv.Columns.Add(item.Value, item.Key);
+                }
+                dgv.Rows.Clear();//清理行数
+                dgv.Rows.Add(list.Count);
+                for (int i = 0; i < list.Count; i++)
+                {
+                    Dictionary<string, string> item = (Dictionary<string, string>)list[i];
+                    object[] arr = new object[item.Count];
+                    int g = 0;
+                    foreach (var value in item)
+                    {
+                        dgv.Rows[i].Cells[g].Value = value.Value;
+                        g++;
+                    }
                 }
             }
+            Label label = new Label();
+            string table = treeView_database.SelectedNode.Text;
+            label.Text = table;
+            label.Location = new Point(5, 10);//绘制
+            skinTabPage1.Controls.Add(label);
+            dgv.Location = new Point(0, 40);//绘制
             dgv.Width = skinTabPage1.Width;
             dgv.Height = skinTabPage1.Height - 50;
+            dgv.ContextMenuStrip = this.skinContextMenuStrip_table_create_tools;
             skinTabPage1.Controls.Add(dgv);
+        }
 
-            //d.Invoke(new Action(() =>
-            //{
-            //    d.Rows.Clear();
-            //    for ()
-            //    {
+        /// <summary>
+        /// 右键功能选择事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void skinContextMenuStrip_table_create_tools_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            if (e.ClickedItem == null) { return; }
+            if (e.ClickedItem.ToString() == "Yii生成模型")
+            {
+                CreateYiiModel model = new CreateYiiModel(tableListData, treeviewSelectHash);
+                model.Show();
+            }
+            if (e.ClickedItem.ToString() == "Yii迁移数据")
+            {
+                CreateYiiMigrate model = new CreateYiiMigrate(treeviewSelectHash);
+                model.Show();
+            }
+        }
 
-            //    }
-
-            //}));
+        /// <summary>
+        /// 添加MySQL数据库
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void mysqlToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Data.addMysql p = new Data.addMysql();
+            p.ShowDialog();
+            Data.pDataManageClass data = new Data.pDataManageClass();
+            data.refreshTreeView(treeView_database);//刷新
         }
     }
 }

@@ -12,6 +12,7 @@ namespace postApiTools
     using System.Drawing;
     using System.Windows.Forms;
     using System.Data;
+    using FastColoredTextBoxNS;
 
     /// <summary>
     /// 历史记录类
@@ -65,7 +66,7 @@ namespace postApiTools
         /// </summary>
         /// <param name="hash"></param>
         /// <param name="comboBox_url_type"></param>
-        public static void fillData(DataGridView dd, string hash, ComboBox comboBox_url_type, TextBox textBox_url, TextBox textBox_html)
+        public static void fillData(DataGridView dd, string hash, ComboBox comboBox_url_type, TextBox textBox_url, FastColoredTextBox textBox_html)
         {
             try
             {

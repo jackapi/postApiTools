@@ -11,6 +11,7 @@ using System.Windows.Forms;
 /// </summary>
 namespace postApiTools
 {
+    using FastColoredTextBoxNS;
     using Newtonsoft.Json.Linq;
     using System.Drawing;
     using System.Net;
@@ -25,32 +26,34 @@ namespace postApiTools
         /// <param name="com"></param>
         /// <param name="textboxHtml"></param>
         /// <param name="tab"></param>
-        public static void htmlToFormatting(string html, ComboBox com, TextBox textboxHtml, TabControl tab)
+        public static string htmlToFormatting(string html, ComboBox com, TabControl tab, FastColoredTextBox fast)
         {
             if (html == "")
             {
-                return;
+                return "";
             }
             if (com.Text == "JSON")
             {
                 string htmlTmep = pJson.jsonStrToFormat(html);
                 if (pJson.error.Length > 0)
                 {
-                    textboxHtml.Text = html;
+                    return html;
                 }
                 else
                 {
-                    textboxHtml.Text = htmlTmep;//格式化json}
+                    fast.Language = Language.JS;
+                    return htmlTmep;//格式化json}
                 }
             }
             else if (com.Text == "HTML")
             {
-                tab.SelectedIndex = 1;
+                fast.Language = Language.HTML;
             }
             else
             {
-                textboxHtml.Text = html;//显示
+                return html;//显示
             }
+            return html;
         }
 
         /// <summary>
@@ -557,7 +560,7 @@ namespace postApiTools
         /// <param name="urldata"></param>
         /// <param name="html"></param>
         /// <param name="url"></param>
-        public static void createTemplateString(TextBox textHtml, TextBox textDoc, ComboBox combobox, string name, string method, string[,] urldata, string html, string url)
+        public static void createTemplateString( TextBox textDoc, ComboBox combobox, string name, string method, string[,] urldata, string html, string url)
         {
 
             if (combobox.Text == "默认模板")
@@ -743,7 +746,7 @@ namespace postApiTools
         /// <param name="cb"></param>
         /// <param name="html"></param>
         /// <param name="t"></param>
-        public static void toRn(CheckBox cb, string html, TextBox t)
+        public static string toRn(CheckBox cb, string html)
         {
             string f = lib.pIni.read("form1", "to_rn");
             if (f == "true")
@@ -751,15 +754,15 @@ namespace postApiTools
                 int number = html.IndexOf("\r\n");
                 if (number > 0)
                 {
-                    return;
+                    return html;
                 }
                 html = html.Replace("\n", "\r\n");
-                t.Text = html;
-                return;
+                return html;
             }
             else
             {
             }
+            return html;
         }
 
     }

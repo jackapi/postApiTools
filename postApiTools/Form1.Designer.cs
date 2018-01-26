@@ -48,10 +48,10 @@
             this.清空ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.fastColoredTextBox_html = new FastColoredTextBoxNS.FastColoredTextBox();
             this.checkBox_to_rn = new System.Windows.Forms.CheckBox();
             this.button_to_rn = new System.Windows.Forms.Button();
             this.comboBox_html_show_type = new System.Windows.Forms.ComboBox();
-            this.textBox_html = new System.Windows.Forms.TextBox();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.dataGridView_header = new System.Windows.Forms.DataGridView();
@@ -116,8 +116,6 @@
             this.ToolStripMenuItem_websocket_tools = new System.Windows.Forms.ToolStripMenuItem();
             this.pHP相关ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItem_yii = new System.Windows.Forms.ToolStripMenuItem();
-            this.模型功能ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.迁移生成ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItem_tp = new System.Windows.Forms.ToolStripMenuItem();
             this.项目管理ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItem_stop_server = new System.Windows.Forms.ToolStripMenuItem();
@@ -139,6 +137,7 @@
             this.contextMenuStrip_urldata_dataview.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabPage4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.fastColoredTextBox_html)).BeginInit();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_header)).BeginInit();
             this.tabPage3.SuspendLayout();
@@ -330,10 +329,10 @@
             // 
             // tabPage4
             // 
+            this.tabPage4.Controls.Add(this.fastColoredTextBox_html);
             this.tabPage4.Controls.Add(this.checkBox_to_rn);
             this.tabPage4.Controls.Add(this.button_to_rn);
             this.tabPage4.Controls.Add(this.comboBox_html_show_type);
-            this.tabPage4.Controls.Add(this.textBox_html);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
@@ -341,6 +340,25 @@
             this.tabPage4.TabIndex = 0;
             this.tabPage4.Text = "源码";
             this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // fastColoredTextBox_html
+            // 
+            this.fastColoredTextBox_html.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.fastColoredTextBox_html.AutoScrollMinSize = new System.Drawing.Size(27, 14);
+            this.fastColoredTextBox_html.BackBrush = null;
+            this.fastColoredTextBox_html.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.fastColoredTextBox_html.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.fastColoredTextBox_html.Font = new System.Drawing.Font("Courier New", 9.75F);
+            this.fastColoredTextBox_html.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.fastColoredTextBox_html.IsReplaceMode = false;
+            this.fastColoredTextBox_html.Location = new System.Drawing.Point(6, 30);
+            this.fastColoredTextBox_html.Name = "fastColoredTextBox_html";
+            this.fastColoredTextBox_html.Paddings = new System.Windows.Forms.Padding(0);
+            this.fastColoredTextBox_html.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
+            this.fastColoredTextBox_html.Size = new System.Drawing.Size(959, 292);
+            this.fastColoredTextBox_html.TabIndex = 4;
             // 
             // checkBox_to_rn
             // 
@@ -381,19 +399,6 @@
             this.comboBox_html_show_type.Size = new System.Drawing.Size(128, 20);
             this.comboBox_html_show_type.TabIndex = 1;
             this.comboBox_html_show_type.SelectedIndexChanged += new System.EventHandler(this.comboBox_html_show_type_SelectedIndexChanged);
-            // 
-            // textBox_html
-            // 
-            this.textBox_html.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_html.Location = new System.Drawing.Point(0, 30);
-            this.textBox_html.Multiline = true;
-            this.textBox_html.Name = "textBox_html";
-            this.textBox_html.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox_html.Size = new System.Drawing.Size(968, 298);
-            this.textBox_html.TabIndex = 0;
-            this.textBox_html.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_html_KeyPress);
             // 
             // tabPage5
             // 
@@ -1057,31 +1062,15 @@
             // 
             // ToolStripMenuItem_yii
             // 
-            this.ToolStripMenuItem_yii.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.模型功能ToolStripMenuItem,
-            this.迁移生成ToolStripMenuItem});
             this.ToolStripMenuItem_yii.Name = "ToolStripMenuItem_yii";
-            this.ToolStripMenuItem_yii.Size = new System.Drawing.Size(114, 22);
+            this.ToolStripMenuItem_yii.Size = new System.Drawing.Size(152, 22);
             this.ToolStripMenuItem_yii.Text = "Yii相关";
             this.ToolStripMenuItem_yii.Click += new System.EventHandler(this.ToolStripMenuItem_yii_Click);
-            // 
-            // 模型功能ToolStripMenuItem
-            // 
-            this.模型功能ToolStripMenuItem.Name = "模型功能ToolStripMenuItem";
-            this.模型功能ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
-            this.模型功能ToolStripMenuItem.Text = "模型功能";
-            this.模型功能ToolStripMenuItem.Click += new System.EventHandler(this.模型功能ToolStripMenuItem_Click);
-            // 
-            // 迁移生成ToolStripMenuItem
-            // 
-            this.迁移生成ToolStripMenuItem.Name = "迁移生成ToolStripMenuItem";
-            this.迁移生成ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
-            this.迁移生成ToolStripMenuItem.Text = "迁移生成";
             // 
             // ToolStripMenuItem_tp
             // 
             this.ToolStripMenuItem_tp.Name = "ToolStripMenuItem_tp";
-            this.ToolStripMenuItem_tp.Size = new System.Drawing.Size(114, 22);
+            this.ToolStripMenuItem_tp.Size = new System.Drawing.Size(152, 22);
             this.ToolStripMenuItem_tp.Text = "TP相关";
             this.ToolStripMenuItem_tp.Click += new System.EventHandler(this.ToolStripMenuItem_tp_Click);
             // 
@@ -1260,6 +1249,7 @@
             this.tabControl2.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.fastColoredTextBox_html)).EndInit();
             this.tabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_header)).EndInit();
             this.tabPage3.ResumeLayout(false);
@@ -1298,7 +1288,6 @@
         private System.Windows.Forms.Button button_setting;
         private System.Windows.Forms.DataGridView dataGridView_http_data;
         private System.Windows.Forms.ComboBox comboBox_bm;
-        private System.Windows.Forms.TextBox textBox_html;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label_code;
         private System.Windows.Forms.Label label4;
@@ -1384,8 +1373,7 @@
         private System.Windows.Forms.ToolStripMenuItem pHP相关ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItem_yii;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItem_tp;
-        private System.Windows.Forms.ToolStripMenuItem 模型功能ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 迁移生成ToolStripMenuItem;
+        private FastColoredTextBoxNS.FastColoredTextBox fastColoredTextBox_html;
     }
 }
 

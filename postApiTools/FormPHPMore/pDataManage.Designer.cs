@@ -45,6 +45,8 @@
             this.treeView_database = new System.Windows.Forms.TreeView();
             this.skinContextMenuStrip_treeview = new CCWin.SkinControl.SkinContextMenuStrip();
             this.打开ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.刷新ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.重命名ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.删除表ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.删除ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.imageList_databse = new System.Windows.Forms.ImageList(this.components);
@@ -54,11 +56,17 @@
             this.skinTabPage4 = new CCWin.SkinControl.SkinTabPage();
             this.skinTabPage2 = new CCWin.SkinControl.SkinTabPage();
             this.skinTabPage3 = new CCWin.SkinControl.SkinTabPage();
-            this.刷新ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.skinContextMenuStrip_table_create_tools = new CCWin.SkinControl.SkinContextMenuStrip();
+            this.yII生成模型ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.yii迁移数据ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tP迁移数据ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.转POST参数ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.连接详情ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.skinContextMenuStrip_add_database.SuspendLayout();
             this.skinMenuStrip1.SuspendLayout();
             this.skinContextMenuStrip_treeview.SuspendLayout();
             this.skinTabControl1.SuspendLayout();
+            this.skinContextMenuStrip_table_create_tools.SuspendLayout();
             this.SuspendLayout();
             // 
             // skinContextMenuStrip_add_database
@@ -112,6 +120,7 @@
             this.mysqlToolStripMenuItem.Name = "mysqlToolStripMenuItem";
             this.mysqlToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
             this.mysqlToolStripMenuItem.Text = "Mysql";
+            this.mysqlToolStripMenuItem.Click += new System.EventHandler(this.mysqlToolStripMenuItem_Click);
             // 
             // mssqlToolStripMenuItem
             // 
@@ -163,7 +172,7 @@
             this.skinMenuStrip1.Location = new System.Drawing.Point(4, 28);
             this.skinMenuStrip1.Name = "skinMenuStrip1";
             this.skinMenuStrip1.RadiusStyle = CCWin.SkinClass.RoundStyle.All;
-            this.skinMenuStrip1.Size = new System.Drawing.Size(1025, 25);
+            this.skinMenuStrip1.Size = new System.Drawing.Size(1205, 25);
             this.skinMenuStrip1.SkinAllColor = true;
             this.skinMenuStrip1.TabIndex = 2;
             this.skinMenuStrip1.Text = "skinMenuStrip1";
@@ -220,7 +229,7 @@
             this.treeView_database.Location = new System.Drawing.Point(14, 102);
             this.treeView_database.Name = "treeView_database";
             this.treeView_database.SelectedImageIndex = 0;
-            this.treeView_database.Size = new System.Drawing.Size(268, 534);
+            this.treeView_database.Size = new System.Drawing.Size(287, 572);
             this.treeView_database.TabIndex = 4;
             this.treeView_database.DoubleClick += new System.EventHandler(this.treeView_database_DoubleClick);
             // 
@@ -243,12 +252,14 @@
             this.skinContextMenuStrip_treeview.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.打开ToolStripMenuItem,
             this.刷新ToolStripMenuItem,
+            this.重命名ToolStripMenuItem,
             this.删除表ToolStripMenuItem,
-            this.删除ToolStripMenuItem});
+            this.删除ToolStripMenuItem,
+            this.连接详情ToolStripMenuItem});
             this.skinContextMenuStrip_treeview.ItemSplitter = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(148)))), ((int)(((byte)(212)))));
             this.skinContextMenuStrip_treeview.Name = "skinContextMenuStrip_treeview";
             this.skinContextMenuStrip_treeview.RadiusStyle = CCWin.SkinClass.RoundStyle.All;
-            this.skinContextMenuStrip_treeview.Size = new System.Drawing.Size(153, 114);
+            this.skinContextMenuStrip_treeview.Size = new System.Drawing.Size(153, 158);
             this.skinContextMenuStrip_treeview.SkinAllColor = true;
             this.skinContextMenuStrip_treeview.TitleAnamorphosis = true;
             this.skinContextMenuStrip_treeview.TitleColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(228)))), ((int)(((byte)(236)))));
@@ -261,6 +272,18 @@
             this.打开ToolStripMenuItem.Name = "打开ToolStripMenuItem";
             this.打开ToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
             this.打开ToolStripMenuItem.Text = "打开数据库";
+            // 
+            // 刷新ToolStripMenuItem
+            // 
+            this.刷新ToolStripMenuItem.Name = "刷新ToolStripMenuItem";
+            this.刷新ToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.刷新ToolStripMenuItem.Text = "刷新";
+            // 
+            // 重命名ToolStripMenuItem
+            // 
+            this.重命名ToolStripMenuItem.Name = "重命名ToolStripMenuItem";
+            this.重命名ToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.重命名ToolStripMenuItem.Text = "重命名";
             // 
             // 删除表ToolStripMenuItem
             // 
@@ -278,8 +301,9 @@
             // 
             this.imageList_databse.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList_databse.ImageStream")));
             this.imageList_databse.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList_databse.Images.SetKeyName(0, "server_database");
+            this.imageList_databse.Images.SetKeyName(0, "server_2.png");
             this.imageList_databse.Images.SetKeyName(1, "Table");
+            this.imageList_databse.Images.SetKeyName(2, "database.png");
             // 
             // skinButton_add_database
             // 
@@ -308,7 +332,7 @@
             this.skinTabControl1.HeadBack = null;
             this.skinTabControl1.ImgTxtOffset = new System.Drawing.Point(0, 0);
             this.skinTabControl1.ItemSize = new System.Drawing.Size(70, 36);
-            this.skinTabControl1.Location = new System.Drawing.Point(307, 70);
+            this.skinTabControl1.Location = new System.Drawing.Point(317, 70);
             this.skinTabControl1.Name = "skinTabControl1";
             this.skinTabControl1.PageArrowDown = ((System.Drawing.Image)(resources.GetObject("skinTabControl1.PageArrowDown")));
             this.skinTabControl1.PageArrowHover = ((System.Drawing.Image)(resources.GetObject("skinTabControl1.PageArrowHover")));
@@ -319,7 +343,7 @@
             this.skinTabControl1.PageImagePosition = CCWin.SkinControl.SkinTabControl.ePageImagePosition.Left;
             this.skinTabControl1.PageNorml = null;
             this.skinTabControl1.SelectedIndex = 0;
-            this.skinTabControl1.Size = new System.Drawing.Size(708, 566);
+            this.skinTabControl1.Size = new System.Drawing.Size(877, 604);
             this.skinTabControl1.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.skinTabControl1.TabIndex = 8;
             // 
@@ -329,7 +353,7 @@
             this.skinTabPage1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.skinTabPage1.Location = new System.Drawing.Point(0, 36);
             this.skinTabPage1.Name = "skinTabPage1";
-            this.skinTabPage1.Size = new System.Drawing.Size(708, 530);
+            this.skinTabPage1.Size = new System.Drawing.Size(877, 568);
             this.skinTabPage1.TabIndex = 0;
             this.skinTabPage1.TabItemImage = null;
             this.skinTabPage1.Text = "表";
@@ -340,7 +364,7 @@
             this.skinTabPage4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.skinTabPage4.Location = new System.Drawing.Point(0, 36);
             this.skinTabPage4.Name = "skinTabPage4";
-            this.skinTabPage4.Size = new System.Drawing.Size(708, 530);
+            this.skinTabPage4.Size = new System.Drawing.Size(877, 568);
             this.skinTabPage4.TabIndex = 3;
             this.skinTabPage4.TabItemImage = null;
             this.skinTabPage4.Text = "结构";
@@ -351,7 +375,7 @@
             this.skinTabPage2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.skinTabPage2.Location = new System.Drawing.Point(0, 36);
             this.skinTabPage2.Name = "skinTabPage2";
-            this.skinTabPage2.Size = new System.Drawing.Size(708, 530);
+            this.skinTabPage2.Size = new System.Drawing.Size(877, 568);
             this.skinTabPage2.TabIndex = 1;
             this.skinTabPage2.TabItemImage = null;
             this.skinTabPage2.Text = "数据";
@@ -362,22 +386,78 @@
             this.skinTabPage3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.skinTabPage3.Location = new System.Drawing.Point(0, 36);
             this.skinTabPage3.Name = "skinTabPage3";
-            this.skinTabPage3.Size = new System.Drawing.Size(708, 530);
+            this.skinTabPage3.Size = new System.Drawing.Size(877, 568);
             this.skinTabPage3.TabIndex = 2;
             this.skinTabPage3.TabItemImage = null;
             this.skinTabPage3.Text = "查询";
             // 
-            // 刷新ToolStripMenuItem
+            // skinContextMenuStrip_table_create_tools
             // 
-            this.刷新ToolStripMenuItem.Name = "刷新ToolStripMenuItem";
-            this.刷新ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.刷新ToolStripMenuItem.Text = "刷新";
+            this.skinContextMenuStrip_table_create_tools.Arrow = System.Drawing.Color.Black;
+            this.skinContextMenuStrip_table_create_tools.Back = System.Drawing.Color.White;
+            this.skinContextMenuStrip_table_create_tools.BackRadius = 4;
+            this.skinContextMenuStrip_table_create_tools.Base = System.Drawing.Color.FromArgb(((int)(((byte)(105)))), ((int)(((byte)(200)))), ((int)(((byte)(254)))));
+            this.skinContextMenuStrip_table_create_tools.DropDownImageSeparator = System.Drawing.Color.FromArgb(((int)(((byte)(197)))), ((int)(((byte)(197)))), ((int)(((byte)(197)))));
+            this.skinContextMenuStrip_table_create_tools.Fore = System.Drawing.Color.Black;
+            this.skinContextMenuStrip_table_create_tools.HoverFore = System.Drawing.Color.White;
+            this.skinContextMenuStrip_table_create_tools.ItemAnamorphosis = true;
+            this.skinContextMenuStrip_table_create_tools.ItemBorder = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(148)))), ((int)(((byte)(212)))));
+            this.skinContextMenuStrip_table_create_tools.ItemBorderShow = true;
+            this.skinContextMenuStrip_table_create_tools.ItemHover = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(148)))), ((int)(((byte)(212)))));
+            this.skinContextMenuStrip_table_create_tools.ItemPressed = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(148)))), ((int)(((byte)(212)))));
+            this.skinContextMenuStrip_table_create_tools.ItemRadius = 4;
+            this.skinContextMenuStrip_table_create_tools.ItemRadiusStyle = CCWin.SkinClass.RoundStyle.All;
+            this.skinContextMenuStrip_table_create_tools.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.yII生成模型ToolStripMenuItem,
+            this.yii迁移数据ToolStripMenuItem,
+            this.tP迁移数据ToolStripMenuItem,
+            this.转POST参数ToolStripMenuItem});
+            this.skinContextMenuStrip_table_create_tools.ItemSplitter = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(148)))), ((int)(((byte)(212)))));
+            this.skinContextMenuStrip_table_create_tools.Name = "skinContextMenuStrip_table_create_tools";
+            this.skinContextMenuStrip_table_create_tools.RadiusStyle = CCWin.SkinClass.RoundStyle.All;
+            this.skinContextMenuStrip_table_create_tools.Size = new System.Drawing.Size(144, 92);
+            this.skinContextMenuStrip_table_create_tools.SkinAllColor = true;
+            this.skinContextMenuStrip_table_create_tools.TitleAnamorphosis = true;
+            this.skinContextMenuStrip_table_create_tools.TitleColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(228)))), ((int)(((byte)(236)))));
+            this.skinContextMenuStrip_table_create_tools.TitleRadius = 4;
+            this.skinContextMenuStrip_table_create_tools.TitleRadiusStyle = CCWin.SkinClass.RoundStyle.All;
+            this.skinContextMenuStrip_table_create_tools.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.skinContextMenuStrip_table_create_tools_ItemClicked);
+            // 
+            // yII生成模型ToolStripMenuItem
+            // 
+            this.yII生成模型ToolStripMenuItem.Name = "yII生成模型ToolStripMenuItem";
+            this.yII生成模型ToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.yII生成模型ToolStripMenuItem.Text = "Yii生成模型";
+            // 
+            // yii迁移数据ToolStripMenuItem
+            // 
+            this.yii迁移数据ToolStripMenuItem.Name = "yii迁移数据ToolStripMenuItem";
+            this.yii迁移数据ToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.yii迁移数据ToolStripMenuItem.Text = "Yii迁移数据";
+            // 
+            // tP迁移数据ToolStripMenuItem
+            // 
+            this.tP迁移数据ToolStripMenuItem.Name = "tP迁移数据ToolStripMenuItem";
+            this.tP迁移数据ToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.tP迁移数据ToolStripMenuItem.Text = "TP迁移数据";
+            // 
+            // 转POST参数ToolStripMenuItem
+            // 
+            this.转POST参数ToolStripMenuItem.Name = "转POST参数ToolStripMenuItem";
+            this.转POST参数ToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.转POST参数ToolStripMenuItem.Text = "转POST参数";
+            // 
+            // 连接详情ToolStripMenuItem
+            // 
+            this.连接详情ToolStripMenuItem.Name = "连接详情ToolStripMenuItem";
+            this.连接详情ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.连接详情ToolStripMenuItem.Text = "连接详情";
             // 
             // pDataManage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1033, 661);
+            this.ClientSize = new System.Drawing.Size(1213, 681);
             this.Controls.Add(this.skinTabControl1);
             this.Controls.Add(this.skinButton_add_database);
             this.Controls.Add(this.treeView_database);
@@ -397,6 +477,7 @@
             this.skinMenuStrip1.PerformLayout();
             this.skinContextMenuStrip_treeview.ResumeLayout(false);
             this.skinTabControl1.ResumeLayout(false);
+            this.skinContextMenuStrip_table_create_tools.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -428,5 +509,12 @@
         private CCWin.SkinControl.SkinTabPage skinTabPage2;
         private CCWin.SkinControl.SkinTabPage skinTabPage3;
         private System.Windows.Forms.ToolStripMenuItem 刷新ToolStripMenuItem;
+        private CCWin.SkinControl.SkinContextMenuStrip skinContextMenuStrip_table_create_tools;
+        private System.Windows.Forms.ToolStripMenuItem yII生成模型ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem yii迁移数据ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tP迁移数据ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 转POST参数ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 重命名ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 连接详情ToolStripMenuItem;
     }
 }

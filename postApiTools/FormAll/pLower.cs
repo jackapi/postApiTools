@@ -55,6 +55,7 @@ namespace postApiTools.FormAll
             label1.Text = mssage;
             this.timer_tools.Start();
             start = lib.pDate.getTimeStamp();
+            lib.pWinApi.SwitchToThisWindow(this.Handle, true);//置顶
         }
         /// <summary>
         /// 定时器 自动关闭

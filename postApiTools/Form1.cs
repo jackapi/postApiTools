@@ -23,6 +23,7 @@ namespace postApiTools
     using CCWin;
     using Newtonsoft.Json.Linq;
     using WebKit;
+    using FastColoredTextBoxNS;
 
     public partial class Form1 : CCSkinMain
     {
@@ -51,12 +52,20 @@ namespace postApiTools
         const int AW_BLEND = 0x80000;
 
 
-        public Form1()
+
+
+
+        public string cmdData = "";
+
+        public Form1(string data = "")
         {
             InitializeComponent();
             f = this;
             System.Windows.Forms.Control.CheckForIllegalCrossThreadCalls = false;
             this.dataGridView_http_data.EditMode = DataGridViewEditMode.EditOnEnter;
+            lib.pReg.install();
+            lib.pReg.createPrice(lib.pReg.createData, "path", Config.exe);
+            this.cmdData = data;
         }
 
         public lib.updateServer update = new lib.updateServer();
@@ -72,7 +81,8 @@ namespace postApiTools
             formLoadTh = new Thread(formLoadFun);
             formLoadTh.Start();
             //timer_server.Start();//启动定时器 不能再线程中使用
-            this.Text = this.Text + " 开发助手 v" + update.version + " (测试接口、生成文档) 作者:apiziliao@gmail.com  qq群:616318658";
+            this.Text = this.Text + " 开发助手";
+            lib.pWinApi.SwitchToThisWindow(this.Handle, true);//启动后置顶
         }
 
         /// <summary>
@@ -192,7 +202,7 @@ namespace postApiTools
             {
                 encoding = "utf-8";
             }
-            textBox_html.Text = "";//html
+            showHtml("");//html
             label_code.Text = "";//httpcode
             label_runtime.Text = "";//ms
             string url = textBox_url.Text;
@@ -218,15 +228,14 @@ namespace postApiTools
             this.testHtml = html;
             lib.pRunTimeNumber.end();
             pform1.labelShowStatusRunTime(label_code, label_runtime, lib.phttp.HttpCustom_code, lib.pRunTimeNumber.result());//显示运行时间和状态
-
-            pform1.htmlToFormatting(this.testHtml, comboBox_html_show_type, textBox_html, tabControl2);//格式化输出源码结果
+            html = pform1.toRn(checkBox_to_rn, pform1.htmlToFormatting(this.testHtml, comboBox_html_show_type, tabControl2, fastColoredTextBox_html));//格式化输出源码结果
+            showHtml(html);//显示
             button_test.Text = "提交测试";
             pform1.textBoxUrlWrite(textBox_url, url);
             pform1.httpHtmlTypeDataWrite(comboBox_html_show_type);//写入HTML类型
             pform1.httpTypeWrite(comboBox_url_type);
             pform1.dataviewUrlDataWrite(dataGridView_http_data);//写入dataurl配置
             pHistory.dataViewShow(dataGridView_history, dataGridView_http_data, textBox_url.Text, comboBox_url_type.Text);//刷新历史数据
-            pform1.toRn(checkBox_to_rn, textBox_html.Text, textBox_html);//自动换行
         }
 
         /// <summary>
@@ -236,7 +245,8 @@ namespace postApiTools
         /// <param name="e"></param>
         private void comboBox_html_show_type_SelectedIndexChanged(object sender, EventArgs e)
         {
-            pform1.htmlToFormatting(this.testHtml, comboBox_html_show_type, textBox_html, tabControl2);
+            if (loadInt!=0) { return; }
+            showHtml(pform1.htmlToFormatting(this.testHtml, comboBox_html_show_type, tabControl2, fastColoredTextBox_html));
         }
 
 
@@ -263,7 +273,7 @@ namespace postApiTools
         /// <param name="e"></param>
         private void button_creation_doc_Click(object sender, EventArgs e)
         {
-            pform1.createTemplateString(textBox_html, textBox_doc, comboBox_template, textBox_api_name.Text, comboBox_url_type.Text, pform1.dataViewUrlDataToObjectArray(dataGridView_http_data), textBox_html.Text, textBox_url.Text);//调用生成文档模板方法
+            pform1.createTemplateString(textBox_doc, comboBox_template, textBox_api_name.Text, comboBox_url_type.Text, pform1.dataViewUrlDataToObjectArray(dataGridView_http_data), getHtml(), textBox_url.Text);//调用生成文档模板方法
             tabControl1.SelectedIndex = 3;//切换显示生成文档
         }
 
@@ -391,7 +401,7 @@ namespace postApiTools
             {
                 button_new_url_http_Click(null, null);//先清理在添加数据
                 string hash = dataGridView_history.Rows[e.RowIndex].Cells[0].ToolTipText;
-                pHistory.fillData(dataGridView_http_data, hash, comboBox_url_type, textBox_url, textBox_html);//填充数据
+                pHistory.fillData(dataGridView_http_data, hash, comboBox_url_type, textBox_url, fastColoredTextBox_html);//填充数据
             }
         }
 
@@ -415,7 +425,7 @@ namespace postApiTools
                     if (pForm1TreeView.editApi(editApiHash, name, desc, url, urlDataStr, urlType))
                     {
                         pForm1TreeView.updateTreeViewText(treeView_save_list, editApiHash, name);//无刷新修改
-                        MessageBox.Show("编辑成功", "提示", MessageBoxButtons.OK);
+                        //MessageBox.Show("编辑成功", "提示", MessageBoxButtons.OK);
                         return;
                     }
                     MessageBox.Show("编辑失败:" + pForm1TreeView.error, "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -640,7 +650,26 @@ namespace postApiTools
         /// <param name="html"></param>
         public void showHtml(string html)
         {
-            textBox_html.Text = html;
+            try
+            {
+                fastColoredTextBox_html.Invoke(new Action(() =>
+                {
+                    fastColoredTextBox_html.Clear();
+                    fastColoredTextBox_html.Language = Language.HTML;
+                    fastColoredTextBox_html.Text = html;
+                }));
+            }
+            catch { }
+
+        }
+
+        /// <summary>
+        /// 获取源码
+        /// </summary>
+        /// <returns></returns>
+        public string getHtml()
+        {
+            return fastColoredTextBox_html.Text;
         }
         /// <summary>
         /// 错误
@@ -667,7 +696,7 @@ namespace postApiTools
                 return;
             }
             pForm1TreeView.showMainData(treeView_save_list, imageList_treeview);
-            pForm1TreeView.apidocSearch(treeView_save_list, search, textBox_html);
+            pForm1TreeView.apidocSearch(treeView_save_list, search, fastColoredTextBox_html);
         }
 
         /// <summary>
@@ -692,7 +721,7 @@ namespace postApiTools
         {
             string html = this.testHtml;
             html = html.Replace("\n", "\r\n");
-            textBox_html.Text = html;
+            showHtml(html);
         }
 
         /// <summary>
@@ -771,9 +800,10 @@ namespace postApiTools
             textBox_url.Text = "";
             textBox_api_name.Text = "";
             textBox_doc.Text = "";
-            textBox_html.Text = "";
+            showHtml("");
             webkitShowOpenLocal();
         }
+
         /// <summary>
         /// 便签界面
         /// </summary>
@@ -1310,7 +1340,8 @@ namespace postApiTools
         /// <param name="e"></param>
         private void ToolStripMenuItem_yii_Click(object sender, EventArgs e)
         {
-
+            FormPHPMore.pDataManage manage = new FormPHPMore.pDataManage();
+            manage.Show();
         }
         /// <summary>
         /// tp相关
@@ -1319,17 +1350,49 @@ namespace postApiTools
         /// <param name="e"></param>
         private void ToolStripMenuItem_tp_Click(object sender, EventArgs e)
         {
-
+            FormPHPMore.pDataManage manage = new FormPHPMore.pDataManage();
+            manage.Show();
         }
-        /// <summary>
-        /// yii模型功能
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void 模型功能ToolStripMenuItem_Click(object sender, EventArgs e)
+
+
+        //WM_COPYDATA消息所要求的数据结构
+        public struct CopyDataStruct
         {
-            FormPHPMore.pYiiModel p = new FormPHPMore.pYiiModel();
-            p.Show();
+            public IntPtr dwData;
+            public int cbData;
+
+            [MarshalAs(UnmanagedType.LPStr)]
+            public string lpData;
+        }
+
+        private const int WM_COPYDATA = 0x004A;
+
+        /// <summary>
+        /// 接收exe消息方法
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void WndProc(ref System.Windows.Forms.Message e)
+        {
+            if (e.Msg == WM_COPYDATA)
+            {
+                CopyDataStruct cds = (CopyDataStruct)e.GetLParam(typeof(CopyDataStruct));
+                string result = cds.lpData.ToString();
+                string[] mainArray = result.Split(':');
+                if (mainArray.Length <= 1) { return; }
+                string[] dataArray = mainArray[1].Split('/');
+                string type = dataArray[2];
+                string hash = dataArray[3];
+                if (type == "getDocument")
+                {
+                    button_new_url_http_Click(null, null);//清空
+                    editApiHash = hash;//编辑文档
+                    bool s = pForm1TreeView.webOpenApiDataShow(hash, textBox_url, comboBox_url_type, dataGridView_http_data, textBox_api_name, textBox_doc);
+                    lib.pWinApi.SwitchToThisWindow(f.Handle, true);//置顶
+                    if (!s) { MessageBox.Show("错误:" + pForm1TreeView.error, "提示", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+                }
+
+            }
+            base.WndProc(ref e);
         }
     }
 }

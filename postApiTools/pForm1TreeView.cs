@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 /// </summary>
 namespace postApiTools
 {
+    using FastColoredTextBoxNS;
     using Newtonsoft.Json.Linq;
     using System.IO;
     using System.Threading;
@@ -423,6 +424,39 @@ namespace postApiTools
                 return false;
             }
         }
+
+        /// <summary>
+        /// web打开api赋值到界面
+        /// </summary>
+        /// <param name="t"></param>
+        /// <param name="url"></param>
+        /// <param name="urlType"></param>
+        /// <param name="dd"></param>
+        /// <returns></returns>
+        public static bool webOpenApiDataShow(string serverHash, TextBox url, ComboBox urlType, DataGridView dd, TextBox textBox_api_name, TextBox doc)
+        {
+            if (serverHash == "") { return false; }
+            Dictionary<string, string> list = sqlite.getOne(string.Format("select *from {0} where server_hash='{1}' ", table, serverHash));
+            if (list.Count <= 0)
+            {
+                error = "本地没有数据或没有权限！请重新拉取！";
+                return false;
+            }
+            if (list["server_hash"] != "" || list["server_hash"] != null)//直接读取线上最新
+            {
+                updateDocument(list["server_hash"]);
+                list = sqlite.getOne(string.Format("select *from {0} where server_hash='{1}' ", table, serverHash));
+            }
+            url.Text = list["url"];
+            urlType.Text = list["method"];
+            textBox_api_name.Text = list["name"];
+            doc.Text = list["desc"];
+            string urlDataStr = list["urldata"];
+            urlDataStr = lib.pBase64.base64ToString(urlDataStr);
+            object[,] obj = pJson.jsonStrToObjectArray(urlDataStr, 4);
+            pform1.objecArrayToDataViewShow(dd, obj);//刷新显示
+            return true;
+        }
         /// <summary>
         /// 打开一个api赋值到界面
         /// </summary>
@@ -461,7 +495,7 @@ namespace postApiTools
         /// 搜索接口文档
         /// </summary>
         /// <param name="search"></param>
-        public static void apidocSearch(TreeView t, string search, TextBox text)
+        public static void apidocSearch(TreeView t, string search, FastColoredTextBox text)
         {
             t.Invoke(new Action(() =>
             {

@@ -260,7 +260,6 @@ namespace postApiTools.lib
             Dictionary<int, object> noneList = new Dictionary<int, object> { };
             Dictionary<int, object> updateList = new Dictionary<int, object> { };
             int noneI = 0;
-            int updateListI = 0;
             int nowListI = 0;
             Dictionary<int, object> d = sqlite.getRows(string.Format("select *from {0} where pid=0", pForm1TreeView.getTableSetting()));//本地列表
             JObject job = pApizlHttp.getUserProjectList(pApizlHttp.token);//获取服务器列表

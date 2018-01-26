@@ -9,9 +9,15 @@ namespace postApiTools
     public class Config
     {
         /// <summary>
-        /// 当前exe路径
+        /// 当前exe路径 AppDomain.CurrentDomain.BaseDirectory
         /// </summary>
-        public static string exePath = System.Environment.CurrentDirectory;
+        //public static string exePath = System.Environment.CurrentDirectory;
+        public static string exePath = AppDomain.CurrentDomain.BaseDirectory;
+
+        /// <summary>
+        /// exe路径
+        /// </summary>
+        public static string exe = System.Windows.Forms.Application.ExecutablePath;
 
         /// <summary>
         /// 配置记录存放地方

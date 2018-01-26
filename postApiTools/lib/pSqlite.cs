@@ -219,5 +219,16 @@ namespace postApiTools.lib
             string sql = string.Format("select *from {0} limit {1},{2}", table, page, size);
             return getRows(sql);
         }
+
+        /// <summary>
+        /// 获取表结构数据
+        /// </summary>
+        /// <param name="table"></param>
+        /// <returns></returns>
+        public Dictionary<int, object> getTableInfo(string table)
+        {
+            string sql = string.Format("PRAGMA TABLE_INFO ({0})", table);
+            return getRows(sql);
+        }
     }
 }

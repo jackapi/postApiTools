@@ -1,6 +1,6 @@
 ﻿namespace postApiTools.FormPHPMore
 {
-    partial class CreateTpMigrate
+    partial class CreateYiiModel
     {
         /// <summary>
         /// Required designer variable.
@@ -28,13 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CreateTpMigrate));
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CreateYiiModel));
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.skinChatRichTextBox1 = new CCWin.SkinControl.SkinChatRichTextBox();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column4 = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.skinButton_create = new CCWin.SkinControl.SkinButton();
+            this.textBox_model_name = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -44,22 +47,21 @@
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1,
             this.Column2,
-            this.Column3,
-            this.Column4});
-            this.dataGridView1.Location = new System.Drawing.Point(7, 76);
+            this.Column3});
+            this.dataGridView1.Location = new System.Drawing.Point(7, 128);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 23;
-            this.dataGridView1.Size = new System.Drawing.Size(464, 466);
+            this.dataGridView1.Size = new System.Drawing.Size(338, 398);
             this.dataGridView1.TabIndex = 0;
             // 
             // skinChatRichTextBox1
             // 
-            this.skinChatRichTextBox1.Location = new System.Drawing.Point(520, 76);
+            this.skinChatRichTextBox1.Location = new System.Drawing.Point(362, 128);
             this.skinChatRichTextBox1.Name = "skinChatRichTextBox1";
             this.skinChatRichTextBox1.SelectControl = null;
             this.skinChatRichTextBox1.SelectControlIndex = 0;
             this.skinChatRichTextBox1.SelectControlPoint = new System.Drawing.Point(0, 0);
-            this.skinChatRichTextBox1.Size = new System.Drawing.Size(596, 466);
+            this.skinChatRichTextBox1.Size = new System.Drawing.Size(565, 398);
             this.skinChatRichTextBox1.TabIndex = 1;
             this.skinChatRichTextBox1.Text = "";
             // 
@@ -75,40 +77,73 @@
             // 
             // Column3
             // 
-            this.Column3.HeaderText = "长度";
+            this.Column3.HeaderText = "场景";
             this.Column3.Name = "Column3";
             // 
-            // Column4
+            // skinButton_create
             // 
-            this.Column4.HeaderText = "其他";
-            this.Column4.Name = "Column4";
+            this.skinButton_create.BackColor = System.Drawing.Color.Transparent;
+            this.skinButton_create.ControlState = CCWin.SkinClass.ControlState.Normal;
+            this.skinButton_create.DownBack = null;
+            this.skinButton_create.Location = new System.Drawing.Point(362, 99);
+            this.skinButton_create.MouseBack = null;
+            this.skinButton_create.Name = "skinButton_create";
+            this.skinButton_create.NormlBack = null;
+            this.skinButton_create.Size = new System.Drawing.Size(75, 23);
+            this.skinButton_create.TabIndex = 2;
+            this.skinButton_create.Text = "生成";
+            this.skinButton_create.UseVisualStyleBackColor = false;
+            this.skinButton_create.Click += new System.EventHandler(this.skinButton_create_Click);
             // 
-            // CreateTpMigrate
+            // textBox_model_name
+            // 
+            this.textBox_model_name.Location = new System.Drawing.Point(42, 31);
+            this.textBox_model_name.Name = "textBox_model_name";
+            this.textBox_model_name.Size = new System.Drawing.Size(100, 21);
+            this.textBox_model_name.TabIndex = 3;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(7, 34);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(29, 12);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "名称";
+            // 
+            // CreateYiiModel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1123, 549);
+            this.ClientSize = new System.Drawing.Size(934, 541);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.textBox_model_name);
+            this.Controls.Add(this.skinButton_create);
             this.Controls.Add(this.skinChatRichTextBox1);
             this.Controls.Add(this.dataGridView1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "CreateTpMigrate";
+            this.Name = "CreateYiiModel";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "TP迁移生成";
+            this.Text = "生成YII模型";
+            this.Load += new System.EventHandler(this.CreateYiiModel_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
         private System.Windows.Forms.DataGridView dataGridView1;
+        private CCWin.SkinControl.SkinChatRichTextBox skinChatRichTextBox1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
-        private System.Windows.Forms.DataGridViewButtonColumn Column4;
-        private CCWin.SkinControl.SkinChatRichTextBox skinChatRichTextBox1;
+        private CCWin.SkinControl.SkinButton skinButton_create;
+        private System.Windows.Forms.TextBox textBox_model_name;
+        private System.Windows.Forms.Label label1;
     }
 }

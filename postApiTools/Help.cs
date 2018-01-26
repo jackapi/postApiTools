@@ -32,6 +32,7 @@ namespace postApiTools
             supply.Add("websocket-sharp", "https://github.com/sta/websocket-sharp");
             supply.Add("mysql", "https://dev.mysql.com/");
             supply.Add("WebKit .NET", "http://webkitdotnet.sourceforge.net/");
+            supply.Add("FastColoredTextBox", "https://github.com/PavelTorgashov/FastColoredTextBox");
             int i = 1;
             foreach (var item in supply)
             {
@@ -40,6 +41,7 @@ namespace postApiTools
                 label.Name = "lable_" + item.Key;
                 label.Text = item.Key;
                 label.Width = 100;
+                label.Height = 20;
                 label.Tag = item.Key;
                 label.Location = new Point(12, y);
                 tabPage2.Controls.Add(label);
@@ -49,6 +51,7 @@ namespace postApiTools
                 link.Text = item.Value;
                 link.Location = new Point(120, y);
                 link.Width = 239;
+                link.Height = 20;
                 link.Tag = item.Value;
                 link.Click += new EventHandler(linkLabel_Clicked);
                 tabPage2.Controls.Add(link);

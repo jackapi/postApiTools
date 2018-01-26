@@ -16,6 +16,10 @@ namespace postApiTools
         {
             try
             {
+                if (lib.pWinApi.FindWindow(null, "PostApiTools 开发助手") > 0)
+                {
+                    //return;
+                }
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 Application.Run(new Form1());

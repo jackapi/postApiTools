@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 /// <summary>
 /// data数据库管理类
 /// </summary>
@@ -54,6 +55,22 @@ namespace postApiTools.FormPHPMore.Data
             return b;
         }
 
+        /// <summary>
+        /// 添加sqlite到配置
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public bool addMysqlDataBase(string name, string ip, string port, string username, string password)
+        {
+            string hash = lib.pBase.getHash();
+            this.hash = hash;
+            string sql = string.Format("insert into {0} (hash,name,type,ip,port,username,password,addtime)values('{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}')", dataTable, hash, name, DataBaseType.Mysql, ip, port, username, password, lib.pDate.getTimeStamp());
+            bool b = sqlite.executeNonQuery(sql) > 0 ? true : false;
+            error = sqlite.error;
+            return b;
+        }
+
 
         /// <summary>
         /// 获取所有数据库
@@ -88,8 +105,16 @@ namespace postApiTools.FormPHPMore.Data
             return list;
         }
 
-
-       
+        /// <summary>
+        /// 修改数据库名称
+        /// </summary>
+        /// <param name="hash"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public int updateDataBaseName(string hash, string name)
+        {
+            return sqlite.executeNonQuery(string.Format("update {0} set name='{1}' where hash='{2}'", dataTable, name, hash));
+        }
 
         /// <summary>
         /// 获取数据库
@@ -99,6 +124,36 @@ namespace postApiTools.FormPHPMore.Data
         public Dictionary<string, string> getDataBaseHash(string hash)
         {
             return sqlite.getOne(string.Format("select *from {0} where hash='{1}'", dataTable, hash));
+        }
+
+        /// <summary>
+        /// 删除数据库
+        /// </summary>
+        /// <param name="hash"></param>
+        /// <returns></returns>
+        public int deleteDataBaseHash(string hash)
+        {
+            return sqlite.executeNonQuery(string.Format("delete from {0} where hash='{1}'", dataTable, hash));
+        }
+        /// <summary>
+        /// 刷新treeview
+        /// </summary>
+        /// <param name="tv"></param>
+        public void refreshTreeView(TreeView tv)
+        {
+            Dictionary<int, object> list = getDataBaseAll();
+            tv.Invoke(new Action(() =>
+            {
+                for (int i = 0; i < list.Count; i++)
+                {
+                    Dictionary<string, string> item = (Dictionary<string, string>)list[i];
+                    TreeNode tn = pForm1TreeView.FindNodeByName(tv.Nodes, item["hash"]);
+                    if (tn == null)
+                    {
+                        tv.Nodes.Add(item["hash"], item["type"] + " : " + item["name"]);
+                    }
+                }
+            }));
         }
 
     }
