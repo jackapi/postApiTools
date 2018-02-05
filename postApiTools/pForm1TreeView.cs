@@ -457,6 +457,11 @@ namespace postApiTools
             pform1.objecArrayToDataViewShow(dd, obj);//刷新显示
             return true;
         }
+
+        /// <summary>
+        /// 获取markdown
+        /// </summary>
+        public static string getMarkdown = "";
         /// <summary>
         /// 打开一个api赋值到界面
         /// </summary>
@@ -484,6 +489,7 @@ namespace postApiTools
             urlType.Text = list["method"];
             textBox_api_name.Text = list["name"];
             doc.Text = list["desc"];
+            getMarkdown = list["desc"];//复制markdown
             string urlDataStr = list["urldata"];
             urlDataStr = lib.pBase64.base64ToString(urlDataStr);
             object[,] obj = pJson.jsonStrToObjectArray(urlDataStr, 4);

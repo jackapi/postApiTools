@@ -67,10 +67,20 @@ namespace postApiTools
             lib.pReg.createPrice(lib.pReg.createData, "path", Config.exe);
             this.cmdData = data;
         }
-
+        /// <summary>
+        /// 软件更新服务
+        /// </summary>
         public lib.updateServer update = new lib.updateServer();
+
+        /// <summary>
+        /// 加载锁
+        /// </summary>
         public int loadInt = 1;
+        /// <summary>
+        /// 启动加载线程
+        /// </summary>
         Thread formLoadTh = null;
+
         /// <summary>
         /// 界面启动时运行
         /// </summary>
@@ -83,6 +93,8 @@ namespace postApiTools
             //timer_server.Start();//启动定时器 不能再线程中使用
             this.Text = this.Text + " 开发助手";
             lib.pWinApi.SwitchToThisWindow(this.Handle, true);//启动后置顶
+            IEVersion.BrowserEmulationSet();//指定IE
+            pIe.isIeDownload();//检测浏览器版本
         }
 
         /// <summary>
@@ -96,6 +108,7 @@ namespace postApiTools
                 this.tabPage5.Controls.Clear();
                 WebKit.WebKitBrowser browser = new WebKit.WebKitBrowser();
                 browser.Dock = DockStyle.Fill;
+                //browser.Url =new Uri("http://postApiTools.cn/index/document/getMarkdownHash?hash=11b7a71ce52341cbf3b74567cec8949a");
                 this.tabPage5.Controls.Add(browser);
                 browser.DocumentText = html;
             }));
@@ -105,7 +118,8 @@ namespace postApiTools
         /// </summary>
         private void formLoadFun()
         {
-            Thread.Sleep(500);
+            Thread.Sleep(100);
+            label_version.Text = Config.version;//版本显示
             //窗口自动调整
             int[] size = pform1.formSizeRead();
             this.Width = size[0];
@@ -123,7 +137,8 @@ namespace postApiTools
             Config.websocket.start();//启动websocket
             message();//启动消息检测
             loadInt = 0;
-            UpdateFun();///更新
+            //UpdateFun();///老方法更新
+            label_update_Click(null, null);//更新新方法
             showUserName();//显示用户名
         }
 
@@ -245,7 +260,7 @@ namespace postApiTools
         /// <param name="e"></param>
         private void comboBox_html_show_type_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (loadInt!=0) { return; }
+            if (loadInt != 0) { return; }
             showHtml(pform1.htmlToFormatting(this.testHtml, comboBox_html_show_type, tabControl2, fastColoredTextBox_html));
         }
 
@@ -284,12 +299,35 @@ namespace postApiTools
         /// <param name="e"></param>
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            try { System.Environment.Exit(0); }
+            try
+            {
+                e.Cancel = true;
+                //System.Environment.Exit(0);
+                this.Hide();
+                notifyIcon_postapitools.Visible = true;
+                notifyIcon_postapitools.BalloonTipText = "双击显示软件主界面";
+                notifyIcon_postapitools.ShowBalloonTip(1000);
+            }
             catch (Exception ex)
             {
                 pLogs.logs(ex.ToString());
             }
 
+        }
+
+        /// <summary>
+        /// 关闭窗体
+        /// </summary>
+        public void close()
+        {
+            try
+            {
+                System.Environment.Exit(0);
+            }
+            catch (Exception ex)
+            {
+                pLogs.logs(ex.ToString());
+            }
         }
 
         /// <summary>
@@ -354,6 +392,10 @@ namespace postApiTools
         /// <param name="e"></param>
         private void Form1_Resize(object sender, EventArgs e)
         {
+            if (this.WindowState == FormWindowState.Minimized)
+            {
+                this.Hide();
+            }
             int w = this.Width;
             int h = this.Height;
             if (w <= 160)
@@ -404,13 +446,22 @@ namespace postApiTools
                 pHistory.fillData(dataGridView_http_data, hash, comboBox_url_type, textBox_url, fastColoredTextBox_html);//填充数据
             }
         }
-
+        Thread buttonSaveApiTh;
         /// <summary>
         /// api接口保存
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void button_save_api_Click(object sender, EventArgs e)
+        {
+            buttonSaveApiTh = new Thread(button_save_api_ClickFun);
+            buttonSaveApiTh.Start();
+
+        }
+        /// <summary>
+        /// api接口保存Fun
+        /// </summary>
+        public void button_save_api_ClickFun()
         {
             string url = textBox_url.Text;
             string urlType = comboBox_url_type.Text;
@@ -442,6 +493,7 @@ namespace postApiTools
             }
             SavePostApi api = new SavePostApi(urlData, url, urlType, textBox_doc.Text, treeView_save_list);
             api.ShowDialog();
+            buttonSaveApiTh.Abort();
         }
 
         /// <summary>
@@ -626,10 +678,40 @@ namespace postApiTools
             {
                 editApiHash = hash;
             }
+            pForm1TreeView.getMarkdown = "";
             pForm1TreeView.openApiDataShow(treeView_save_list, textBox_url, comboBox_url_type, dataGridView_http_data, textBox_api_name, textBox_doc);
+            showMarkdown();
             //Thread th = new Thread(treeView_save_list_DoubleClickFun);
             //th.Start();
         }
+
+        /// <summary>
+        /// 显示markdown主方法
+        /// </summary>
+        public void showMarkdown()
+        {
+            Thread th = new Thread(showMarkdownFun);
+            th.Start();
+        }
+
+        /// <summary>
+        /// 显示markdown线程
+        /// </summary>
+        public void showMarkdownFun()
+        {
+            string markdown = pForm1TreeView.getMarkdown;
+            tabPage_markdown.BeginInvoke(new Action(() =>
+            {
+                lib.pWebView p = new pWebView();
+                JObject job = pApizlHttp.getMarkdown(markdown);
+                if (job != null)
+                {
+                    p.ShowControlHtml(tabPage_markdown.Controls, job["result"].ToString());//显示文档
+                }
+            }));
+        }
+
+
         private void treeView_save_list_DoubleClickFun()
         {
             if (treeView_save_list.SelectedNode == null) { return; }
@@ -815,6 +897,10 @@ namespace postApiTools
         /// <param name="e"></param>
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.KeyCode == Keys.Escape)
+            {
+                this.Hide();//esc 隐藏窗体
+            }
             if (e.Modifiers == Keys.Control && e.KeyCode == Keys.W)//新建操作
             {
                 button_new_url_http_Click(null, null);
@@ -908,7 +994,7 @@ namespace postApiTools
         /// <param name="e"></param>
         private void 退出ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.Close();
+            close();
         }
 
         /// <summary>
@@ -1264,10 +1350,27 @@ namespace postApiTools
         /// <param name="e"></param>
         private void ToolStripMenuItem_dataManage_Click(object sender, EventArgs e)
         {
+            OpenDataBaseManage();
+        }
+
+        /// <summary>
+        /// 打开窗体
+        /// </summary>
+        public void OpenDataBaseManage()
+        {
+            new System.Threading.Thread((System.Threading.ThreadStart)delegate
+            {
+                Application.Run(new FormPHPMore.pDataManage());
+            }).Start();
+        }
+        /// <summary>
+        /// 线程中打开窗体
+        /// </summary>
+        public void OpenDataBaseManageFun()
+        {
             FormPHPMore.pDataManage manage = new FormPHPMore.pDataManage();
             manage.Show();
         }
-
         /// <summary>
         /// 停止服务器更新
         /// </summary>
@@ -1305,7 +1408,7 @@ namespace postApiTools
         private void ToolStripMenuItem_out_urldata_Click(object sender, EventArgs e)
         {
             FormAll.pOutUrlData p = new pOutUrlData();
-            p.ShowDialog();
+            p.Show();
         }
 
 
@@ -1333,6 +1436,34 @@ namespace postApiTools
                 }
             }));
         }
+
+
+        /// <summary>
+        /// 输出追加urldata显示
+        /// </summary>
+        /// <param name="d"></param>
+        public void outAppendUrlDataView(Dictionary<string, string> d)
+        {
+            DataGridView dataview = dataGridView_http_data;
+            dataview.Invoke(new Action(() =>
+            {
+                int count = dataview.Rows.Count;
+                if (count < 0) { count = 0; }
+                dataview.Rows.Add((d.Count + count) - 1);
+                int i = count - 1;
+                if (i < 0) { i = 0; }
+                foreach (var item in d)
+                {
+                    dataview.Rows[i].Cells[0].Value = item.Key;
+                    dataview.Rows[i].Cells[1].Value = item.Value;
+                    dataview.Rows[i].Cells[2].Value = "";
+                    dataview.Rows[i].Cells[3].Value = "字符串";
+                    dataview.Rows[i].Cells[4].Value = "删除";
+                    i++;
+                }
+            }));
+        }
+
         /// <summary>
         /// yii相关
         /// </summary>
@@ -1340,9 +1471,9 @@ namespace postApiTools
         /// <param name="e"></param>
         private void ToolStripMenuItem_yii_Click(object sender, EventArgs e)
         {
-            FormPHPMore.pDataManage manage = new FormPHPMore.pDataManage();
-            manage.Show();
+            OpenDataBaseManage();
         }
+
         /// <summary>
         /// tp相关
         /// </summary>
@@ -1350,8 +1481,7 @@ namespace postApiTools
         /// <param name="e"></param>
         private void ToolStripMenuItem_tp_Click(object sender, EventArgs e)
         {
-            FormPHPMore.pDataManage manage = new FormPHPMore.pDataManage();
-            manage.Show();
+            OpenDataBaseManage();
         }
 
 
@@ -1393,6 +1523,117 @@ namespace postApiTools
 
             }
             base.WndProc(ref e);
+        }
+
+        /// <summary>
+        /// agency
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void agencyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("暂未开放!", "操作提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        /// <summary>
+        /// 加入交流群
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void label8_Click(object sender, EventArgs e)
+        {
+            lib.pBase.openWeb("https://jq.qq.com/?_wv=1027&k=5p3VuiP");
+        }
+
+        /// <summary>
+        /// 检测更新事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void label_update_Click(object sender, EventArgs e)
+        {
+            string json = phttp.HttpGetCustom(Config.openServerUrl + "/index/api/version/", "");
+            if (json.Length <= 0) { MessageBox.Show("获取更新失败!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+            JObject job = pJsonData.stringToJobject(json);
+            if (job == null) { MessageBox.Show("获取更新解析失败!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+            if (job["code"].ToString() != "1") { MessageBox.Show("获取更新解析code失败!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+            JObject result = (JObject)job["result"];
+            string ServerVersion = result["version"].ToString();
+            string desc = result["desc"].ToString();
+            string NowVersion = Config.version;
+            NowVersion = NowVersion.Replace("*", "0");
+            Version now = new Version(NowVersion);
+            Version server = new Version(ServerVersion);
+            if (desc.Length > 30)
+            {
+                desc = desc.Substring(0, 30) + "...";
+            }
+            if (server > now)
+            {
+                if (MessageBox.Show("发现新版本:" + ServerVersion + "\r\n" + desc + "\r\n确定开始更新软件!", "更新提示", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    System.Diagnostics.Process.Start(Config.exePath + "postApiToolsUpdate.exe");
+                    close();
+                }
+            }
+            else
+            {
+                if (sender == null && e == null) { return; }
+                MessageBox.Show("当前已是最新版本!", "更新提示");
+            }
+        }
+
+        /// <summary>
+        /// 双击托盘显示
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void notifyIcon_postapitools_DoubleClick(object sender, EventArgs e)
+        {
+            this.Show();
+            lib.pWinApi.SwitchToThisWindow(f.Handle, true);//置顶
+        }
+
+        /// <summary>
+        /// 托盘菜单
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void contextMenuStrip_postapitools_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            if (e.ClickedItem == null) { return; }
+            if (e.ClickedItem.ToString() == "显示")
+            {
+                notifyIcon_postapitools_DoubleClick(null, null);
+            }
+            if (e.ClickedItem.ToString() == "关于")
+            {
+                Help help = new Help();
+                help.ShowDialog();
+            }
+            if (e.ClickedItem.ToString() == "退出")
+            {
+                close();
+            }
+        }
+
+        /// <summary>
+        /// 获取urldata datagridview 数据
+        /// </summary>
+        /// <returns></returns>
+        public DataGridView GetUrlDataGridViewData()
+        {
+            return dataGridView_http_data;
+        }
+
+        /// <summary>
+        /// 关闭软件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ToolStripMenuItem_close_Click(object sender, EventArgs e)
+        {
+            close();
         }
     }
 }

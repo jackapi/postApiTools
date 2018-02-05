@@ -110,6 +110,8 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.SQLite">
@@ -131,6 +133,7 @@
     <Reference Include="websocket-sharp">
       <HintPath>..\websocket-sharp.dll</HintPath>
     </Reference>
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddPid.cs">
@@ -236,6 +239,7 @@
       <DependentUpon>pRen.cs</DependentUpon>
     </Compile>
     <Compile Include="FormPHPMore\Data\pYiiMigrateType.cs" />
+    <Compile Include="FormPHPMore\Models\YiiConstScenario.cs" />
     <Compile Include="FormPHPMore\pDataBaseInfo.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -285,6 +289,7 @@
     <Compile Include="Help.Designer.cs">
       <DependentUpon>Help.cs</DependentUpon>
     </Compile>
+    <Compile Include="lib\IEVersion.cs" />
     <Compile Include="lib\pApizlHttp.cs" />
     <Compile Include="lib\pBase.cs" />
     <Compile Include="lib\pBase64.cs" />
@@ -293,6 +298,7 @@
     <Compile Include="lib\pFile.cs" />
     <Compile Include="lib\phttp.cs" />
     <Compile Include="lib\pHttpCode.cs" />
+    <Compile Include="lib\pIe.cs" />
     <Compile Include="lib\pIni.cs" />
     <Compile Include="lib\pJsonData.cs" />
     <Compile Include="lib\pMaterialSkin.cs">
@@ -302,9 +308,12 @@
     <Compile Include="lib\pProcess.cs" />
     <Compile Include="lib\pReg.cs" />
     <Compile Include="lib\pRegex.cs" />
+    <Compile Include="lib\pFormRichTextBox.cs" />
     <Compile Include="lib\pRunTimeNumber.cs" />
     <Compile Include="lib\pSqlite.cs" />
     <Compile Include="lib\pSqlServer.cs" />
+    <Compile Include="lib\pWebkit.cs" />
+    <Compile Include="lib\pWebView.cs" />
     <Compile Include="lib\pWinApi.cs" />
     <Compile Include="lib\updateServer.cs" />
     <Compile Include="lib\pUpdateServerWeb.cs" />
@@ -315,6 +324,8 @@
     <Compile Include="Memo.Designer.cs">
       <DependentUpon>Memo.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\NameValue.cs" />
+    <Compile Include="Models\UrlDataView.cs" />
     <Compile Include="pBasePublic.cs" />
     <Compile Include="pform1.cs" />
     <Compile Include="pForm1TreeView.cs" />
@@ -1356,6 +1367,7 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>rd /s/q $(ProjectDir)\bin\install

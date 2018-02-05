@@ -121,5 +121,103 @@ namespace postApiTools.FormPHPMore.Data
             }
             return result;
         }
+
+
+        public static string ReturnType(string type)
+        {
+            string result = "";
+            type = type.ToLower();//转小写
+            if (type.IndexOf("integer") >= 0)//int
+            {
+
+                result = "integer";
+            }
+            if (type.IndexOf("int") >= 0)//int
+            {
+
+                result = "integer";
+            }
+            if (type.IndexOf("char") >= 0)
+            {
+
+                result = "char";
+            }
+            if (type.IndexOf("varchar") >= 0)//字符串
+            {
+
+                result = "varchar";
+            }
+            if (type.IndexOf("string") >= 0)
+            {
+
+                result = "string";
+            }
+            if (type.IndexOf("text") >= 0)
+            {
+
+                result = "text";
+            }
+            if (type.IndexOf("smallint") >= 0)
+            {
+
+                result = "smallint";
+            }
+            if (type.IndexOf("bigint") >= 0)
+            {
+
+                result = "bigint";
+            }
+            if (type.IndexOf("float") >= 0)
+            {
+
+                result = "float";
+            }
+            if (type.IndexOf("double") >= 0)
+            {
+
+                result = "double";
+            }
+            if (type.IndexOf("decimal") >= 0)
+            {
+
+                result = "decimal";
+            }
+            if (type.IndexOf("date") >= 0)
+            {
+
+                result = "date";
+            }
+            if (type.IndexOf("datetime") >= 0)
+            {
+
+                result = "datetime";
+            }
+            if (type.IndexOf("timestamp") >= 0)
+            {
+
+                result = "timestamp";
+            }
+            if (type.IndexOf("time") >= 0)
+            {
+
+                result = "time";
+            }
+            if (type.IndexOf("binary") >= 0)
+            {
+
+                result = "binary";
+            }
+            if (type.IndexOf("boolean") >= 0)
+            {
+
+                result = "boolean";
+            }
+            if (type.IndexOf("money") >= 0)
+            {
+
+                result = "money";
+            }
+            return result;
+        }
     }
 }

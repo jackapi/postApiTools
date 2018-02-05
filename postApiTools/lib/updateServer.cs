@@ -25,16 +25,16 @@ namespace postApiTools.lib
         /// <summary>
         /// download
         /// </summary>
-        public const string versionuDownload = "http://wstatic.apizl.com/postapitools/setup.exe";
+        public const string versionuDownload = "http://postapitools.com/soft/postapitools.exe";
         /// <summary>
         /// 请求URL
         /// </summary>
-        public const string versionuUrl = "http://wstatic.apizl.com/postapitools/version.txt";
+        public const string versionuUrl = "http://postapitools.com/soft/version.txt";
 
         /// <summary>
         /// version_desc URL
         /// </summary>
-        public const string versionuDescUrl = "http://wstatic.apizl.com/postapitools/version_desc.txt";
+        public const string versionuDescUrl = "http://postapitools.com/soft/desc.txt";
 
         /// <summary>
         /// 更新说明

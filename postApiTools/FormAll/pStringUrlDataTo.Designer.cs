@@ -39,14 +39,15 @@
             this.ToolStripMenuItem_paste = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItem_empty = new System.Windows.Forms.ToolStripMenuItem();
             this.skinDataGridView1 = new CCWin.SkinControl.SkinDataGridView();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.skinButton_save = new CCWin.SkinControl.SkinButton();
             this.skinButton_close = new CCWin.SkinControl.SkinButton();
             this.skinLabel1 = new CCWin.SkinControl.SkinLabel();
             this.skinLabel2 = new CCWin.SkinControl.SkinLabel();
             this.skinComboBox1 = new CCWin.SkinControl.SkinComboBox();
             this.skinButton_create = new CCWin.SkinControl.SkinButton();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.skinButton_append = new CCWin.SkinControl.SkinButton();
             this.skinContextMenuStrip_text.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.skinDataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -154,6 +155,18 @@
             this.skinDataGridView1.TitleBackColorBegin = System.Drawing.Color.White;
             this.skinDataGridView1.TitleBackColorEnd = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(196)))), ((int)(((byte)(242)))));
             // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "参数";
+            this.Column1.Name = "Column1";
+            this.Column1.Width = 220;
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "值";
+            this.Column2.Name = "Column2";
+            this.Column2.Width = 220;
+            // 
             // skinButton_save
             // 
             this.skinButton_save.BackColor = System.Drawing.Color.Transparent;
@@ -237,23 +250,27 @@
             this.skinButton_create.UseVisualStyleBackColor = false;
             this.skinButton_create.Click += new System.EventHandler(this.skinButton_create_Click);
             // 
-            // Column1
+            // skinButton_append
             // 
-            this.Column1.HeaderText = "参数";
-            this.Column1.Name = "Column1";
-            this.Column1.Width = 220;
-            // 
-            // Column2
-            // 
-            this.Column2.HeaderText = "值";
-            this.Column2.Name = "Column2";
-            this.Column2.Width = 220;
+            this.skinButton_append.BackColor = System.Drawing.Color.Transparent;
+            this.skinButton_append.ControlState = CCWin.SkinClass.ControlState.Normal;
+            this.skinButton_append.DownBack = null;
+            this.skinButton_append.Location = new System.Drawing.Point(124, 426);
+            this.skinButton_append.MouseBack = null;
+            this.skinButton_append.Name = "skinButton_append";
+            this.skinButton_append.NormlBack = null;
+            this.skinButton_append.Size = new System.Drawing.Size(75, 23);
+            this.skinButton_append.TabIndex = 6;
+            this.skinButton_append.Text = "追加";
+            this.skinButton_append.UseVisualStyleBackColor = false;
+            this.skinButton_append.Click += new System.EventHandler(this.skinButton_append_Click);
             // 
             // pStringUrlDataTo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(571, 465);
+            this.Controls.Add(this.skinButton_append);
             this.Controls.Add(this.skinButton_create);
             this.Controls.Add(this.skinComboBox1);
             this.Controls.Add(this.skinLabel2);
@@ -294,5 +311,6 @@
         private CCWin.SkinControl.SkinButton skinButton_create;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private CCWin.SkinControl.SkinButton skinButton_append;
     }
 }

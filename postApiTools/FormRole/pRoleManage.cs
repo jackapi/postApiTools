@@ -127,7 +127,8 @@ namespace postApiTools.FormRole
                 if (job == null) { return; }
                 showDataView(skinDataGridView_more, (JArray)job["result"], new string[] { "hash", "name" });//显示数据
             }
-            if (e.ClickedItem.Text == "添加项目") {
+            if (e.ClickedItem.Text == "添加项目")
+            {
                 setProjectSetting set = new setProjectSetting(hash);
                 set.ShowDialog();
             }
@@ -157,21 +158,35 @@ namespace postApiTools.FormRole
         /// <param name="e"></param>
         private void skinContextMenuStrip_more_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            if (e.ClickedItem == null){return;}
+            if (e.ClickedItem == null) { return; }
             if (skinDataGridView_more.CurrentRow.Index < 0) { return; }
             if (skinDataGridView_more.CurrentRow.Index > skinDataGridView_more.Rows.Count - 2) { return; }//判断是否超出列表选择
             if (skinDataGridView_more.Rows[skinDataGridView_more.CurrentRow.Index].Cells["role_hash"] == null) { return; }
             string hash = skinDataGridView_more.Rows[skinDataGridView_more.CurrentRow.Index].Cells["role_hash"].Value.ToString();//hash
             string name = skinDataGridView_more.Rows[skinDataGridView_more.CurrentRow.Index].Cells["user_name"].Value.ToString();//名称
+            skinContextMenuStrip_more.Close();
             if (e.ClickedItem.Text == "删除")
             {
+                JObject job = pRole.deleteRoleUserList(hash);
+                if (job == null) { return; }
+                if (job["code"].ToString() == "1")
+                {
+                    JObject jobHash = pRole.getRoleUserList(hash);
+                    if (jobHash == null) { return; }
+                    showDataView(skinDataGridView_more, (JArray)jobHash["result"], new string[] { "hash", "name" });//显示数据
+                    MessageBox.Show("清理完成");
+                    return;
+                }
+                MessageBox.Show(job["msg"].ToString(), "错误提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
             if (e.ClickedItem.Text == "清空")
             {
                 skinContextMenuStrip_more.Close();
                 JObject job = pRole.roleUserClear(hash);
                 if (job == null) { return; }
-                if (job["code"].ToString() == "1") {
+                if (job["code"].ToString() == "1")
+                {
                     JObject jobHash = pRole.getRoleUserList(hash);
                     if (jobHash == null) { return; }
                     showDataView(skinDataGridView_more, (JArray)jobHash["result"], new string[] { "hash", "name" });//显示数据
@@ -190,8 +205,8 @@ namespace postApiTools.FormRole
         /// <param name="e"></param>
         private void skinDataGridView_role_list_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex> skinDataGridView_role_list.Rows.Count-2) { return; }
-            if (e.RowIndex<0) { return; }
+            if (e.RowIndex > skinDataGridView_role_list.Rows.Count - 2) { return; }
+            if (e.RowIndex < 0) { return; }
             string hash = skinDataGridView_role_list.Rows[e.RowIndex].Cells["hash"].Value.ToString();//hash
             JObject job = pRole.getRoleUserList(hash);
             if (job == null) { return; }

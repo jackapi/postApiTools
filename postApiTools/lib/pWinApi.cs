@@ -21,5 +21,6 @@ namespace postApiTools.lib
         ///通过窗口的标题来查找窗口的句柄
         [DllImport("User32.dll", EntryPoint = "FindWindow")]
         public static extern int FindWindow(string lpClassName, string lpWindowName);
+
     }
 }

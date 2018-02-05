@@ -29,5 +29,45 @@ namespace postApiTools.lib
                 return null;
             }
         }
+
+        /// <summary>
+        /// 字符串转array对象
+        /// </summary>
+        /// <param name="json"></param>
+        /// <returns></returns>
+        public static JArray stringToJArray(string json)
+        {
+            try
+            {
+                JArray jar = (JArray)JsonConvert.DeserializeObject(json);
+                return jar;
+            }
+            catch (Exception ex)
+            {
+                pLogs.logs("json:" + json + " " + ex.ToString());
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 对象转json字符串
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static string objectToString(object obj)
+        {
+            try
+            {
+                string str = JsonConvert.SerializeObject(obj);
+                return str;
+            }
+            catch (Exception ex)
+            {
+                pLogs.logs("json:" + obj.ToString() + " " + ex.ToString());
+                return null;
+            }
+        }
+
+
     }
 }

@@ -21,6 +21,16 @@ namespace postApiTools.FormAll
             InitializeComponent();
             skinComboBox1.Text = "JSON";//json
         }
+
+        /// <summary>
+        /// 显示传入参数
+        /// </summary>
+        /// <param name="content"></param>
+        public void showContent(string content)
+        {
+            skinChatRichTextBox_content.Text = content;
+        }
+
         /// <summary>
         /// 写入
         /// </summary>
@@ -166,6 +176,16 @@ namespace postApiTools.FormAll
                 }
 
             }
+        }
+
+        /// <summary>
+        /// 追加
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void skinButton_append_Click(object sender, EventArgs e)
+        {
+            Form1.f.outAppendUrlDataView(urlData);//追加输出
         }
     }
 }

@@ -30,40 +30,29 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CreateYiiModel));
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.skinChatRichTextBox1 = new CCWin.SkinControl.SkinChatRichTextBox();
+            this.dataGridView_table_info = new System.Windows.Forms.DataGridView();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.skinChatRichTextBox1 = new CCWin.SkinControl.SkinChatRichTextBox();
             this.skinButton_create = new CCWin.SkinControl.SkinButton();
             this.textBox_model_name = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_table_info)).BeginInit();
             this.SuspendLayout();
             // 
-            // dataGridView1
+            // dataGridView_table_info
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridView_table_info.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView_table_info.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1,
             this.Column2,
             this.Column3});
-            this.dataGridView1.Location = new System.Drawing.Point(7, 128);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowTemplate.Height = 23;
-            this.dataGridView1.Size = new System.Drawing.Size(338, 398);
-            this.dataGridView1.TabIndex = 0;
-            // 
-            // skinChatRichTextBox1
-            // 
-            this.skinChatRichTextBox1.Location = new System.Drawing.Point(362, 128);
-            this.skinChatRichTextBox1.Name = "skinChatRichTextBox1";
-            this.skinChatRichTextBox1.SelectControl = null;
-            this.skinChatRichTextBox1.SelectControlIndex = 0;
-            this.skinChatRichTextBox1.SelectControlPoint = new System.Drawing.Point(0, 0);
-            this.skinChatRichTextBox1.Size = new System.Drawing.Size(565, 398);
-            this.skinChatRichTextBox1.TabIndex = 1;
-            this.skinChatRichTextBox1.Text = "";
+            this.dataGridView_table_info.Location = new System.Drawing.Point(7, 128);
+            this.dataGridView_table_info.Name = "dataGridView_table_info";
+            this.dataGridView_table_info.RowTemplate.Height = 23;
+            this.dataGridView_table_info.Size = new System.Drawing.Size(338, 398);
+            this.dataGridView_table_info.TabIndex = 0;
             // 
             // Column1
             // 
@@ -79,6 +68,17 @@
             // 
             this.Column3.HeaderText = "场景";
             this.Column3.Name = "Column3";
+            // 
+            // skinChatRichTextBox1
+            // 
+            this.skinChatRichTextBox1.Location = new System.Drawing.Point(362, 128);
+            this.skinChatRichTextBox1.Name = "skinChatRichTextBox1";
+            this.skinChatRichTextBox1.SelectControl = null;
+            this.skinChatRichTextBox1.SelectControlIndex = 0;
+            this.skinChatRichTextBox1.SelectControlPoint = new System.Drawing.Point(0, 0);
+            this.skinChatRichTextBox1.Size = new System.Drawing.Size(565, 398);
+            this.skinChatRichTextBox1.TabIndex = 1;
+            this.skinChatRichTextBox1.Text = "";
             // 
             // skinButton_create
             // 
@@ -120,7 +120,7 @@
             this.Controls.Add(this.textBox_model_name);
             this.Controls.Add(this.skinButton_create);
             this.Controls.Add(this.skinChatRichTextBox1);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.dataGridView_table_info);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -129,7 +129,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "生成YII模型";
             this.Load += new System.EventHandler(this.CreateYiiModel_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_table_info)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -137,7 +137,7 @@
 
         #endregion
 
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView dataGridView_table_info;
         private CCWin.SkinControl.SkinChatRichTextBox skinChatRichTextBox1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;

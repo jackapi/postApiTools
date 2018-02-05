@@ -15,7 +15,7 @@ namespace postApiTools.lib
         MySqlConnection conn;
 
         public string error = "";
-
+        public string Database = "";
         /// <summary>
         /// 实例化
         /// </summary>
@@ -24,12 +24,13 @@ namespace postApiTools.lib
         /// <param name="username"></param>
         /// <param name="password"></param>
         /// <param name="databsse"></param>
-        public pMysql(string ip, string port, string username, string password, string databsse, string encodingString = "utf-8")
+        public pMysql(string ip, string port, string username, string password, string database, string encodingString = "utf-8")
         {
-            string constructorString = string.Format("server={0};port={1};User Id='{2}';password='{3}';database='{4}';charset='{5}'", ip, port, username, password, databsse, encodingString);
-            if (databsse == "")
+            this.Database = database;
+            string constructorString = string.Format("server={0};port={1};User Id='{2}';password='{3}';database='{4}';charset='{5}'", ip, port, username, password, database, encodingString);
+            if (database == "")
             {
-                constructorString = string.Format("server={0};port={1};User Id='{2}';password='{3}';database='{4}'", ip, port, username, password, databsse);
+                constructorString = string.Format("server={0};port={1};User Id='{2}';password='{3}';database='{4}'", ip, port, username, password, database);
             }
             try
             {
@@ -129,7 +130,8 @@ namespace postApiTools.lib
                 }
                 return d;
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 error = ex.ToString();
                 return d;
             }
@@ -159,7 +161,8 @@ namespace postApiTools.lib
         /// <returns></returns>
         public Dictionary<int, object> getTableInfo(string table)
         {
-            return getRows("desc " + table + ";");
+            return getRows(string.Format("select COLUMN_NAME as Field ,DATA_TYPE as Type,COLUMN_COMMENT as Content,IS_NULLABLE as IsNull,COLUMN_KEY as IsKey from information_schema.columns where table_schema ='{0}' and table_name = '{1}'", this.Database, table));
+
         }
 
 

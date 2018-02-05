@@ -18,7 +18,7 @@ namespace postApiTools
             {
                 if (lib.pWinApi.FindWindow(null, "PostApiTools 开发助手") > 0)
                 {
-                    //return;
+                    return;
                 }
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
@@ -27,7 +27,7 @@ namespace postApiTools
             catch (Exception ex)
             {
                 pLogs.logs(ex.ToString());
-                MessageBox.Show("错误:" + ex.ToString().Substring(0, 200) + "...", "错误提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("错误:" + ex.ToString().Substring(0, 500) + "...", "错误提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 System.Environment.Exit(0);
             }
         }

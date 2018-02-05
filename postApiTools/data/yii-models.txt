@@ -1,48 +1,89 @@
-﻿namespace app\models;
+﻿<?php
+
+namespace app\models;
 
 use yii\db\ActiveRecord;
 
-class {$model-name} extends ActiveRecord
+/**
+ * create 
+ * This is the model class for table "{$model-name}".
+ {$model-table-info-property}
+ */
+class {$model-name-f} extends ActiveRecord
 {
-	{$const}
-    const SCENARIO_LOGIN = 'login';
-    const SCENARIO_REGISTER = 'register';
+	/**
+	*
+	使用
+ * $model = new \app\models\ContactForm;
 
+  // 用户输入数据赋值到模型属性
+  $model->attributes = \Yii::$app->request->post('ContactForm');
+
+	if ($model->validate()) {
+		// 所有输入数据都有效 all inputs are valid
+	} else {
+		// 验证失败：$errors 是一个包含错误信息的数组
+		$errors = $model->errors;
+	}
+	*/
+
+    /**
+	 *{$model-name}
+     * @inheritdoc
+     */
+    public static function tableName() {
+        return '{$model-name}';
+    }
+
+	//场景常量
+{$const}
+
+	/**
+	*验证规则
+	* 场景 [['username', 'password'], 'required', 'on' => 'login'],
+	* 长度验证 ['username', 'string', 'min' => 3, 'max' => 12],
+	*/
 	public function rules()
 	{
 		return [
-			{$rules}
-			// name, email, subject 和 body 属性必须有值
-			[['name', 'email', 'subject', 'body'], 'required'],
-
-			// email 属性必须是一个有效的电子邮箱地址
-			['email', 'email'],
+{$rules}
 		];
 	}
 
-	public function fields()
-	{
-		return [
-			{$fields}
-			// 字段名和属性名相同
-			'id',
-
-			// 字段名为 "email"，对应属性名为 "email_address"
-			'email' => 'email_address',
-
-			// 字段名为 "name", 值通过PHP代码返回
+	/**
+	*字段映射
+	* // 字段名为 "email"，对应属性名为 "email_address"
+	* // 字段名为 "name", 值通过PHP代码返回
 			'name' => function () {
 				return $this->first_name . ' ' . $this->last_name;
 			},
+	*/
+	public function fields()
+	{
+		return [
+{$fields}
 		];
 	}
-
+	
+    /**
+	 * 场景
+     * @inheritdoc
+     */
     public function scenarios()
     {
         return [
-			{$scenarios}
-            self::SCENARIO_LOGIN => ['username', 'password'],
-            self::SCENARIO_REGISTER => ['username', 'email', 'password'],
+{$scenarios}
+        ];
+    }
+
+	
+    /**
+	 * 字段
+     * @inheritdoc
+     */
+    public function attributeLabels() {
+        return [
+{$attributeLabels}
         ];
     }
 }

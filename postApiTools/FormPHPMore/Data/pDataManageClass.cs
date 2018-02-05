@@ -156,5 +156,22 @@ namespace postApiTools.FormPHPMore.Data
             }));
         }
 
+
+        /// <summary>
+        /// 列表字段数据转json
+        /// </summary>
+        /// <param name="d"></param>
+        /// <returns></returns>
+        public string dToJson(Dictionary<int, object> d)
+        {
+            Dictionary<string, string> tableInfo = new Dictionary<string, string> { };
+            if (d.Count <= 0) { return ""; }
+            Dictionary<string, string> temp = (Dictionary<string, string>)d[0];
+            foreach (var item in temp)
+            {
+                tableInfo.Add(item.Key, item.Value);
+            }
+            return pJson.objectToJsonStr(tableInfo);
+        }
     }
 }

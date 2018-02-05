@@ -100,7 +100,7 @@
             this.skinChatRichTextBox_logs = new CCWin.SkinControl.SkinChatRichTextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
-            this.label7 = new System.Windows.Forms.Label();
+            this.label_qq_qun = new System.Windows.Forms.Label();
             this.button_save_api = new System.Windows.Forms.Button();
             this.imageList_treeview = new System.Windows.Forms.ImageList(this.components);
             this.timer_server = new System.Windows.Forms.Timer(this.components);
@@ -114,6 +114,7 @@
             this.ToolStripMenuItem_tools = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItem_dataManage = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItem_websocket_tools = new System.Windows.Forms.ToolStripMenuItem();
+            this.agencyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pHP相关ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItem_yii = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItem_tp = new System.Windows.Forms.ToolStripMenuItem();
@@ -128,9 +129,20 @@
             this.帮助说明ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.检测更新ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.关于ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItem_close = new System.Windows.Forms.ToolStripMenuItem();
             this.skinContextMenuStrip_user_name = new CCWin.SkinControl.SkinContextMenuStrip();
             this.用户登录ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.清理登录ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label_update = new System.Windows.Forms.Label();
+            this.label_version = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.notifyIcon_postapitools = new System.Windows.Forms.NotifyIcon(this.components);
+            this.contextMenuStrip_postapitools = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.显示ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.关于ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.退出ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.tabPage_markdown = new System.Windows.Forms.TabPage();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_http_data)).BeginInit();
@@ -151,6 +163,7 @@
             this.tabPage_logs.SuspendLayout();
             this.skinMenuStrip1.SuspendLayout();
             this.skinContextMenuStrip_user_name.SuspendLayout();
+            this.contextMenuStrip_postapitools.SuspendLayout();
             this.SuspendLayout();
             // 
             // button_test
@@ -207,10 +220,11 @@
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage6);
+            this.tabControl1.Controls.Add(this.tabPage_markdown);
             this.tabControl1.Location = new System.Drawing.Point(263, 140);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(993, 544);
+            this.tabControl1.Size = new System.Drawing.Size(993, 552);
             this.tabControl1.TabIndex = 4;
             // 
             // tabPage1
@@ -220,7 +234,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(985, 518);
+            this.tabPage1.Size = new System.Drawing.Size(985, 526);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "数据";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -324,7 +338,7 @@
             this.tabControl2.Location = new System.Drawing.Point(6, 157);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(976, 354);
+            this.tabControl2.Size = new System.Drawing.Size(976, 362);
             this.tabControl2.TabIndex = 0;
             // 
             // tabPage4
@@ -336,7 +350,7 @@
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(968, 328);
+            this.tabPage4.Size = new System.Drawing.Size(968, 336);
             this.tabPage4.TabIndex = 0;
             this.tabPage4.Text = "源码";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -350,14 +364,13 @@
             this.fastColoredTextBox_html.BackBrush = null;
             this.fastColoredTextBox_html.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.fastColoredTextBox_html.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
-            this.fastColoredTextBox_html.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.fastColoredTextBox_html.ImeMode = System.Windows.Forms.ImeMode.On;
             this.fastColoredTextBox_html.IsReplaceMode = false;
             this.fastColoredTextBox_html.Location = new System.Drawing.Point(6, 30);
             this.fastColoredTextBox_html.Name = "fastColoredTextBox_html";
             this.fastColoredTextBox_html.Paddings = new System.Windows.Forms.Padding(0);
             this.fastColoredTextBox_html.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
-            this.fastColoredTextBox_html.Size = new System.Drawing.Size(959, 292);
+            this.fastColoredTextBox_html.Size = new System.Drawing.Size(959, 300);
             this.fastColoredTextBox_html.TabIndex = 4;
             // 
             // checkBox_to_rn
@@ -405,7 +418,7 @@
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(968, 328);
+            this.tabPage5.Size = new System.Drawing.Size(968, 336);
             this.tabPage5.TabIndex = 1;
             this.tabPage5.Text = "浏览器";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -416,7 +429,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(985, 518);
+            this.tabPage2.Size = new System.Drawing.Size(985, 526);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "提交报文";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -462,7 +475,7 @@
             this.tabPage3.Controls.Add(this.dataGridView_Response);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(985, 518);
+            this.tabPage3.Size = new System.Drawing.Size(985, 526);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "返回报文";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -508,7 +521,7 @@
             this.tabPage6.Location = new System.Drawing.Point(4, 22);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(985, 518);
+            this.tabPage6.Size = new System.Drawing.Size(985, 526);
             this.tabPage6.TabIndex = 3;
             this.tabPage6.Text = "文档";
             this.tabPage6.UseVisualStyleBackColor = true;
@@ -694,7 +707,7 @@
             this.tabControl3.Location = new System.Drawing.Point(3, 94);
             this.tabControl3.Name = "tabControl3";
             this.tabControl3.SelectedIndex = 0;
-            this.tabControl3.Size = new System.Drawing.Size(254, 590);
+            this.tabControl3.Size = new System.Drawing.Size(254, 598);
             this.tabControl3.TabIndex = 16;
             // 
             // tabPage8
@@ -709,7 +722,7 @@
             this.tabPage8.Location = new System.Drawing.Point(4, 22);
             this.tabPage8.Name = "tabPage8";
             this.tabPage8.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage8.Size = new System.Drawing.Size(246, 564);
+            this.tabPage8.Size = new System.Drawing.Size(246, 572);
             this.tabPage8.TabIndex = 1;
             this.tabPage8.Text = "保存";
             this.tabPage8.UseVisualStyleBackColor = true;
@@ -779,7 +792,7 @@
             this.treeView_save_list.ContextMenuStrip = this.contextMenuStrip_save_list;
             this.treeView_save_list.Location = new System.Drawing.Point(3, 61);
             this.treeView_save_list.Name = "treeView_save_list";
-            this.treeView_save_list.Size = new System.Drawing.Size(251, 507);
+            this.treeView_save_list.Size = new System.Drawing.Size(251, 515);
             this.treeView_save_list.TabIndex = 2;
             this.treeView_save_list.DoubleClick += new System.EventHandler(this.treeView_save_list_DoubleClick);
             // 
@@ -825,7 +838,7 @@
             this.tabPage7.Location = new System.Drawing.Point(4, 22);
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage7.Size = new System.Drawing.Size(246, 564);
+            this.tabPage7.Size = new System.Drawing.Size(246, 572);
             this.tabPage7.TabIndex = 0;
             this.tabPage7.Text = "历史";
             this.tabPage7.UseVisualStyleBackColor = true;
@@ -846,7 +859,7 @@
             this.tabPage_logs.Location = new System.Drawing.Point(4, 22);
             this.tabPage_logs.Name = "tabPage_logs";
             this.tabPage_logs.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage_logs.Size = new System.Drawing.Size(246, 564);
+            this.tabPage_logs.Size = new System.Drawing.Size(246, 572);
             this.tabPage_logs.TabIndex = 2;
             this.tabPage_logs.Text = "日志";
             this.tabPage_logs.UseVisualStyleBackColor = true;
@@ -866,7 +879,7 @@
             // 
             this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(1, 687);
+            this.label6.Location = new System.Drawing.Point(1, 697);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(35, 12);
             this.label6.TabIndex = 17;
@@ -877,7 +890,7 @@
             this.linkLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.linkLabel1.AutoSize = true;
             this.linkLabel1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.linkLabel1.Location = new System.Drawing.Point(42, 687);
+            this.linkLabel1.Location = new System.Drawing.Point(42, 697);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(125, 12);
             this.linkLabel1.TabIndex = 18;
@@ -885,18 +898,18 @@
             this.linkLabel1.Text = "http://www.apizl.com";
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
-            // label7
+            // label_qq_qun
             // 
-            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label7.AutoSize = true;
-            this.label7.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.label7.ForeColor = System.Drawing.Color.Red;
-            this.label7.Location = new System.Drawing.Point(185, 687);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(53, 12);
-            this.label7.TabIndex = 19;
-            this.label7.Text = "赞助支持";
-            this.label7.Click += new System.EventHandler(this.label7_Click);
+            this.label_qq_qun.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label_qq_qun.AutoSize = true;
+            this.label_qq_qun.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label_qq_qun.ForeColor = System.Drawing.Color.Red;
+            this.label_qq_qun.Location = new System.Drawing.Point(185, 697);
+            this.label_qq_qun.Name = "label_qq_qun";
+            this.label_qq_qun.Size = new System.Drawing.Size(53, 12);
+            this.label_qq_qun.TabIndex = 19;
+            this.label_qq_qun.Text = "赞助支持";
+            this.label_qq_qun.Click += new System.EventHandler(this.label7_Click);
             // 
             // button_save_api
             // 
@@ -937,7 +950,7 @@
             this.label_help.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label_help.AutoSize = true;
             this.label_help.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.label_help.Location = new System.Drawing.Point(254, 687);
+            this.label_help.Location = new System.Drawing.Point(254, 697);
             this.label_help.Name = "label_help";
             this.label_help.Size = new System.Drawing.Size(53, 12);
             this.label_help.TabIndex = 21;
@@ -992,7 +1005,8 @@
             this.pHP相关ToolStripMenuItem,
             this.项目管理ToolStripMenuItem,
             this.用户管理ToolStripMenuItem,
-            this.帮助ToolStripMenuItem});
+            this.帮助ToolStripMenuItem,
+            this.ToolStripMenuItem_close});
             this.skinMenuStrip1.Location = new System.Drawing.Point(4, 28);
             this.skinMenuStrip1.Name = "skinMenuStrip1";
             this.skinMenuStrip1.RadiusStyle = CCWin.SkinClass.RoundStyle.All;
@@ -1032,7 +1046,8 @@
             // 
             this.ToolStripMenuItem_tools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ToolStripMenuItem_dataManage,
-            this.ToolStripMenuItem_websocket_tools});
+            this.ToolStripMenuItem_websocket_tools,
+            this.agencyToolStripMenuItem});
             this.ToolStripMenuItem_tools.Name = "ToolStripMenuItem_tools";
             this.ToolStripMenuItem_tools.Size = new System.Drawing.Size(44, 21);
             this.ToolStripMenuItem_tools.Text = "工具";
@@ -1051,6 +1066,13 @@
             this.ToolStripMenuItem_websocket_tools.Text = "websocket测试工具";
             this.ToolStripMenuItem_websocket_tools.Click += new System.EventHandler(this.ToolStripMenuItem_websocket_tools_Click);
             // 
+            // agencyToolStripMenuItem
+            // 
+            this.agencyToolStripMenuItem.Name = "agencyToolStripMenuItem";
+            this.agencyToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.agencyToolStripMenuItem.Text = "Agency";
+            this.agencyToolStripMenuItem.Click += new System.EventHandler(this.agencyToolStripMenuItem_Click);
+            // 
             // pHP相关ToolStripMenuItem
             // 
             this.pHP相关ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -1063,14 +1085,14 @@
             // ToolStripMenuItem_yii
             // 
             this.ToolStripMenuItem_yii.Name = "ToolStripMenuItem_yii";
-            this.ToolStripMenuItem_yii.Size = new System.Drawing.Size(152, 22);
+            this.ToolStripMenuItem_yii.Size = new System.Drawing.Size(114, 22);
             this.ToolStripMenuItem_yii.Text = "Yii相关";
             this.ToolStripMenuItem_yii.Click += new System.EventHandler(this.ToolStripMenuItem_yii_Click);
             // 
             // ToolStripMenuItem_tp
             // 
             this.ToolStripMenuItem_tp.Name = "ToolStripMenuItem_tp";
-            this.ToolStripMenuItem_tp.Size = new System.Drawing.Size(152, 22);
+            this.ToolStripMenuItem_tp.Size = new System.Drawing.Size(114, 22);
             this.ToolStripMenuItem_tp.Text = "TP相关";
             this.ToolStripMenuItem_tp.Click += new System.EventHandler(this.ToolStripMenuItem_tp_Click);
             // 
@@ -1159,6 +1181,13 @@
             this.关于ToolStripMenuItem.Text = "关于";
             this.关于ToolStripMenuItem.Click += new System.EventHandler(this.关于ToolStripMenuItem_Click);
             // 
+            // ToolStripMenuItem_close
+            // 
+            this.ToolStripMenuItem_close.Name = "ToolStripMenuItem_close";
+            this.ToolStripMenuItem_close.Size = new System.Drawing.Size(44, 21);
+            this.ToolStripMenuItem_close.Text = "关闭";
+            this.ToolStripMenuItem_close.Click += new System.EventHandler(this.ToolStripMenuItem_close_Click);
+            // 
             // skinContextMenuStrip_user_name
             // 
             this.skinContextMenuStrip_user_name.Arrow = System.Drawing.Color.Black;
@@ -1201,17 +1230,109 @@
             this.清理登录ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.清理登录ToolStripMenuItem.Text = "清理登录";
             // 
+            // label8
+            // 
+            this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(332, 697);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(125, 12);
+            this.label8.TabIndex = 24;
+            this.label8.Text = "加入交流群:454420458";
+            this.label8.Click += new System.EventHandler(this.label8_Click);
+            // 
+            // label_update
+            // 
+            this.label_update.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label_update.AutoSize = true;
+            this.label_update.Location = new System.Drawing.Point(480, 697);
+            this.label_update.Name = "label_update";
+            this.label_update.Size = new System.Drawing.Size(53, 12);
+            this.label_update.TabIndex = 25;
+            this.label_update.Text = "检测更新";
+            this.label_update.Click += new System.EventHandler(this.label_update_Click);
+            // 
+            // label_version
+            // 
+            this.label_version.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.label_version.AutoSize = true;
+            this.label_version.Location = new System.Drawing.Point(1194, 697);
+            this.label_version.Name = "label_version";
+            this.label_version.Size = new System.Drawing.Size(47, 12);
+            this.label_version.TabIndex = 25;
+            this.label_version.Text = "1.0.0.0";
+            // 
+            // label7
+            // 
+            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(1129, 697);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(59, 12);
+            this.label7.TabIndex = 26;
+            this.label7.Text = "当前版本:";
+            // 
+            // notifyIcon_postapitools
+            // 
+            this.notifyIcon_postapitools.ContextMenuStrip = this.contextMenuStrip_postapitools;
+            this.notifyIcon_postapitools.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon_postapitools.Icon")));
+            this.notifyIcon_postapitools.Text = "postApiTools";
+            this.notifyIcon_postapitools.Visible = true;
+            this.notifyIcon_postapitools.DoubleClick += new System.EventHandler(this.notifyIcon_postapitools_DoubleClick);
+            // 
+            // contextMenuStrip_postapitools
+            // 
+            this.contextMenuStrip_postapitools.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.显示ToolStripMenuItem,
+            this.关于ToolStripMenuItem1,
+            this.退出ToolStripMenuItem1});
+            this.contextMenuStrip_postapitools.Name = "contextMenuStrip_postapitools";
+            this.contextMenuStrip_postapitools.Size = new System.Drawing.Size(101, 70);
+            this.contextMenuStrip_postapitools.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuStrip_postapitools_ItemClicked);
+            // 
+            // 显示ToolStripMenuItem
+            // 
+            this.显示ToolStripMenuItem.Name = "显示ToolStripMenuItem";
+            this.显示ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.显示ToolStripMenuItem.Text = "显示";
+            // 
+            // 关于ToolStripMenuItem1
+            // 
+            this.关于ToolStripMenuItem1.Name = "关于ToolStripMenuItem1";
+            this.关于ToolStripMenuItem1.Size = new System.Drawing.Size(100, 22);
+            this.关于ToolStripMenuItem1.Text = "关于";
+            // 
+            // 退出ToolStripMenuItem1
+            // 
+            this.退出ToolStripMenuItem1.Name = "退出ToolStripMenuItem1";
+            this.退出ToolStripMenuItem1.Size = new System.Drawing.Size(100, 22);
+            this.退出ToolStripMenuItem1.Text = "退出";
+            // 
+            // tabPage_markdown
+            // 
+            this.tabPage_markdown.Location = new System.Drawing.Point(4, 22);
+            this.tabPage_markdown.Name = "tabPage_markdown";
+            this.tabPage_markdown.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage_markdown.Size = new System.Drawing.Size(985, 526);
+            this.tabPage_markdown.TabIndex = 4;
+            this.tabPage_markdown.Text = "markdown";
+            this.tabPage_markdown.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1268, 708);
+            this.ClientSize = new System.Drawing.Size(1268, 716);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.label_version);
+            this.Controls.Add(this.label_update);
+            this.Controls.Add(this.label8);
             this.Controls.Add(this.skinMenuStrip1);
             this.Controls.Add(this.button_role);
             this.Controls.Add(this.label_help);
             this.Controls.Add(this.button_new_url_http);
             this.Controls.Add(this.button_save_api);
-            this.Controls.Add(this.label7);
+            this.Controls.Add(this.label_qq_qun);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.tabControl3);
@@ -1266,6 +1387,7 @@
             this.skinMenuStrip1.ResumeLayout(false);
             this.skinMenuStrip1.PerformLayout();
             this.skinContextMenuStrip_user_name.ResumeLayout(false);
+            this.contextMenuStrip_postapitools.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1314,7 +1436,7 @@
         private System.Windows.Forms.TabPage tabPage8;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.LinkLabel linkLabel1;
-        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label_qq_qun;
         private System.Windows.Forms.Button button_save_api;
         private System.Windows.Forms.TreeView treeView_save_list;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip_save_list;
@@ -1374,6 +1496,18 @@
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItem_yii;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItem_tp;
         private FastColoredTextBoxNS.FastColoredTextBox fastColoredTextBox_html;
+        private System.Windows.Forms.ToolStripMenuItem agencyToolStripMenuItem;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label_update;
+        private System.Windows.Forms.Label label_version;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.NotifyIcon notifyIcon_postapitools;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip_postapitools;
+        private System.Windows.Forms.ToolStripMenuItem 显示ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 关于ToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem 退出ToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItem_close;
+        private System.Windows.Forms.TabPage tabPage_markdown;
     }
 }
 

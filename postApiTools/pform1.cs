@@ -693,7 +693,7 @@ namespace postApiTools
         /// <param name="obj"></param>
         public static void objecArrayToDataViewShow(DataGridView dd, object[,] obj)
         {
-            dd.Invoke(new Action(() =>
+            dd.BeginInvoke(new Action(() =>
             {
                 dd.Invalidate();
                 dd.Rows.Clear();//清理行数

@@ -615,5 +615,19 @@ namespace postApiTools.lib
             string urlStr = Url + "/index/Document/updateProject";
             return getHttpData(urlStr, dicToStringArray(d));
         }
+
+        /// <summary>
+        ///getmarkdown
+        /// </summary>
+        /// <param name="hash"></param>
+        /// <returns></returns>
+        public static JObject getMarkdown(string content)
+        {
+            Dictionary<string, string> d = new Dictionary<string, string> { };
+            d.Add("token", token);
+            d.Add("content", content);
+            string urlStr = Url + "/index/Document/getMarkdown";
+            return getHttpData(urlStr, dicToStringArray(d));
+        }
     }
 }

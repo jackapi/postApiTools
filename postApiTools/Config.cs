@@ -13,7 +13,10 @@ namespace postApiTools
         /// </summary>
         //public static string exePath = System.Environment.CurrentDirectory;
         public static string exePath = AppDomain.CurrentDomain.BaseDirectory;
-
+        /// <summary>
+        /// 程序集版本获取
+        /// </summary>
+        public static string version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
         /// <summary>
         /// exe路径
         /// </summary>

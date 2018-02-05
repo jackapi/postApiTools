@@ -77,16 +77,19 @@ namespace postApiTools
             if (pForm1TreeView.addApi(treeView, name, desc, url, urlType, urlData))
             {
                 TreeNode tn = pForm1TreeView.FindNodeByName(tv.Nodes, treeView.SelectedNode.Name);//返回节点
-                TreeNode addtn = tn.Nodes.Add(pForm1TreeView.addApiHash, name);//无刷新显示添加
-                addtn.ImageIndex = 1; //设置显示图片
-                addtn.SelectedImageIndex = 1;//设置显示图片
-                MessageBox.Show("添加成功");
-                this.Close();
+                tv.Invoke(new Action(() =>
+                {
+                    TreeNode addtn = tn.Nodes.Add(pForm1TreeView.addApiHash, name);//无刷新显示添加
+                    addtn.ImageIndex = 1; //设置显示图片
+                    addtn.SelectedImageIndex = 1;//设置显示图片
+                }));
             }
             else
             {
                 MessageBox.Show("添加失败 请重试：" + pForm1TreeView.error);
+                return;
             }
+            this.Close();
         }
 
         private void button_back_Click(object sender, EventArgs e)

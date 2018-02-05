@@ -14,6 +14,7 @@ namespace postApiTools.FormPHPMore
 {
     using CCWin;
     using System.IO;
+    using System.Threading;
 
     public partial class pDataManage : CCSkinMain
     {
@@ -96,12 +97,23 @@ namespace postApiTools.FormPHPMore
         /// <param name="e"></param>
         private void treeView_database_DoubleClick(object sender, EventArgs e)
         {
+            treeView_database_DoubleClickFun();
+            //Thread th = new Thread(treeView_database_DoubleClickFun);
+            //th.Start();
+        }
+
+        public void treeView_database_DoubleClickFun()
+        {
+            this.Cursor = Cursors.WaitCursor;
             try
             {
                 Data.pDataManageClass p = new Data.pDataManageClass();
                 TreeView tv = treeView_database;
                 this.treeviewSelectHash = "";
-                if (tv.SelectedNode == null) { return; }
+                if (tv.SelectedNode == null)
+                {
+                    this.Cursor = Cursors.Default; return;
+                }
                 string hash = tv.SelectedNode.Name;
                 this.treeviewSelectHash = hash;
                 Dictionary<string, string> database = p.getDataBaseHash(hash);
@@ -109,24 +121,40 @@ namespace postApiTools.FormPHPMore
                 {
                     if (database["type"] == Data.DataBaseType.Sqlite.ToString())//sqlite
                     {
-                        if (!File.Exists(database["path"])) { MessageBox.Show("数据库不存在!", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error); return; }
+                        if (!File.Exists(database["path"]))
+                        {
+                            MessageBox.Show("数据库不存在!", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            this.Cursor = Cursors.Default;
+                            return;
+                        }
                         showSqliteTreeViewTableList(tv, hash, database);
                         return;
                     }
                     if (database["type"] == Data.DataBaseType.Mysql.ToString())//mysql
                     {
                         lib.pMysql mysql = new lib.pMysql(database["ip"], database["port"], database["username"], database["password"], "");
-                        if (!mysql.isConnOpen()) { MessageBox.Show("无法打开数据库!" + mysql.error, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error); return; }
+                        if (!mysql.isConnOpen())
+                        {
+                            MessageBox.Show("无法打开数据库!" + mysql.error, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            this.Cursor = Cursors.Default; return;
+                        }
                         showMysqlTreeViewTableList(tv, hash, database, mysql);
+                        this.Cursor = Cursors.Default;
                         return;
                     }
                 }
                 string[] array = hash.Split('|');
-                if (array.Length < 2) { return; }
+                if (array.Length < 2)
+                {
+                    this.Cursor = Cursors.Default; return;
+                }
                 if (array[1] == "table")//打开表
                 {
                     Dictionary<string, string> list = p.getDataBaseHash(array[0]);
-                    if (list.Count <= 0) { return; }
+                    if (list.Count <= 0)
+                    {
+                        this.Cursor = Cursors.Default; return;
+                    }
                     if (list["type"] == Data.DataBaseType.Sqlite.ToString())//sqlite
                     {
                         lib.pSqlite sqlite = new lib.pSqlite(list["path"]);
@@ -148,14 +176,21 @@ namespace postApiTools.FormPHPMore
                     string databaseName = array[3];//数据库
                     string table = array[4];//数据库
                     lib.pMysql mysql = new lib.pMysql(database["ip"], database["port"], database["username"], database["password"], databaseName);
-                    if (!mysql.isConnOpen()) { MessageBox.Show("操作不正常"); return; }
+                    if (!mysql.isConnOpen())
+                    {
+                        MessageBox.Show("操作不正常");
+                        this.Cursor = Cursors.Default; return;
+                    }
                     Dictionary<int, object> tableList = mysql.getTableListData(table);
                     showDataViewTableListData(tableList);
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                pLogs.logs(ex.ToString());
+                this.Cursor = Cursors.Default;
             }
+            this.Cursor = Cursors.Default;
         }
 
         /// <summary>
@@ -172,18 +207,22 @@ namespace postApiTools.FormPHPMore
             {
                 return;
             }
-            TreeNode tn = tv.SelectedNode;
-            for (int i = 0; i < list.Count; i++)
+            tv.Invoke(new Action(() =>
             {
-                Dictionary<string, string> d = new Dictionary<string, string> { };
-                d = (Dictionary<string, string>)list[i];
-                string pidHash = hash + "|mysql_table|" + Data.DataBaseType.Mysql.ToString() + "|" + table + "|" + d["Tables_in_" + table];
-                TreeNode pidTn = pForm1TreeView.FindNodeByName(tn.Nodes, pidHash);
-                if (pidTn != null) { return; }
-                TreeNode show = tn.Nodes.Add(pidHash, d["Tables_in_" + table]);
-                show.ImageIndex = 1;
-                show.SelectedImageIndex = 1;
-            }
+                TreeNode tn = tv.SelectedNode;
+                for (int i = 0; i < list.Count; i++)
+                {
+                    Dictionary<string, string> d = new Dictionary<string, string> { };
+                    d = (Dictionary<string, string>)list[i];
+                    string pidHash = hash + "|mysql_table|" + Data.DataBaseType.Mysql.ToString() + "|" + table + "|" + d["Tables_in_" + table];
+                    TreeNode pidTn = pForm1TreeView.FindNodeByName(tn.Nodes, pidHash);
+                    if (pidTn != null) { return; }
+                    TreeNode show = tn.Nodes.Add(pidHash, d["Tables_in_" + table]);
+                    show.ImageIndex = 1;
+                    show.SelectedImageIndex = 1;
+                    show.ContextMenuStrip = contextMenuStrip_table;
+                }
+            }));
         }
 
         /// <summary>
@@ -199,18 +238,21 @@ namespace postApiTools.FormPHPMore
             {
                 return;
             }
-            TreeNode tn = tv.SelectedNode;
-            for (int i = 0; i < list.Count; i++)
+            tv.Invoke(new Action(() =>
             {
-                Dictionary<string, string> d = new Dictionary<string, string> { };
-                d = (Dictionary<string, string>)list[i];
-                string pidHash = hash + "|mysql_database|" + Data.DataBaseType.Mysql.ToString() + "|" + d["Database"];
-                TreeNode pidTn = pForm1TreeView.FindNodeByName(tn.Nodes, pidHash);
-                if (pidTn != null) { return; }
-                TreeNode show = tn.Nodes.Add(pidHash, d["Database"]);
-                show.ImageIndex = 2;
-                show.SelectedImageIndex = 2;
-            }
+                TreeNode tn = tv.SelectedNode;
+                for (int i = 0; i < list.Count; i++)
+                {
+                    Dictionary<string, string> d = new Dictionary<string, string> { };
+                    d = (Dictionary<string, string>)list[i];
+                    string pidHash = hash + "|mysql_database|" + Data.DataBaseType.Mysql.ToString() + "|" + d["Database"];
+                    TreeNode pidTn = pForm1TreeView.FindNodeByName(tn.Nodes, pidHash);
+                    if (pidTn != null) { return; }
+                    TreeNode show = tn.Nodes.Add(pidHash, d["Database"]);
+                    show.ImageIndex = 2;
+                    show.SelectedImageIndex = 2;
+                }
+            }));
         }
 
         /// <summary>
@@ -298,6 +340,16 @@ namespace postApiTools.FormPHPMore
                     }
                 }
             }
+            else if (e.ClickedItem.ToString() == "关闭")
+            {
+
+                TreeNode tn = treeView_database.SelectedNode;
+                tn.Nodes.Clear();//关闭
+            }
+            else if (e.ClickedItem.ToString() == "重命名")
+            {
+
+            }
         }
 
         /// <summary>
@@ -306,43 +358,50 @@ namespace postApiTools.FormPHPMore
         /// <param name="list"></param>
         public void showDataViewTableListData(Dictionary<int, object> list)
         {
-            skinTabPage1.Controls.Clear();
-            DataGridView dgv = new DataGridView();
-            if (list.Count <= 0)
+            try
             {
-            }
-            else
-            {
-                tableListData = list;
-                Dictionary<string, string> d = (Dictionary<string, string>)list[0];
-                foreach (var item in d)
+                skinTabPage1.Controls.Clear();
+                DataGridView dgv = new DataGridView();
+
+                if (list.Count <= 0)
                 {
-                    dgv.Columns.Add(item.Value, item.Key);
                 }
-                dgv.Rows.Clear();//清理行数
-                dgv.Rows.Add(list.Count);
-                for (int i = 0; i < list.Count; i++)
+                else
                 {
-                    Dictionary<string, string> item = (Dictionary<string, string>)list[i];
-                    object[] arr = new object[item.Count];
-                    int g = 0;
-                    foreach (var value in item)
+                    tableListData = list;
+                    Dictionary<string, string> d = (Dictionary<string, string>)list[0];
+                    foreach (var item in d)
                     {
-                        dgv.Rows[i].Cells[g].Value = value.Value;
-                        g++;
+                        dgv.Columns.Add(item.Value, item.Key);
+                    }
+                    dgv.Rows.Clear();//清理行数
+                    dgv.Rows.Add(list.Count);
+                    for (int i = 0; i < list.Count; i++)
+                    {
+                        Dictionary<string, string> item = (Dictionary<string, string>)list[i];
+                        object[] arr = new object[item.Count];
+                        int g = 0;
+                        foreach (var value in item)
+                        {
+                            dgv.Rows[i].Cells[g].Value = value.Value;
+                            g++;
+                        }
                     }
                 }
+                Label label = new Label();
+                string table = treeView_database.SelectedNode.Text;
+                label.Text = table;
+                label.Location = new Point(5, 10);//绘制
+                skinTabPage1.Controls.Add(label);
+                dgv.Location = new Point(0, 40);//绘制
+                dgv.Width = skinTabPage1.Width;
+                dgv.Height = skinTabPage1.Height - 50;
+                dgv.ContextMenuStrip = this.skinContextMenuStrip_table_create_tools;
+                skinTabPage1.Controls.Add(dgv);
             }
-            Label label = new Label();
-            string table = treeView_database.SelectedNode.Text;
-            label.Text = table;
-            label.Location = new Point(5, 10);//绘制
-            skinTabPage1.Controls.Add(label);
-            dgv.Location = new Point(0, 40);//绘制
-            dgv.Width = skinTabPage1.Width;
-            dgv.Height = skinTabPage1.Height - 50;
-            dgv.ContextMenuStrip = this.skinContextMenuStrip_table_create_tools;
-            skinTabPage1.Controls.Add(dgv);
+            catch (Exception ex)
+            {
+            }
         }
 
         /// <summary>
@@ -353,15 +412,25 @@ namespace postApiTools.FormPHPMore
         private void skinContextMenuStrip_table_create_tools_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             if (e.ClickedItem == null) { return; }
+
             if (e.ClickedItem.ToString() == "Yii生成模型")
             {
-                CreateYiiModel model = new CreateYiiModel(tableListData, treeviewSelectHash);
+                CreateYiiModel model = new CreateYiiModel(treeviewSelectHash);
                 model.Show();
             }
+
             if (e.ClickedItem.ToString() == "Yii迁移数据")
             {
                 CreateYiiMigrate model = new CreateYiiMigrate(treeviewSelectHash);
                 model.Show();
+            }
+
+            if (e.ClickedItem.ToString() == "转POST参数")
+            {
+                Data.pDataManageClass p = new Data.pDataManageClass();
+                FormAll.pStringUrlDataTo to = new FormAll.pStringUrlDataTo();
+                to.Show();
+                to.showContent(p.dToJson(tableListData));
             }
         }
 
@@ -376,6 +445,44 @@ namespace postApiTools.FormPHPMore
             p.ShowDialog();
             Data.pDataManageClass data = new Data.pDataManageClass();
             data.refreshTreeView(treeView_database);//刷新
+        }
+
+        /// <summary>
+        /// 运行sql
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void skinButton_run_sql_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        /// <summary>
+        /// 右键操作表
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void contextMenuStrip_table_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            if (e.ClickedItem == null) { return; }
+        }
+        /// <summary>
+        /// 添加Oracle
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void oToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("敬请期待");
+        }
+        /// <summary>
+        /// 添加mssql
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void mssqlToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("敬请期待");
         }
     }
 }

@@ -116,6 +116,21 @@ namespace postApiTools.FormRole
             return getHttpData(urlStr, pBase.dicToStringArray(d));
         }
 
+
+        /// <summary>
+        /// 删除角色用户
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public static JObject deleteRoleUserList(string hash)
+        {
+            Dictionary<string, string> d = new Dictionary<string, string> { };
+            d.Add("token", token);
+            d.Add("hash", hash);
+            string urlStr = Url + "/index/role/deleteRoleUser";
+            return getHttpData(urlStr, pBase.dicToStringArray(d));
+        }
+
         /// <summary>
         /// 清空某个权限角色所有用户
         /// </summary>
