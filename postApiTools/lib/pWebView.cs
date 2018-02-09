@@ -10,6 +10,7 @@ namespace postApiTools.lib
 {
     public class pWebView
     {
+        public WebBrowser webBrowser;
         /// <summary>
         /// 加载网页
         /// </summary>
@@ -22,7 +23,9 @@ namespace postApiTools.lib
             browser.Dock = DockStyle.Fill;
             cc.Add(browser);
             browser.ScriptErrorsSuppressed = true;
+            browser.ScrollBarsEnabled = false;
             browser.Url = new Uri(url);
+            webBrowser = browser;
         }
         /// <summary>
         /// 网页HTML
@@ -36,7 +39,9 @@ namespace postApiTools.lib
             browser.Dock = DockStyle.Fill;
             cc.Add(browser);
             browser.ScriptErrorsSuppressed = true;
+            browser.ScrollBarsEnabled = false;
             browser.DocumentText = content;
+            webBrowser = browser;
         }
     }
 }

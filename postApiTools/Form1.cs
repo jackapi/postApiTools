@@ -90,11 +90,10 @@ namespace postApiTools
         {
             formLoadTh = new Thread(formLoadFun);
             formLoadTh.Start();
-            //timer_server.Start();//启动定时器 不能再线程中使用
+            timer_server.Start();//启动定时器 不能再线程中使用
             this.Text = this.Text + " 开发助手";
             lib.pWinApi.SwitchToThisWindow(this.Handle, true);//启动后置顶
             IEVersion.BrowserEmulationSet();//指定IE
-            pIe.isIeDownload();//检测浏览器版本
         }
 
         /// <summary>
@@ -132,6 +131,7 @@ namespace postApiTools
             pform1.dataviewUrlDataRead(dataGridView_http_data);//请求参数列表
             pHistory.dataViewRefresh(dataGridView_history);//刷新历史记录
             pSetting.refreshTemplateList(comboBox_template);//刷新模板列表
+            fTextBox.TextBoxAutoComplete(textBox_url, pHistory.urlHistoryList);//自动textbox填充
             pForm1TreeView.showMainData(treeView_save_list, imageList_treeview);//显示项目列表树
             pform1.toRnShow(checkBox_to_rn);//自动转换选中显示
             Config.websocket.start();//启动websocket
@@ -140,6 +140,10 @@ namespace postApiTools
             //UpdateFun();///老方法更新
             label_update_Click(null, null);//更新新方法
             showUserName();//显示用户名
+            this.BeginInvoke(new Action(() =>
+            {
+                pIe.isIeDownload();//检测浏览器版本 
+            }));
         }
 
         /// <summary>
@@ -677,38 +681,12 @@ namespace postApiTools
             if (pForm1TreeView.isApiHash(hash))
             {
                 editApiHash = hash;
+                button_new_url_http_Click(null, null);//新建操作
             }
             pForm1TreeView.getMarkdown = "";
             pForm1TreeView.openApiDataShow(treeView_save_list, textBox_url, comboBox_url_type, dataGridView_http_data, textBox_api_name, textBox_doc);
-            showMarkdown();
             //Thread th = new Thread(treeView_save_list_DoubleClickFun);
             //th.Start();
-        }
-
-        /// <summary>
-        /// 显示markdown主方法
-        /// </summary>
-        public void showMarkdown()
-        {
-            Thread th = new Thread(showMarkdownFun);
-            th.Start();
-        }
-
-        /// <summary>
-        /// 显示markdown线程
-        /// </summary>
-        public void showMarkdownFun()
-        {
-            string markdown = pForm1TreeView.getMarkdown;
-            tabPage_markdown.BeginInvoke(new Action(() =>
-            {
-                lib.pWebView p = new pWebView();
-                JObject job = pApizlHttp.getMarkdown(markdown);
-                if (job != null)
-                {
-                    p.ShowControlHtml(tabPage_markdown.Controls, job["result"].ToString());//显示文档
-                }
-            }));
         }
 
 
@@ -734,12 +712,39 @@ namespace postApiTools
         {
             try
             {
-                fastColoredTextBox_html.Invoke(new Action(() =>
+                fastColoredTextBox_html.BeginInvoke(new Action(() =>
                 {
                     fastColoredTextBox_html.Clear();
-                    fastColoredTextBox_html.Language = Language.HTML;
                     fastColoredTextBox_html.Text = html;
+                    /**
+                     * TEXT
+                        JSON
+                        HTML
+                        XML
+                        AUTO
+                     **/
+                    if (comboBox_html_show_type.Text == "TEXT")
+                    {
+                        fastColoredTextBox_html.Language = Language.CSharp;
+                    }
+                    if (comboBox_html_show_type.Text == "JSON")
+                    {
+                        fastColoredTextBox_html.Language = Language.JS;
+                    }
+                    if (comboBox_html_show_type.Text == "HTML")
+                    {
+                        fastColoredTextBox_html.Language = Language.HTML;
+                    }
+                    if (comboBox_html_show_type.Text == "XML")
+                    {
+                        fastColoredTextBox_html.Language = Language.XML;
+                    }
+                    if (comboBox_html_show_type.Text == "AUTO")
+                    {
+                        fastColoredTextBox_html.Language = Language.Custom;
+                    }
                 }));
+
             }
             catch { }
 
@@ -824,6 +829,8 @@ namespace postApiTools
         private void timer_server_Tick(object sender, EventArgs e)
         {
             //lib.pUpdateServerWeb.updateProjectMain2();//更新主项目
+            IntPtr pHandle = lib.pWinApi.GetCurrentProcess();
+            lib.pWinApi.SetProcessWorkingSetSize(pHandle, -1, -1);
         }
 
         /// <summary>
@@ -882,6 +889,8 @@ namespace postApiTools
             textBox_url.Text = "";
             textBox_api_name.Text = "";
             textBox_doc.Text = "";
+            label_code.Text = "200";
+            label_runtime.Text = "0";
             showHtml("");
             webkitShowOpenLocal();
         }
@@ -967,11 +976,15 @@ namespace postApiTools
         private void button_pull_Click(object sender, EventArgs e)
         {
             if (Config.openServerUrl.Length <= 0) { MessageError("没有配置服务器URL无法进行操作!", "提示"); return; }
-            button_pull.Enabled = false;
-            pUpdateServerWeb.t = treeView_save_list;
-            pUpdateServerWeb.image = imageList_treeview;
-            pUpdateServerWeb.buttonPull = button_pull;
-            pUpdateServerWeb.pullProjectMainTh();
+
+            if (MessageBox.Show("将同步所有项目！此过程很漫长！", "更新提示", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+            {
+                button_pull.Enabled = false;
+                pUpdateServerWeb.t = treeView_save_list;
+                pUpdateServerWeb.image = imageList_treeview;
+                pUpdateServerWeb.buttonPull = button_pull;
+                pUpdateServerWeb.pullProjectMainTh();
+            }
         }
 
         /// <summary>
@@ -982,10 +995,13 @@ namespace postApiTools
         private void button_role_Click(object sender, EventArgs e)
         {
             if (Config.userToken.Length <= 0) { MessageError("没有配置服务器无法进行操作!", "提示"); return; }
-            using (FormRole.pRoleManage manage = new FormRole.pRoleManage())
+            Thread th = new System.Threading.Thread((System.Threading.ThreadStart)delegate
             {
-                manage.ShowDialog();
-            }
+                Application.Run(new FormRole.pRoleManage());
+            });
+            th.SetApartmentState(ApartmentState.STA);
+            th.IsBackground = true;
+            th.Start();
         }
         /// <summary>
         /// 关闭界面
@@ -1316,7 +1332,7 @@ namespace postApiTools
         {
             try
             {
-                skinChatRichTextBox_logs.Invoke(new Action(() =>
+                skinChatRichTextBox_logs.BeginInvoke(new Action(() =>
                 {
                     string content = skinChatRichTextBox_logs.Text;
                     string newString = DateTime.Now.ToLongTimeString().ToString() + ":" + text + "\r\n";
@@ -1354,14 +1370,17 @@ namespace postApiTools
         }
 
         /// <summary>
-        /// 打开窗体
+        /// 打开databasemanage窗体
         /// </summary>
         public void OpenDataBaseManage()
         {
-            new System.Threading.Thread((System.Threading.ThreadStart)delegate
-            {
-                Application.Run(new FormPHPMore.pDataManage());
-            }).Start();
+            Thread th = new System.Threading.Thread((System.Threading.ThreadStart)delegate
+           {
+               Application.Run(new FormPHPMore.pDataManage());
+           });
+            th.SetApartmentState(ApartmentState.STA);
+            th.IsBackground = true;
+            th.Start();
         }
         /// <summary>
         /// 线程中打开窗体
@@ -1553,9 +1572,9 @@ namespace postApiTools
         private void label_update_Click(object sender, EventArgs e)
         {
             string json = phttp.HttpGetCustom(Config.openServerUrl + "/index/api/version/", "");
-            if (json.Length <= 0) { MessageBox.Show("获取更新失败!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+            if (json.Length <= 0) { MessageBox.Show("获取更新失败!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error); return; }
             JObject job = pJsonData.stringToJobject(json);
-            if (job == null) { MessageBox.Show("获取更新解析失败!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+            if (job == null) { MessageBox.Show("获取更新解析失败!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error); return; }
             if (job["code"].ToString() != "1") { MessageBox.Show("获取更新解析code失败!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error); }
             JObject result = (JObject)job["result"];
             string ServerVersion = result["version"].ToString();
@@ -1564,9 +1583,9 @@ namespace postApiTools
             NowVersion = NowVersion.Replace("*", "0");
             Version now = new Version(NowVersion);
             Version server = new Version(ServerVersion);
-            if (desc.Length > 30)
+            if (desc.Length > 100)
             {
-                desc = desc.Substring(0, 30) + "...";
+                desc = desc.Substring(0, 100) + "...";
             }
             if (server > now)
             {
@@ -1633,7 +1652,91 @@ namespace postApiTools
         /// <param name="e"></param>
         private void ToolStripMenuItem_close_Click(object sender, EventArgs e)
         {
-            close();
+            DialogResult result1 = MessageBox.Show("是否关闭程序?",
+                                                    "PostApiTools",
+                                                    MessageBoxButtons.YesNo);
+            if (result1 == DialogResult.Yes)
+                close();
+        }
+
+        /// <summary>
+        /// 往doc添加文本数据
+        /// </summary>
+        /// <param name="text"></param>
+        public void textBoxDocDataShow(string text)
+        {
+            this.BeginInvoke(new Action(() =>
+            {
+                textBox_doc.Text = text;
+            }));
+        }
+
+        /// <summary>
+        /// 编辑markdown右键菜单
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void contextMenuStrip_markdown_edit_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            if (e.ClickedItem == null) { return; }
+            if (e.ClickedItem.ToString() == "markdown编辑")
+            {
+                markdownEdit edit = new markdownEdit();
+                edit.content = textBox_doc.Text;
+                edit.Show();
+            }
+            if (e.ClickedItem.ToString() == "清空")
+            {
+                this.BeginInvoke(new Action(() =>
+                {
+                    textBox_doc.Clear();//清空内容
+                }));
+            }
+        }
+
+        /// <summary>
+        /// 双击文档框打开markdown界面
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void textBox_doc_DoubleClick(object sender, EventArgs e)
+        {
+            markdownEdit edit = new markdownEdit();
+            edit.content = textBox_doc.Text;
+            edit.Show();
+        }
+
+        /// <summary>
+        /// 手动更新
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ToolStripMenuItem_update_data_Click(object sender, EventArgs e)
+        {
+            string hash = treeView_save_list.SelectedNode.Name;
+            string name = treeView_save_list.SelectedNode.Text;
+            if (Config.openServerUpdate != CheckState.Checked.ToString())
+            {
+                f.TextShowlogs("没有开启更新！无法使用此功能！", "error");
+                return;
+            }
+            pUpdateServerWeb.buttonPull = button_pull;
+            pUpdateServerWeb.t = treeView_save_list;
+            pUpdateServerWeb.image = imageList_treeview;
+            if (pForm1TreeView.isApiHash(hash))
+            {
+                f.TextShowlogs("开始更新文章:" + name);
+                Dictionary<string, string> d = pForm1TreeView.getApi(hash);
+                pForm1TreeView.updateDocument(d["server_hash"]);//更新一个线上文档
+                pForm1TreeView.refreshTreeViewText(treeView_save_list, hash);
+                f.TextShowlogs("更新完成:" + name);
+            }
+            else
+            {
+                f.TextShowlogs("开始更新栏目:" + name);
+                pUpdateServerWeb.pullProjecrOne(hash);
+                f.TextShowlogs("更新完成:" + name);
+            }
         }
     }
 }

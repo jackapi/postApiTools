@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace postApiTools
 {
@@ -132,6 +133,7 @@ namespace postApiTools
                 openServerUpdate = pSetting.openServerUpdateRead();
                 websocket = new lib.pUpdateServerSocket();
                 userToken = lib.pApizlHttp.getToken();
+                if (userToken.Length <= 0) { MessageBox.Show("用户自动登录失败！" + lib.pApizlHttp.error, "登录提示", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
                 return "";
             }
             catch (Exception ex)

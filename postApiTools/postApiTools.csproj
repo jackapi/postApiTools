@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\cef.redist.x64.3.3239.1723\build\cef.redist.x64.props" Condition="Exists('..\packages\cef.redist.x64.3.3239.1723\build\cef.redist.x64.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -168,6 +169,12 @@
     <Compile Include="FormAll\getProjectContent.Designer.cs">
       <DependentUpon>getProjectContent.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormAll\markdownEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormAll\markdownEdit.Designer.cs">
+      <DependentUpon>markdownEdit.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormAll\pFormAll.cs" />
     <Compile Include="FormAll\pLogin.cs">
       <SubType>Form</SubType>
@@ -239,6 +246,7 @@
       <DependentUpon>pRen.cs</DependentUpon>
     </Compile>
     <Compile Include="FormPHPMore\Data\pYiiMigrateType.cs" />
+    <Compile Include="FormPHPMore\Models\RunSqlForm.cs" />
     <Compile Include="FormPHPMore\Models\YiiConstScenario.cs" />
     <Compile Include="FormPHPMore\pDataBaseInfo.cs">
       <SubType>Form</SubType>
@@ -289,6 +297,7 @@
     <Compile Include="Help.Designer.cs">
       <DependentUpon>Help.cs</DependentUpon>
     </Compile>
+    <Compile Include="lib\fTextBox.cs" />
     <Compile Include="lib\IEVersion.cs" />
     <Compile Include="lib\pApizlHttp.cs" />
     <Compile Include="lib\pBase.cs" />
@@ -315,6 +324,7 @@
     <Compile Include="lib\pWebkit.cs" />
     <Compile Include="lib\pWebView.cs" />
     <Compile Include="lib\pWinApi.cs" />
+    <Compile Include="lib\pWindow.cs" />
     <Compile Include="lib\updateServer.cs" />
     <Compile Include="lib\pUpdateServerWeb.cs" />
     <Compile Include="lib\pUpdateServerSocket.cs" />
@@ -375,6 +385,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormAll\getProjectContent.resx">
       <DependentUpon>getProjectContent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormAll\markdownEdit.resx">
+      <DependentUpon>markdownEdit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormAll\pLogin.resx">
       <DependentUpon>pLogin.cs</DependentUpon>
@@ -1363,6 +1376,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="post_it_96px_1206795_easyicon.net.ico" />
+    <Content Include="Resources\Add_96px_1194719_easyicon.net.png" />
+    <Content Include="Resources\add_96px_1206665_easyicon.net.png" />
+    <None Include="Resources\update_32px_1134051_easyicon.net.ico" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
@@ -1370,20 +1386,8 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>rd /s/q $(ProjectDir)\bin\install
-mkdir $(ProjectDir)\bin\install
-d:
-cd $(ProjectDir)
-cd $(ProjectDir)\bin\
-xcopy /e $(ProjectDir)\bin\Release $(ProjectDir)\bin\install 
-del  /s/q  $(ProjectDir)\bin\install\data\database.db
-del  /s/q  $(ProjectDir)\bin\install\data\memodb.db
-del  /s/q  $(ProjectDir)\bin\install\postApiTools.vshost.exe
-del /s/q $(ProjectDir)\bin\install\postApiTools.pdb
-del   /s/q $(ProjectDir)\bin\install\postApiTools.vshost.exe.config
-del /s/q $(ProjectDir)\bin\install\postApiTools.vshost.exe.manifest
-rd /s/q $(ProjectDir)\bin\install\runtime
-mkdir $(ProjectDir)\bin\install\runtime</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

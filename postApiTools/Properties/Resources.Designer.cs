@@ -61,6 +61,26 @@ namespace postApiTools.Properties {
         }
         
         /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        public static System.Drawing.Bitmap Add_96px_1194719_easyicon_net {
+            get {
+                object obj = ResourceManager.GetObject("Add_96px_1194719_easyicon.net", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        public static System.Drawing.Bitmap add_96px_1206665_easyicon_net {
+            get {
+                object obj = ResourceManager.GetObject("add_96px_1206665_easyicon.net", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 **简要描述：** 
         ///
         ///- {$name}
@@ -101,6 +121,16 @@ namespace postApiTools.Properties {
         public static string template {
             get {
                 return ResourceManager.GetString("template", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        public static System.Drawing.Bitmap update_32px_1134051_easyicon_net {
+            get {
+                object obj = ResourceManager.GetObject("update_32px_1134051_easyicon.net", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }

@@ -14,9 +14,9 @@ using System.Windows.Forms;
 namespace postApiTools.FormPHPMore
 {
     using CCWin;
-    using FastColoredTextBoxNS;
     using System.IO;
     using System.Text.RegularExpressions;
+    using FastColoredTextBoxNS;
 
     public partial class CreateYiiMigrate : CCSkinMain
     {
@@ -26,8 +26,15 @@ namespace postApiTools.FormPHPMore
 
         public CreateYiiMigrate(string hash)
         {
-            InitializeComponent();
-            this.hash = hash;
+            try
+            {
+                InitializeComponent();
+                this.hash = hash;
+            }
+            catch (Exception ex)
+            {
+                pLogs.logs(ex.ToString());
+            }
         }
 
         Dictionary<int, object> CreateTableInfoList = new Dictionary<int, object> { };
@@ -39,30 +46,37 @@ namespace postApiTools.FormPHPMore
         /// <param name="e"></param>
         private void CreateYiiMigrate_Load(object sender, EventArgs e)
         {
-            if (this.hash == "")
+            try
             {
-                return;
-            }
-            string[] array = hash.Split('|');
-            if (array.Length < 4)
-            {
-                return;
-            }
-            tableName = array[3];
-            if (array[1] == "table" && array[2] == Data.DataBaseType.Sqlite.ToString())//sqlite数据库
-            {
-                sqliteLoad(array[0], array[3]);//加载sqlite表结构
-                textBox_model_name.Text = array[3];//自动加载表名
-            }
+                if (this.hash == "")
+                {
+                    return;
+                }
+                string[] array = hash.Split('|');
+                if (array.Length < 4)
+                {
+                    return;
+                }
+                if (array[1] == "table" && array[2] == Data.DataBaseType.Sqlite.ToString())//sqlite数据库
+                {
+                    tableName = array[3];
+                    sqliteLoad(array[0], array[3]);//加载sqlite表结构
+                    textBox_model_name.Text = array[3];//自动加载表名
+                }
 
-            if (array[1] == "mysql_table" && array[2] == Data.DataBaseType.Mysql.ToString())//mysql数据库
-            {
-                mysqlLoad(array[0], array[3], array[4]);//mysql表结构
-                textBox_model_name.Text = array[3];//自动加载表名
-            }
+                if (array[1] == "mysql_table" && array[2] == Data.DataBaseType.Mysql.ToString())//mysql数据库
+                {
+                    mysqlLoad(array[0], array[3], array[4]);//mysql表结构
+                    textBox_model_name.Text = array[4];//自动加载表名
+                }
 
-            textBox_yii_path.Text = lib.pIni.read("database", "yii_path");//加载
-            textBox_php_path.Text = lib.pIni.read("database", "php_path");//加载
+                textBox_yii_path.Text = lib.pIni.read("database", "yii_path");//加载
+                textBox_php_path.Text = lib.pIni.read("database", "php_path");//加载 
+            }
+            catch (Exception ex)
+            {
+                pLogs.logs(ex.ToString());
+            }
         }
 
         /// <summary>
@@ -228,6 +242,7 @@ namespace postApiTools.FormPHPMore
         private void button_open_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
+            ofd.InitialDirectory = Application.StartupPath;
             ofd.Filter = "所有文件|*.*";
             ofd.ValidateNames = true;
             ofd.CheckPathExists = true;
@@ -247,6 +262,7 @@ namespace postApiTools.FormPHPMore
         private void button_php_path_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
+            ofd.InitialDirectory = Application.StartupPath;
             ofd.Filter = "所有文件|*.*";
             ofd.ValidateNames = true;
             ofd.CheckPathExists = true;

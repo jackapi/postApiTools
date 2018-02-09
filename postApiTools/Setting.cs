@@ -155,7 +155,8 @@ namespace postApiTools
             }
             pSetting.saveUrlNamePassword(url, name, password, update, agreed);
             pSetting.saveSocket(ip, port, force);//socket
-            MessageBox.Show("设置成功！");
+            MessageBox.Show("设置成功！将重新启动软件！");
+            Form1.f.close();
 
         }
         /// <summary>

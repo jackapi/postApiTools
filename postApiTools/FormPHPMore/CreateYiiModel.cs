@@ -11,6 +11,7 @@ using System.Windows.Forms;
 namespace postApiTools.FormPHPMore
 {
     using CCWin;
+    using FastColoredTextBoxNS;
     public partial class CreateYiiModel : CCSkinMain
     {
         string hash = "";
@@ -33,30 +34,35 @@ namespace postApiTools.FormPHPMore
         /// <param name="e"></param>
         private void CreateYiiModel_Load(object sender, EventArgs e)
         {
-            if (this.hash == "")
+            try
             {
-                return;
-            }
-            string[] array = hash.Split('|');
-            if (array.Length < 4)
-            {
-                return;
-            }
-            tableName = array[3];
-            if (array[1] == "table" && array[2] == Data.DataBaseType.Sqlite.ToString())//sqlite数据库
-            {
-                sqliteLoad(array[0], array[3]);//加载sqlite表结构
-                textBox_model_name.Text = array[3];//自动加载表名
-            }
+                if (this.hash == "")
+                {
+                    return;
+                }
+                string[] array = hash.Split('|');
+                if (array.Length < 4)
+                {
+                    return;
+                }
+                tableName = array[3];
+                if (array[1] == "table" && array[2] == Data.DataBaseType.Sqlite.ToString())//sqlite数据库
+                {
+                    sqliteLoad(array[0], array[3]);//加载sqlite表结构
+                    textBox_model_name.Text = array[3];//自动加载表名
+                }
 
-            if (array[1] == "mysql_table" && array[2] == Data.DataBaseType.Mysql.ToString())//mysql数据库
-            {
-                mysqlLoad(array[0], array[3], array[4]);//mysql表结构
-                textBox_model_name.Text = array[4];//自动加载表名
-                tableName = array[4];
+                if (array[1] == "mysql_table" && array[2] == Data.DataBaseType.Mysql.ToString())//mysql数据库
+                {
+                    mysqlLoad(array[0], array[3], array[4]);//mysql表结构
+                    textBox_model_name.Text = array[4];//自动加载表名
+                    tableName = array[4];
+                }
             }
-
-
+            catch (Exception ex)
+            {
+                pLogs.logs(ex.ToString());
+            }
         }
         /// <summary>
         /// 加载mysql表结构
@@ -92,7 +98,7 @@ namespace postApiTools.FormPHPMore
         public void showDataGridViewDictionary(Dictionary<int, object> tableListInfo, Data.DataBaseType type)
         {
 
-            dataGridView_table_info.Invoke(new Action(() =>
+            dataGridView_table_info.BeginInvoke(new Action(() =>
             {
                 if (tableListInfo.Count <= 0) { return; }
                 dataGridView_table_info.Rows.Clear();
@@ -139,7 +145,12 @@ namespace postApiTools.FormPHPMore
             content = AttributeLabels(content);//生成表结构以及注释
             content = Fields(content);//字段映射
             content = Rules(content);//规则验证生成
-            skinChatRichTextBox1.Text = content;
+            fastColoredTextBox_result.BeginInvoke(new Action(() =>
+            {
+                fastColoredTextBox_result.Clear();
+                fastColoredTextBox_result.Language = Language.PHP;
+                fastColoredTextBox_result.Text = content;
+            }));
         }
 
         /// <summary>

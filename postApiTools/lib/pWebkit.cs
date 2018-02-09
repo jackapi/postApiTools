@@ -26,5 +26,18 @@ namespace postApiTools.lib
             cc.Add(browser);
             browser.DocumentText = content;
         }
+        /// <summary>
+        /// 显示网页
+        /// </summary>
+        /// <param name="cc"></param>
+        /// <param name="content"></param>
+        public void ShowControlHtml(ControlCollection cc, string content)
+        {
+            cc.Clear();
+            WebKit.WebKitBrowser browser = new WebKit.WebKitBrowser();
+            browser.Dock = DockStyle.Fill;
+            browser.DocumentText = content;
+            cc.Add(browser);
+        }
     }
 }

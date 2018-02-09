@@ -24,7 +24,7 @@ namespace postApiTools.lib
         /// <param name="username"></param>
         /// <param name="password"></param>
         /// <param name="databsse"></param>
-        public pMysql(string ip, string port, string username, string password, string database, string encodingString = "utf-8")
+        public pMysql(string ip, string port, string username, string password, string database, string encodingString = "utf8")
         {
             this.Database = database;
             string constructorString = string.Format("server={0};port={1};User Id='{2}';password='{3}';database='{4}';charset='{5}'", ip, port, username, password, database, encodingString);
@@ -78,7 +78,6 @@ namespace postApiTools.lib
         public int executeNonQuery(string sql)
         {
             MySqlCommand myCmd = new MySqlCommand(sql, conn);
-            Console.WriteLine(myCmd.CommandText);
             return myCmd.ExecuteNonQuery();
         }
 

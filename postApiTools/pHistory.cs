@@ -106,7 +106,10 @@ namespace postApiTools
         /// 包含添加过总数
         /// </summary>
         public static int dataViewRefreshRows = 0;
-
+        /// <summary>
+        /// 历史数组
+        /// </summary>
+        public static string[] urlHistoryList;
         /// <summary>
         /// 刷新历史数据框
         /// </summary>
@@ -120,6 +123,9 @@ namespace postApiTools
                     Dictionary<int, object> data = sqlite.getRows("select *from " + table + " order by addtime desc limit 0,32");
                     if (data.Count <= 0)
                     {
+                        urlHistoryList = new string[2];
+                        urlHistoryList[0] = "http://";
+                        urlHistoryList[1] = "https://";
                         history.Invalidate();
                         history.Rows.Clear();//清理行数
                         return;
@@ -154,9 +160,10 @@ namespace postApiTools
                     history.Rows.Clear();//清理行数
                     history.Rows.Add(data.Count);
                     //history.RowTemplate.Height = 30;//行距
-                                                    //设置自动调整高度
+                    //设置自动调整高度
                     history.ReadOnly = true;//不可编辑
 
+                    urlHistoryList = new string[data.Count + 2];
                     for (int i = 0; i < data.Count; i++)
                     {
 
@@ -172,7 +179,10 @@ namespace postApiTools
                         history.Rows[i].DataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCellsExceptHeaders;
                         dataViewRefreshRows++;
                         //history.Rows[i].Cells[1].Style.BackColor = Color.LightGray;
+                        urlHistoryList[i] = d["url"];
                     }
+                    urlHistoryList[data.Count] = "http://";
+                    urlHistoryList[data.Count + 1] = "https://";
                     history.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
                     history.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
                 }));

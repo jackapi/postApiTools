@@ -79,13 +79,15 @@ namespace postApiTools.lib
         /// <returns></returns>
         public static string HttpUploadFile(string url, string[,] valuesList = null, string[,] pathList = null, string encodingString = "utf-8")
         {
-            if (url.IndexOf("://")<=0) { return ""; }
+            if (url.IndexOf("://") <= 0) { return ""; }
             HttpWebResponse response;
             string content;
             Stream postStreamStart = null;
             StreamReader sr;
             try
             {
+                if (url == "http://") { return ""; }
+                if (url == "https://") { return ""; }
                 // 设置参数
                 HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
                 CookieContainer cookieContainer = new CookieContainer();
@@ -318,6 +320,8 @@ namespace postApiTools.lib
             if (url.IndexOf("://") <= 0) { return ""; }
             try
             {
+                if (url == "http://") { return ""; }
+                if (url == "https://") { return ""; }
                 //创建Get请求
                 url = url + (data == "" ? "" : "?") + data;
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);

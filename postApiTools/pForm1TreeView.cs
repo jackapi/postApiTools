@@ -78,7 +78,7 @@ namespace postApiTools
                 return false;
             }
             string hash = lib.pBase.getHash();//生成hash
-            if (lib.pApizlHttp.createProject(lib.pApizlHttp.token, name, desc, "0")) //创建在线
+            if (lib.pApizlHttp.createProject(Config.userToken, name, desc, "0")) //创建在线
             {
                 Config.websocket.sendServerProjectHashCreate(lib.pApizlHttp.project_hash);//项目创建消息推送
                 string sql = "insert into " + tableSetting + "(hash,pid,sort,name,desc,server_hash,server_update,addtime)values('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}')";
@@ -185,7 +185,7 @@ namespace postApiTools
         /// <param name="t"></param>
         public static void showMainData(TreeView t, ImageList image)
         {
-            t.Invoke(new Action(() =>
+            t.BeginInvoke(new Action(() =>
             {
                 t.Nodes.Clear();
                 t.ImageList = image;
@@ -225,7 +225,7 @@ namespace postApiTools
             Dictionary<string, string> mainResult = sqlite.getOne(getSql);
             if (mainResult.Count <= 0) { error = "需要一个上级"; return; }
             string hash = lib.pBase.getHash();
-            if (lib.pApizlHttp.createProjectPid(lib.pApizlHttp.token, mainResult["server_hash"], name, "", "0"))
+            if (lib.pApizlHttp.createProjectPid(Config.userToken, mainResult["server_hash"], name, "", "0"))
             {
 
                 Config.websocket.sendServerProjectHashCreate(lib.pApizlHttp.project_hash);//项目创建消息推送
@@ -293,7 +293,7 @@ namespace postApiTools
                 error = sqlite.error;
                 return false;
             }
-            if (lib.pApizlHttp.createDocument(lib.pApizlHttp.token, d["server_hash"], name, desc, url, urlDataStr, urlType))
+            if (lib.pApizlHttp.createDocument(Config.userToken, d["server_hash"], name, desc, url, urlDataStr, urlType))
             {
                 string sql = string.Format("insert into {0} (hash,project_id,sort,name,desc,url,urldata,method,server_hash,server_update,addtime)values('{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}')", table, hash, project_id, 0, name, desc, url, urlDataStr, urlType, lib.pApizlHttp.project_hash, lib.pDate.getTimeStamp(), lib.pDate.getTimeStamp());
                 if (sqlite.executeNonQuery(sql) > 0)
@@ -585,6 +585,22 @@ namespace postApiTools
             return d.Count > 0 ? true : false;
 
         }
+
+        /// <summary>
+        /// 获取本地文档全部详情
+        /// </summary>
+        /// <param name="hash"></param>
+        /// <returns></returns>
+        public static Dictionary<string, string> getApi(string hash)
+        {
+            create();
+            string sql = string.Format("select *from {0} where hash='{1}'", table, hash);
+            Dictionary<string, string> d = sqlite.getOne(sql);
+            error = sqlite.error;
+            return d;
+
+        }
+
         /// <summary>
         /// 编辑API
         /// </summary>

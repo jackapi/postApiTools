@@ -96,7 +96,7 @@ namespace postApiTools.lib
         /// </summary>
         public void startFun()
         {
-            Thread.Sleep(1000);//一秒后连接
+            Thread.Sleep(100);//0.1秒后连接
             Form1.f.TextShowlogs("连接服务器...");
             try
             {
@@ -160,6 +160,12 @@ namespace postApiTools.lib
         /// </summary>
         public void login()
         {
+            if (Config.userToken == "")
+            {
+                Form1.f.TextShowlogs("用户登录状态不正确！请重新登录用户！", "error");
+                stop();
+                return;
+            }
             Dictionary<string, string> d = new Dictionary<string, string> { };
             d.Add("type", "login_websocket");
             d.Add("room_id", "1");
@@ -366,13 +372,20 @@ namespace postApiTools.lib
 
         public void stopFun()
         {
-            if (th != null)
+            try
             {
-                isStart = false;
-                Form1.f.TextShowlogs("关闭服务器连接！");
-                socket.Close();
-                socket = null;
-                th = null;
+                if (th != null)
+                {
+                    isStart = false;
+                    Form1.f.TextShowlogs("关闭服务器连接！", "error");
+                    socket.Close();
+                    socket = null;
+                    th = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                pLogs.logs(ex.ToString());
             }
         }
 

@@ -22,5 +22,23 @@ namespace postApiTools.lib
         [DllImport("User32.dll", EntryPoint = "FindWindow")]
         public static extern int FindWindow(string lpClassName, string lpWindowName);
 
+        /// <summary>
+        /// 释放内存
+        /// IntPtr pHandle = GetCurrentProcess();
+        /// SetProcessWorkingSetSize(pHandle, -1, -1);
+        /// </summary>
+        /// <param name="pProcess"></param>
+        /// <param name="dwMinimumWorkingSetSize"></param>
+        /// <param name="dwMaximumWorkingSetSize"></param>
+        /// <returns></returns>
+        [DllImport("KERNEL32.DLL", EntryPoint = "SetProcessWorkingSetSize", SetLastError = true, CallingConvention = CallingConvention.StdCall)]
+        internal static extern bool SetProcessWorkingSetSize(IntPtr pProcess, int dwMinimumWorkingSetSize, int dwMaximumWorkingSetSize);
+
+        /// <summary>
+        /// 获取句柄
+        /// </summary>
+        /// <returns></returns>
+        [DllImport("KERNEL32.DLL", EntryPoint = "GetCurrentProcess", SetLastError = true, CallingConvention = CallingConvention.StdCall)]
+        internal static extern IntPtr GetCurrentProcess();
     }
 }

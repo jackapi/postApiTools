@@ -34,11 +34,12 @@
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.skinChatRichTextBox1 = new CCWin.SkinControl.SkinChatRichTextBox();
             this.skinButton_create = new CCWin.SkinControl.SkinButton();
             this.textBox_model_name = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.fastColoredTextBox_result = new FastColoredTextBoxNS.FastColoredTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_table_info)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fastColoredTextBox_result)).BeginInit();
             this.SuspendLayout();
             // 
             // dataGridView_table_info
@@ -48,10 +49,10 @@
             this.Column1,
             this.Column2,
             this.Column3});
-            this.dataGridView_table_info.Location = new System.Drawing.Point(7, 128);
+            this.dataGridView_table_info.Location = new System.Drawing.Point(7, 62);
             this.dataGridView_table_info.Name = "dataGridView_table_info";
             this.dataGridView_table_info.RowTemplate.Height = 23;
-            this.dataGridView_table_info.Size = new System.Drawing.Size(338, 398);
+            this.dataGridView_table_info.Size = new System.Drawing.Size(338, 464);
             this.dataGridView_table_info.TabIndex = 0;
             // 
             // Column1
@@ -69,23 +70,12 @@
             this.Column3.HeaderText = "场景";
             this.Column3.Name = "Column3";
             // 
-            // skinChatRichTextBox1
-            // 
-            this.skinChatRichTextBox1.Location = new System.Drawing.Point(362, 128);
-            this.skinChatRichTextBox1.Name = "skinChatRichTextBox1";
-            this.skinChatRichTextBox1.SelectControl = null;
-            this.skinChatRichTextBox1.SelectControlIndex = 0;
-            this.skinChatRichTextBox1.SelectControlPoint = new System.Drawing.Point(0, 0);
-            this.skinChatRichTextBox1.Size = new System.Drawing.Size(565, 398);
-            this.skinChatRichTextBox1.TabIndex = 1;
-            this.skinChatRichTextBox1.Text = "";
-            // 
             // skinButton_create
             // 
             this.skinButton_create.BackColor = System.Drawing.Color.Transparent;
             this.skinButton_create.ControlState = CCWin.SkinClass.ControlState.Normal;
             this.skinButton_create.DownBack = null;
-            this.skinButton_create.Location = new System.Drawing.Point(362, 99);
+            this.skinButton_create.Location = new System.Drawing.Point(148, 29);
             this.skinButton_create.MouseBack = null;
             this.skinButton_create.Name = "skinButton_create";
             this.skinButton_create.NormlBack = null;
@@ -111,15 +101,46 @@
             this.label1.TabIndex = 4;
             this.label1.Text = "名称";
             // 
+            // fastColoredTextBox_result
+            // 
+            this.fastColoredTextBox_result.AutoCompleteBracketsList = new char[] {
+        '(',
+        ')',
+        '{',
+        '}',
+        '[',
+        ']',
+        '\"',
+        '\"',
+        '\'',
+        '\''};
+            this.fastColoredTextBox_result.AutoScrollMinSize = new System.Drawing.Size(29, 18);
+            this.fastColoredTextBox_result.BackBrush = null;
+            this.fastColoredTextBox_result.CharHeight = 18;
+            this.fastColoredTextBox_result.CharWidth = 9;
+            this.fastColoredTextBox_result.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.fastColoredTextBox_result.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.fastColoredTextBox_result.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.fastColoredTextBox_result.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.fastColoredTextBox_result.IsReplaceMode = false;
+            this.fastColoredTextBox_result.Location = new System.Drawing.Point(351, 62);
+            this.fastColoredTextBox_result.Name = "fastColoredTextBox_result";
+            this.fastColoredTextBox_result.Paddings = new System.Windows.Forms.Padding(0);
+            this.fastColoredTextBox_result.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
+            this.fastColoredTextBox_result.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("fastColoredTextBox_result.ServiceColors")));
+            this.fastColoredTextBox_result.Size = new System.Drawing.Size(576, 464);
+            this.fastColoredTextBox_result.TabIndex = 5;
+            this.fastColoredTextBox_result.Zoom = 100;
+            // 
             // CreateYiiModel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(934, 541);
+            this.Controls.Add(this.fastColoredTextBox_result);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBox_model_name);
             this.Controls.Add(this.skinButton_create);
-            this.Controls.Add(this.skinChatRichTextBox1);
             this.Controls.Add(this.dataGridView_table_info);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -130,6 +151,7 @@
             this.Text = "生成YII模型";
             this.Load += new System.EventHandler(this.CreateYiiModel_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_table_info)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fastColoredTextBox_result)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -138,12 +160,12 @@
         #endregion
 
         private System.Windows.Forms.DataGridView dataGridView_table_info;
-        private CCWin.SkinControl.SkinChatRichTextBox skinChatRichTextBox1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private CCWin.SkinControl.SkinButton skinButton_create;
         private System.Windows.Forms.TextBox textBox_model_name;
         private System.Windows.Forms.Label label1;
+        private FastColoredTextBoxNS.FastColoredTextBox fastColoredTextBox_result;
     }
 }

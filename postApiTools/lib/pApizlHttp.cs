@@ -53,6 +53,7 @@ namespace postApiTools.lib
                 {
                     if (!Login(Config.openServerName, Config.openServerPassword))
                     {
+                        pIni.write("apizlHttp", "usertoken", "");
                         return "";
                     }
                 }
@@ -61,6 +62,7 @@ namespace postApiTools.lib
             {
                 if (!Login(Config.openServerName, Config.openServerPassword))
                 {
+                    pIni.write("apizlHttp", "usertoken", "");
                     return "";
                 }
             }
@@ -83,7 +85,7 @@ namespace postApiTools.lib
         /// <returns></returns>
         public static bool isLogin(string token)
         {
-            string urlStr = Url + "/index/register/isLogin";
+            string urlStr = Config.openServerUrl + "/index/register/isLogin";
             string[,] urlData = new string[1, 2];
             urlData[0, 0] = "token";
             urlData[0, 1] = token;
@@ -119,7 +121,7 @@ namespace postApiTools.lib
                 error = "已关闭自动更新";
                 return true;
             }
-            string urlStr = Url + "/index/register/ajaxLoginToken";
+            string urlStr = Config.openServerUrl + "/index/register/ajaxLoginToken";
             string[,] urlData = new string[2, 2];
             urlData[0, 0] = "name";
             urlData[0, 1] = name;
@@ -169,7 +171,7 @@ namespace postApiTools.lib
                 error = "已关闭自动更新";
                 return true;
             }
-            string urlStr = Url + "/index/Document/createProjectAjax";
+            string urlStr =Config.openServerUrl +"/index/Document/createProjectAjax";
             string[,] urlData = new string[3, 2];
             urlData[0, 0] = "name";
             urlData[0, 1] = name;
@@ -215,7 +217,7 @@ namespace postApiTools.lib
                 error = "已关闭自动更新";
                 return true;
             }
-            string urlStr = Url + "/index/Document/createProjectPidAjax";
+            string urlStr =Config.openServerUrl +"/index/Document/createProjectPidAjax";
             string[,] urlData = new string[5, 2];
             urlData[0, 0] = "name";
             urlData[0, 1] = name;
@@ -265,7 +267,7 @@ namespace postApiTools.lib
                 error = "已关闭自动更新";
                 return true;
             }
-            string urlStr = Url + "/index/Document/createDocument";
+            string urlStr =Config.openServerUrl +"/index/Document/createDocument";
             string[,] urlData = new string[7, 2];
             urlData[0, 0] = "name";
             urlData[0, 1] = name;
@@ -303,6 +305,46 @@ namespace postApiTools.lib
             return false;
         }
 
+        /// <summary>
+        /// 获取自己指定项目
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public static JObject getUserProjectOne(string token,string serverHash)
+        {
+            if (Config.openServerUpdate != CheckState.Checked.ToString())
+            {
+                error = "已关闭自动更新";
+                return null;
+            }
+            string urlStr = Config.openServerUrl + "/index/role/getProjectOneList";
+            string[,] urlData = new string[2, 2];
+            urlData[0, 0] = "token";
+            urlData[0, 1] = token;
+            urlData[1, 0] = "hash";
+            urlData[1, 1] = serverHash;
+            string json = phttp.HttpUploadFile(urlStr, urlData);
+            if (json.Length <= 0)
+            {
+                error = "数据请求失败";
+                return null;
+            }
+            JObject job = pJsonData.stringToJobject(json);
+            if (job == null)
+            {
+                error = "服务器异常";
+                return null;
+            }
+            if (job["code"].ToString() == "1")
+            {
+                error = job["msg"].ToString();
+                return job;
+            }
+            error = job["msg"].ToString();
+            return null;
+        }
+
+
 
         /// <summary>
         /// 获取自己项目
@@ -316,7 +358,7 @@ namespace postApiTools.lib
                 error = "已关闭自动更新";
                 return null;
             }
-            string urlStr = Url + "/index/role/getProjectSettingList";
+            string urlStr =Config.openServerUrl +"/index/role/getProjectSettingList";
             string[,] urlData = new string[1, 2];
             urlData[0, 0] = "token";
             urlData[0, 1] = token;
@@ -353,7 +395,7 @@ namespace postApiTools.lib
                 error = "已关闭自动更新";
                 return null;
             }
-            string urlStr = Url + "/index/role/getProjectSettingList";
+            string urlStr =Config.openServerUrl +"/index/role/getProjectSettingList";
             string[,] urlData = new string[2, 2];
             urlData[0, 0] = "token";
             urlData[0, 1] = token;
@@ -393,7 +435,7 @@ namespace postApiTools.lib
                 error = "已关闭自动更新";
                 return null;
             }
-            string urlStr = Url + "/index/role/getProjectList";
+            string urlStr =Config.openServerUrl +"/index/role/getProjectList";
             string[,] urlData = new string[2, 2];
             urlData[0, 0] = "token";
             urlData[0, 1] = token;
@@ -461,7 +503,7 @@ namespace postApiTools.lib
             urlData[0, 1] = token;
             urlData[1, 0] = "hash";
             urlData[1, 1] = hash;
-            string urlStr = Url + "/index/role/getProjectList";
+            string urlStr =Config.openServerUrl +"/index/role/getProjectList";
             return getHttpData(urlStr, urlData);
         }
 
@@ -477,7 +519,7 @@ namespace postApiTools.lib
             urlData[0, 1] = token;
             urlData[1, 0] = "hash";
             urlData[1, 1] = hash;
-            string urlStr = Url + "/index/Document/deleteProject";
+            string urlStr =Config.openServerUrl +"/index/Document/deleteProject";
             return getHttpData(urlStr, urlData);
         }
 
@@ -493,7 +535,7 @@ namespace postApiTools.lib
             urlData[0, 1] = token;
             urlData[1, 0] = "hash";
             urlData[1, 1] = hash;
-            string urlStr = Url + "/index/Document/deleteDocument";
+            string urlStr =Config.openServerUrl +"/index/Document/deleteDocument";
             return getHttpData(urlStr, urlData);
         }
 
@@ -509,7 +551,7 @@ namespace postApiTools.lib
             urlData[0, 1] = token;
             urlData[1, 0] = "hash";
             urlData[1, 1] = hash;
-            string urlStr = Url + "/index/Document/getProjectPidList";
+            string urlStr =Config.openServerUrl +"/index/Document/getProjectPidList";
             return getHttpData(urlStr, urlData);
         }
 
@@ -525,7 +567,7 @@ namespace postApiTools.lib
             urlData[0, 1] = token;
             urlData[1, 0] = "hash";
             urlData[1, 1] = hash;
-            string urlStr = Url + "/index/Document/getDocumentList";
+            string urlStr =Config.openServerUrl +"/index/Document/getDocumentList";
             return getHttpData(urlStr, urlData);
         }
 
@@ -544,7 +586,7 @@ namespace postApiTools.lib
             d.Add("url", url);
             d.Add("urldata", urldata);
             d.Add("method", method);
-            string urlStr = Url + "/index/Document/editDocument";
+            string urlStr =Config.openServerUrl +"/index/Document/editDocument";
             return getHttpData(urlStr, dicToStringArray(d));
         }
 
@@ -581,7 +623,7 @@ namespace postApiTools.lib
             Dictionary<string, string> d = new Dictionary<string, string> { };
             d.Add("token", token);
             d.Add("hash", serverHash);
-            string urlStr = Url + "/index/Document/getDocumentInfo";
+            string urlStr =Config.openServerUrl +"/index/Document/getDocumentInfo";
             return getHttpData(urlStr, dicToStringArray(d));
         }
 
@@ -595,7 +637,7 @@ namespace postApiTools.lib
             Dictionary<string, string> d = new Dictionary<string, string> { };
             d.Add("token", token);
             d.Add("hash", serverHash);
-            string urlStr = Url + "/index/Document/getProjectInfo";
+            string urlStr =Config.openServerUrl +"/index/Document/getProjectInfo";
             return getHttpData(urlStr, dicToStringArray(d));
         }
 
@@ -612,7 +654,7 @@ namespace postApiTools.lib
             d.Add("name", name);
             d.Add("desc", desc);
             d.Add("sort", sort);
-            string urlStr = Url + "/index/Document/updateProject";
+            string urlStr =Config.openServerUrl +"/index/Document/updateProject";
             return getHttpData(urlStr, dicToStringArray(d));
         }
 
@@ -626,7 +668,7 @@ namespace postApiTools.lib
             Dictionary<string, string> d = new Dictionary<string, string> { };
             d.Add("token", token);
             d.Add("content", content);
-            string urlStr = Url + "/index/Document/getMarkdown";
+            string urlStr =Config.openServerUrl +"/index/Document/getMarkdown";
             return getHttpData(urlStr, dicToStringArray(d));
         }
     }

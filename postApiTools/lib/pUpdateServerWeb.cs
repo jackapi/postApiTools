@@ -65,6 +65,134 @@ namespace postApiTools.lib
             th.Start();
         }
         /// <summary>
+        /// 更新单个
+        /// </summary>
+        /// <param name="hash"></param>
+        public static void pullProjecrOne(string hash)
+        {
+            Thread th = new Thread(pullProjectOne);
+            th.Start(hash);
+
+        }
+        /// <summary>
+        /// 更新主栏目
+        /// </summary>
+        /// <returns></returns>
+        public static void pullProjectOne(object obj)
+        {
+            try
+            {
+                string hash = (string)obj;
+                if (startEnd > 0)
+                {
+                    return;
+                }
+                startEnd++;
+                Dictionary<string, object> nowList = new Dictionary<string, object> { };
+                Dictionary<int, object> d = sqlite.getRows(string.Format("select *from {0} where hash='{1}'", pForm1TreeView.getTableSetting(), hash));//本地列表
+                if (d.Count <= 0)
+                {
+                    Form1.f.TextShowlogs("更新内容不存在!", "error");
+                    return;
+                }
+                Dictionary<string, string> serverHashTemp = (Dictionary<string, string>)d[0];
+                JObject job = pApizlHttp.getUserProjectOne(Config.userToken, serverHashTemp["server_hash"]);//获取指定列表
+                if (job == null)
+                {
+                    error = pApizlHttp.error;
+                    return;
+                }
+                JArray serverList = (JArray)job["result"];//获取结果
+                //if (serverList.Count < d.Count)
+                //{
+                //    error = "选择提交..";
+                //    return;
+                //}
+                for (int i = 0; i < serverList.Count; i++)
+                {
+                    if (d.Count <= 0)
+                    {
+                        if (nowList.ContainsKey(serverList[i]["hash"].ToString()))
+                        {
+                            continue;
+                        }
+                        Dictionary<string, object> addTemp = new Dictionary<string, object> { };
+                        addTemp.Add("type", "insert");
+                        addTemp.Add("server", serverList[i]);
+                        nowList.Add(serverList[i]["hash"].ToString(), addTemp);//需要新增
+                    }
+                    for (int g = 0; g < d.Count; g++)
+                    {
+                        Dictionary<string, object> addTemp = new Dictionary<string, object> { };
+                        Dictionary<string, string> temp = (Dictionary<string, string>)d[g];
+                        if (serverList[i]["name"].ToString() == temp["name"] && serverList[i]["hash"].ToString() == temp["server_hash"])
+                        {
+                            addTemp.Add("type", "ok");
+                            if (nowList.ContainsKey(serverList[i]["hash"].ToString()))
+                            {
+                                nowList.Remove(serverList[i]["hash"].ToString());
+                                nowList.Add(serverList[i]["hash"].ToString(), addTemp);//已存在
+                            }
+                        }
+                        if (serverList[i]["name"].ToString() == temp["name"] && serverList[i]["hash"].ToString() != temp["server_hash"])
+                        {
+                            if (nowList.ContainsKey(serverList[i]["hash"].ToString()))
+                            {
+                                continue;
+                            }
+                            addTemp.Add("type", "update");
+                            addTemp.Add("result", temp);
+                            addTemp.Add("server", serverList[i]);
+                            if (nowList.ContainsKey(serverList[i]["hash"].ToString()))
+                            {
+                                nowList.Remove(serverList[i]["hash"].ToString());
+                                nowList.Add(serverList[i]["hash"].ToString(), addTemp);//需要更新
+                            }
+                        }
+                        if (serverList[i]["name"].ToString() != temp["name"] && serverList[i]["hash"].ToString() != temp["server_hash"])
+                        {
+                            string serverHash = serverList[i]["hash"].ToString();
+                            if (nowList.ContainsKey(serverHash))
+                            {
+                                nowList.Remove(serverHash);
+                            }
+                            addTemp.Add("type", "insert");
+                            addTemp.Add("server", serverList[i]);
+                            nowList.Remove(serverList[i]["hash"].ToString());
+                            nowList.Add(serverList[i]["hash"].ToString(), addTemp);//需要新增
+                        }
+                    }
+                }
+                foreach (KeyValuePair<string, object> f in nowList)
+                {
+                    Dictionary<string, object> t = (Dictionary<string, object>)f.Value;
+                    if (t["type"].ToString() == "update")
+                    {
+                        Dictionary<string, string> resultUpdate = (Dictionary<string, string>)t["result"];
+                        JObject serverUpdate = (JObject)t["server"];
+                        pForm1TreeView.updateProjectServerHash(resultUpdate["hash"].ToString(), serverUpdate["hash"].ToString());//更新本地server hash
+                    }
+                    if (t["type"].ToString() == "insert")
+                    {
+                        JObject serverUpdate = (JObject)t["server"];
+                        pForm1TreeView.insertMainSql(serverUpdate["name"].ToString(), serverUpdate["desc"].ToString(), serverUpdate["hash"].ToString());//新增项目}
+                        //pForm1TreeView.insertMain(serverUpdate["name"].ToString(), serverUpdate                    ;//新增项目}
+                    }
+                }
+                startEnd--;
+                pullProjectPidList();//递归创建子类
+                pullDocumentListTh();//创建文档
+                return;
+            }
+            catch (Exception ex)
+            {
+                pLogs.logs(ex.ToString()); startEnd--;
+                return;
+            }
+        }
+
+
+        /// <summary>
         /// 更新主栏目
         /// </summary>
         /// <returns></returns>
@@ -79,7 +207,7 @@ namespace postApiTools.lib
                 startEnd++;
                 Dictionary<string, object> nowList = new Dictionary<string, object> { };
                 Dictionary<int, object> d = sqlite.getRows(string.Format("select *from {0} where pid=0", pForm1TreeView.getTableSetting()));//本地列表
-                JObject job = pApizlHttp.getUserProjectList(pApizlHttp.token);//获取服务器列表
+                JObject job = pApizlHttp.getUserProjectList(Config.userToken);//获取服务器列表
                 if (job == null)
                 {
                     error = pApizlHttp.error;
@@ -262,7 +390,7 @@ namespace postApiTools.lib
             int noneI = 0;
             int nowListI = 0;
             Dictionary<int, object> d = sqlite.getRows(string.Format("select *from {0} where pid=0", pForm1TreeView.getTableSetting()));//本地列表
-            JObject job = pApizlHttp.getUserProjectList(pApizlHttp.token);//获取服务器列表
+            JObject job = pApizlHttp.getUserProjectList(Config.userToken);//获取服务器列表
             if (job == null)
             {
                 error = pApizlHttp.error;
@@ -332,7 +460,7 @@ namespace postApiTools.lib
             if (d == null) { return; }
             Dictionary<string, string> nowHash = sqlite.getOne(string.Format("select *from {0} where server_hash='{1}'", pForm1TreeView.getTableSetting(), d["hash"]));//进行验证
             if (nowHash == null) { return; }
-            JObject job = pApizlHttp.getProjectSettingPidList(pApizlHttp.token, nowHash["server_hash"]);//获取服务器上子栏目
+            JObject job = pApizlHttp.getProjectSettingPidList(Config.userToken, nowHash["server_hash"]);//获取服务器上子栏目
             if (job == null) { return; }
             Dictionary<int, object> list = sqlite.getRows(string.Format("select *from {0} where pid='{1}'", pForm1TreeView.getTableSetting(), nowHash["server_hash"]));//本地子项目列表
             if (list == null)//为空情况
@@ -411,7 +539,7 @@ namespace postApiTools.lib
             if (d == null) { return; }
             string serverHash = d["server_hash"];
             Dictionary<int, object> rows = sqlite.getRows(string.Format("select *from {0} where project_id ='{1}'", pForm1TreeView.getTable(), d["hash"]));//获取栏目下文章列表
-            JObject job = pApizlHttp.getDocumentList(pApizlHttp.token, serverHash);//获取线上
+            JObject job = pApizlHttp.getDocumentList(Config.userToken, serverHash);//获取线上
             JArray serverRows = (JArray)job["result"];
             if (rows == null || rows.Count <= 0)
             {

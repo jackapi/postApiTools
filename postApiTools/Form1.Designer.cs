@@ -65,6 +65,9 @@
             this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.textBox_doc = new System.Windows.Forms.TextBox();
+            this.contextMenuStrip_markdown_edit = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem_markdown_text_webedit = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem_markdown_edit_clear = new System.Windows.Forms.ToolStripMenuItem();
             this.dataGridView_history = new System.Windows.Forms.DataGridView();
             this.Column10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -91,6 +94,7 @@
             this.treeView_save_list = new System.Windows.Forms.TreeView();
             this.contextMenuStrip_save_list = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItem_update_data = new System.Windows.Forms.ToolStripMenuItem();
             this.查看ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
@@ -142,7 +146,6 @@
             this.显示ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.关于ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.退出ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.tabPage_markdown = new System.Windows.Forms.TabPage();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_http_data)).BeginInit();
@@ -155,6 +158,7 @@
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Response)).BeginInit();
             this.tabPage6.SuspendLayout();
+            this.contextMenuStrip_markdown_edit.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_history)).BeginInit();
             this.tabControl3.SuspendLayout();
             this.tabPage8.SuspendLayout();
@@ -188,6 +192,10 @@
             // 
             // textBox_url
             // 
+            this.textBox_url.AutoCompleteCustomSource.AddRange(new string[] {
+            "http://"});
+            this.textBox_url.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.textBox_url.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             this.textBox_url.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.textBox_url.Location = new System.Drawing.Point(221, 56);
             this.textBox_url.Name = "textBox_url";
@@ -220,11 +228,10 @@
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage6);
-            this.tabControl1.Controls.Add(this.tabPage_markdown);
             this.tabControl1.Location = new System.Drawing.Point(263, 140);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(993, 552);
+            this.tabControl1.Size = new System.Drawing.Size(1005, 596);
             this.tabControl1.TabIndex = 4;
             // 
             // tabPage1
@@ -234,7 +241,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(985, 526);
+            this.tabPage1.Size = new System.Drawing.Size(997, 570);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "数据";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -245,6 +252,7 @@
             this.dataGridView_http_data.AllowUserToResizeRows = false;
             this.dataGridView_http_data.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridView_http_data.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView_http_data.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView_http_data.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1,
@@ -257,7 +265,7 @@
             this.dataGridView_http_data.Name = "dataGridView_http_data";
             this.dataGridView_http_data.RowHeadersVisible = false;
             this.dataGridView_http_data.RowTemplate.Height = 23;
-            this.dataGridView_http_data.Size = new System.Drawing.Size(985, 151);
+            this.dataGridView_http_data.Size = new System.Drawing.Size(997, 151);
             this.dataGridView_http_data.TabIndex = 8;
             this.dataGridView_http_data.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_http_data_CellClick);
             this.dataGridView_http_data.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_http_data_CellContentClick);
@@ -268,19 +276,16 @@
             // 
             this.Column1.HeaderText = "键";
             this.Column1.Name = "Column1";
-            this.Column1.Width = 200;
             // 
             // Column2
             // 
             this.Column2.HeaderText = "值(字符串)";
             this.Column2.Name = "Column2";
-            this.Column2.Width = 350;
             // 
             // Column3
             // 
             this.Column3.HeaderText = "说明";
             this.Column3.Name = "Column3";
-            this.Column3.Width = 200;
             // 
             // Column13
             // 
@@ -338,7 +343,7 @@
             this.tabControl2.Location = new System.Drawing.Point(6, 157);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(976, 362);
+            this.tabControl2.Size = new System.Drawing.Size(988, 406);
             this.tabControl2.TabIndex = 0;
             // 
             // tabPage4
@@ -350,7 +355,7 @@
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(968, 336);
+            this.tabPage4.Size = new System.Drawing.Size(980, 380);
             this.tabPage4.TabIndex = 0;
             this.tabPage4.Text = "源码";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -360,18 +365,34 @@
             this.fastColoredTextBox_html.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.fastColoredTextBox_html.AutoScrollMinSize = new System.Drawing.Size(27, 14);
+            this.fastColoredTextBox_html.AutoCompleteBracketsList = new char[] {
+        '(',
+        ')',
+        '{',
+        '}',
+        '[',
+        ']',
+        '\"',
+        '\"',
+        '\'',
+        '\''};
+            this.fastColoredTextBox_html.AutoScrollMinSize = new System.Drawing.Size(29, 18);
             this.fastColoredTextBox_html.BackBrush = null;
+            this.fastColoredTextBox_html.CharHeight = 18;
+            this.fastColoredTextBox_html.CharWidth = 9;
             this.fastColoredTextBox_html.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.fastColoredTextBox_html.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.fastColoredTextBox_html.Font = new System.Drawing.Font("Consolas", 12F);
             this.fastColoredTextBox_html.ImeMode = System.Windows.Forms.ImeMode.On;
             this.fastColoredTextBox_html.IsReplaceMode = false;
             this.fastColoredTextBox_html.Location = new System.Drawing.Point(6, 30);
             this.fastColoredTextBox_html.Name = "fastColoredTextBox_html";
             this.fastColoredTextBox_html.Paddings = new System.Windows.Forms.Padding(0);
             this.fastColoredTextBox_html.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
-            this.fastColoredTextBox_html.Size = new System.Drawing.Size(959, 300);
+            this.fastColoredTextBox_html.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("fastColoredTextBox_html.ServiceColors")));
+            this.fastColoredTextBox_html.Size = new System.Drawing.Size(971, 344);
             this.fastColoredTextBox_html.TabIndex = 4;
+            this.fastColoredTextBox_html.Zoom = 100;
             // 
             // checkBox_to_rn
             // 
@@ -387,7 +408,7 @@
             // button_to_rn
             // 
             this.button_to_rn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_to_rn.Location = new System.Drawing.Point(885, 4);
+            this.button_to_rn.Location = new System.Drawing.Point(897, 4);
             this.button_to_rn.Name = "button_to_rn";
             this.button_to_rn.Size = new System.Drawing.Size(77, 24);
             this.button_to_rn.TabIndex = 2;
@@ -418,7 +439,7 @@
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(968, 336);
+            this.tabPage5.Size = new System.Drawing.Size(980, 380);
             this.tabPage5.TabIndex = 1;
             this.tabPage5.Text = "浏览器";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -429,7 +450,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(985, 526);
+            this.tabPage2.Size = new System.Drawing.Size(997, 570);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "提交报文";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -439,6 +460,7 @@
             this.dataGridView_header.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridView_header.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView_header.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView_header.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column4,
@@ -456,26 +478,23 @@
             // 
             this.Column4.HeaderText = "键";
             this.Column4.Name = "Column4";
-            this.Column4.Width = 200;
             // 
             // Column5
             // 
             this.Column5.HeaderText = "值";
             this.Column5.Name = "Column5";
-            this.Column5.Width = 300;
             // 
             // Column6
             // 
             this.Column6.HeaderText = "说明";
             this.Column6.Name = "Column6";
-            this.Column6.Width = 200;
             // 
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.dataGridView_Response);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(985, 526);
+            this.tabPage3.Size = new System.Drawing.Size(997, 570);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "返回报文";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -485,6 +504,7 @@
             this.dataGridView_Response.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridView_Response.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView_Response.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView_Response.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column7,
@@ -494,26 +514,23 @@
             this.dataGridView_Response.Name = "dataGridView_Response";
             this.dataGridView_Response.RowHeadersVisible = false;
             this.dataGridView_Response.RowTemplate.Height = 23;
-            this.dataGridView_Response.Size = new System.Drawing.Size(982, 585);
+            this.dataGridView_Response.Size = new System.Drawing.Size(982, 527);
             this.dataGridView_Response.TabIndex = 0;
             // 
             // Column7
             // 
             this.Column7.HeaderText = "键";
             this.Column7.Name = "Column7";
-            this.Column7.Width = 200;
             // 
             // Column8
             // 
             this.Column8.HeaderText = "值";
             this.Column8.Name = "Column8";
-            this.Column8.Width = 300;
             // 
             // Column9
             // 
             this.Column9.HeaderText = "说明";
             this.Column9.Name = "Column9";
-            this.Column9.Width = 200;
             // 
             // tabPage6
             // 
@@ -521,7 +538,7 @@
             this.tabPage6.Location = new System.Drawing.Point(4, 22);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(985, 526);
+            this.tabPage6.Size = new System.Drawing.Size(997, 570);
             this.tabPage6.TabIndex = 3;
             this.tabPage6.Text = "文档";
             this.tabPage6.UseVisualStyleBackColor = true;
@@ -532,13 +549,36 @@
             this.textBox_doc.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox_doc.ContextMenuStrip = this.contextMenuStrip_markdown_edit;
             this.textBox_doc.Location = new System.Drawing.Point(-4, 0);
             this.textBox_doc.Multiline = true;
             this.textBox_doc.Name = "textBox_doc";
             this.textBox_doc.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.textBox_doc.Size = new System.Drawing.Size(993, 572);
             this.textBox_doc.TabIndex = 0;
+            this.textBox_doc.DoubleClick += new System.EventHandler(this.textBox_doc_DoubleClick);
             this.textBox_doc.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_doc_KeyPress);
+            // 
+            // contextMenuStrip_markdown_edit
+            // 
+            this.contextMenuStrip_markdown_edit.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem_markdown_text_webedit,
+            this.toolStripMenuItem_markdown_edit_clear});
+            this.contextMenuStrip_markdown_edit.Name = "contextMenuStrip_markdown_edit";
+            this.contextMenuStrip_markdown_edit.Size = new System.Drawing.Size(163, 48);
+            this.contextMenuStrip_markdown_edit.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuStrip_markdown_edit_ItemClicked);
+            // 
+            // toolStripMenuItem_markdown_text_webedit
+            // 
+            this.toolStripMenuItem_markdown_text_webedit.Name = "toolStripMenuItem_markdown_text_webedit";
+            this.toolStripMenuItem_markdown_text_webedit.Size = new System.Drawing.Size(162, 22);
+            this.toolStripMenuItem_markdown_text_webedit.Text = "markdown编辑";
+            // 
+            // toolStripMenuItem_markdown_edit_clear
+            // 
+            this.toolStripMenuItem_markdown_edit_clear.Name = "toolStripMenuItem_markdown_edit_clear";
+            this.toolStripMenuItem_markdown_edit_clear.Size = new System.Drawing.Size(162, 22);
+            this.toolStripMenuItem_markdown_edit_clear.Text = "清空";
             // 
             // dataGridView_history
             // 
@@ -707,7 +747,7 @@
             this.tabControl3.Location = new System.Drawing.Point(3, 94);
             this.tabControl3.Name = "tabControl3";
             this.tabControl3.SelectedIndex = 0;
-            this.tabControl3.Size = new System.Drawing.Size(254, 598);
+            this.tabControl3.Size = new System.Drawing.Size(254, 642);
             this.tabControl3.TabIndex = 16;
             // 
             // tabPage8
@@ -722,7 +762,7 @@
             this.tabPage8.Location = new System.Drawing.Point(4, 22);
             this.tabPage8.Name = "tabPage8";
             this.tabPage8.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage8.Size = new System.Drawing.Size(246, 572);
+            this.tabPage8.Size = new System.Drawing.Size(246, 616);
             this.tabPage8.TabIndex = 1;
             this.tabPage8.Text = "保存";
             this.tabPage8.UseVisualStyleBackColor = true;
@@ -792,7 +832,7 @@
             this.treeView_save_list.ContextMenuStrip = this.contextMenuStrip_save_list;
             this.treeView_save_list.Location = new System.Drawing.Point(3, 61);
             this.treeView_save_list.Name = "treeView_save_list";
-            this.treeView_save_list.Size = new System.Drawing.Size(251, 515);
+            this.treeView_save_list.Size = new System.Drawing.Size(251, 559);
             this.treeView_save_list.TabIndex = 2;
             this.treeView_save_list.DoubleClick += new System.EventHandler(this.treeView_save_list_DoubleClick);
             // 
@@ -800,18 +840,28 @@
             // 
             this.contextMenuStrip_save_list.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem1,
+            this.ToolStripMenuItem_update_data,
             this.查看ToolStripMenuItem,
             this.toolStripMenuItem3,
             this.toolStripMenuItem2});
             this.contextMenuStrip_save_list.Name = "contextMenuStrip_save_list";
-            this.contextMenuStrip_save_list.Size = new System.Drawing.Size(113, 92);
+            this.contextMenuStrip_save_list.Size = new System.Drawing.Size(113, 114);
             this.contextMenuStrip_save_list.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuStrip_save_list_ItemClicked);
             // 
             // toolStripMenuItem1
             // 
+            this.toolStripMenuItem1.Image = global::postApiTools.Properties.Resources.add_96px_1206665_easyicon_net;
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(112, 22);
             this.toolStripMenuItem1.Text = "添加";
+            // 
+            // ToolStripMenuItem_update_data
+            // 
+            this.ToolStripMenuItem_update_data.Image = global::postApiTools.Properties.Resources.update_32px_1134051_easyicon_net;
+            this.ToolStripMenuItem_update_data.Name = "ToolStripMenuItem_update_data";
+            this.ToolStripMenuItem_update_data.Size = new System.Drawing.Size(112, 22);
+            this.ToolStripMenuItem_update_data.Text = "更新";
+            this.ToolStripMenuItem_update_data.Click += new System.EventHandler(this.ToolStripMenuItem_update_data_Click);
             // 
             // 查看ToolStripMenuItem
             // 
@@ -838,7 +888,7 @@
             this.tabPage7.Location = new System.Drawing.Point(4, 22);
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage7.Size = new System.Drawing.Size(246, 572);
+            this.tabPage7.Size = new System.Drawing.Size(246, 616);
             this.tabPage7.TabIndex = 0;
             this.tabPage7.Text = "历史";
             this.tabPage7.UseVisualStyleBackColor = true;
@@ -859,7 +909,7 @@
             this.tabPage_logs.Location = new System.Drawing.Point(4, 22);
             this.tabPage_logs.Name = "tabPage_logs";
             this.tabPage_logs.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage_logs.Size = new System.Drawing.Size(246, 572);
+            this.tabPage_logs.Size = new System.Drawing.Size(246, 616);
             this.tabPage_logs.TabIndex = 2;
             this.tabPage_logs.Text = "日志";
             this.tabPage_logs.UseVisualStyleBackColor = true;
@@ -879,7 +929,7 @@
             // 
             this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(1, 697);
+            this.label6.Location = new System.Drawing.Point(1, 741);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(35, 12);
             this.label6.TabIndex = 17;
@@ -890,7 +940,7 @@
             this.linkLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.linkLabel1.AutoSize = true;
             this.linkLabel1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.linkLabel1.Location = new System.Drawing.Point(42, 697);
+            this.linkLabel1.Location = new System.Drawing.Point(42, 741);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(125, 12);
             this.linkLabel1.TabIndex = 18;
@@ -904,7 +954,7 @@
             this.label_qq_qun.AutoSize = true;
             this.label_qq_qun.Cursor = System.Windows.Forms.Cursors.Hand;
             this.label_qq_qun.ForeColor = System.Drawing.Color.Red;
-            this.label_qq_qun.Location = new System.Drawing.Point(185, 697);
+            this.label_qq_qun.Location = new System.Drawing.Point(185, 741);
             this.label_qq_qun.Name = "label_qq_qun";
             this.label_qq_qun.Size = new System.Drawing.Size(53, 12);
             this.label_qq_qun.TabIndex = 19;
@@ -930,7 +980,7 @@
             // 
             // timer_server
             // 
-            this.timer_server.Interval = 10000;
+            this.timer_server.Interval = 500;
             this.timer_server.Tick += new System.EventHandler(this.timer_server_Tick);
             // 
             // button_new_url_http
@@ -950,7 +1000,7 @@
             this.label_help.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label_help.AutoSize = true;
             this.label_help.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.label_help.Location = new System.Drawing.Point(254, 697);
+            this.label_help.Location = new System.Drawing.Point(254, 741);
             this.label_help.Name = "label_help";
             this.label_help.Size = new System.Drawing.Size(53, 12);
             this.label_help.TabIndex = 21;
@@ -1010,7 +1060,7 @@
             this.skinMenuStrip1.Location = new System.Drawing.Point(4, 28);
             this.skinMenuStrip1.Name = "skinMenuStrip1";
             this.skinMenuStrip1.RadiusStyle = CCWin.SkinClass.RoundStyle.All;
-            this.skinMenuStrip1.Size = new System.Drawing.Size(1260, 25);
+            this.skinMenuStrip1.Size = new System.Drawing.Size(1272, 25);
             this.skinMenuStrip1.SkinAllColor = true;
             this.skinMenuStrip1.TabIndex = 23;
             this.skinMenuStrip1.Text = "skinMenuStrip1";
@@ -1234,7 +1284,7 @@
             // 
             this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(332, 697);
+            this.label8.Location = new System.Drawing.Point(332, 741);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(125, 12);
             this.label8.TabIndex = 24;
@@ -1245,7 +1295,7 @@
             // 
             this.label_update.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label_update.AutoSize = true;
-            this.label_update.Location = new System.Drawing.Point(480, 697);
+            this.label_update.Location = new System.Drawing.Point(480, 741);
             this.label_update.Name = "label_update";
             this.label_update.Size = new System.Drawing.Size(53, 12);
             this.label_update.TabIndex = 25;
@@ -1256,7 +1306,7 @@
             // 
             this.label_version.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label_version.AutoSize = true;
-            this.label_version.Location = new System.Drawing.Point(1194, 697);
+            this.label_version.Location = new System.Drawing.Point(1206, 741);
             this.label_version.Name = "label_version";
             this.label_version.Size = new System.Drawing.Size(47, 12);
             this.label_version.TabIndex = 25;
@@ -1266,7 +1316,7 @@
             // 
             this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(1129, 697);
+            this.label7.Location = new System.Drawing.Point(1141, 741);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(59, 12);
             this.label7.TabIndex = 26;
@@ -1308,21 +1358,11 @@
             this.退出ToolStripMenuItem1.Size = new System.Drawing.Size(100, 22);
             this.退出ToolStripMenuItem1.Text = "退出";
             // 
-            // tabPage_markdown
-            // 
-            this.tabPage_markdown.Location = new System.Drawing.Point(4, 22);
-            this.tabPage_markdown.Name = "tabPage_markdown";
-            this.tabPage_markdown.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage_markdown.Size = new System.Drawing.Size(985, 526);
-            this.tabPage_markdown.TabIndex = 4;
-            this.tabPage_markdown.Text = "markdown";
-            this.tabPage_markdown.UseVisualStyleBackColor = true;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1268, 716);
+            this.ClientSize = new System.Drawing.Size(1280, 760);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label_version);
             this.Controls.Add(this.label_update);
@@ -1377,6 +1417,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Response)).EndInit();
             this.tabPage6.ResumeLayout(false);
             this.tabPage6.PerformLayout();
+            this.contextMenuStrip_markdown_edit.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_history)).EndInit();
             this.tabControl3.ResumeLayout(false);
             this.tabPage8.ResumeLayout(false);
@@ -1507,7 +1548,10 @@
         private System.Windows.Forms.ToolStripMenuItem 关于ToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem 退出ToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItem_close;
-        private System.Windows.Forms.TabPage tabPage_markdown;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip_markdown_edit;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem_markdown_text_webedit;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem_markdown_edit_clear;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItem_update_data;
     }
 }
 

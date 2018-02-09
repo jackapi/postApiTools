@@ -13,3 +13,5 @@
 /postApiTools/bin/postApiTools-cache/part1/output-info.ini
 /postApiTools/bin/postApiTools-cache/part1/FILES.7z
 /postApiTools/bin/postApiTools-cache
+/postApiTools/obj/x64
+/postApiTools/obj/x86
