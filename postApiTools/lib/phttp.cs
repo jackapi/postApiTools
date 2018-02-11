@@ -316,7 +316,6 @@ namespace postApiTools.lib
         /// <returns></returns>
         public static string HttpGetCustom(string url, string data, string encodingString = "utf-8")
         {
-
             if (url.IndexOf("://") <= 0) { return ""; }
             try
             {

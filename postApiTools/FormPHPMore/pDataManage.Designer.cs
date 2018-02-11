@@ -48,19 +48,12 @@
             this.关闭ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.查询ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.重命名ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.删除表ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.删除ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.连接详情ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.imageList_databse = new System.Windows.Forms.ImageList(this.components);
             this.skinButton_add_database = new CCWin.SkinControl.SkinButton();
             this.skinTabControl1 = new CCWin.SkinControl.SkinTabControl();
             this.skinTabPage1 = new CCWin.SkinControl.SkinTabPage();
-            this.skinTabPage2 = new CCWin.SkinControl.SkinTabPage();
-            this.skinTabPage4 = new CCWin.SkinControl.SkinTabPage();
-            this.skinTabPage3 = new CCWin.SkinControl.SkinTabPage();
-            this.skinButton_run_sql = new CCWin.SkinControl.SkinButton();
-            this.dataGridView_getsql = new System.Windows.Forms.DataGridView();
-            this.fastColoredTextBox_getsql = new FastColoredTextBoxNS.FastColoredTextBox();
             this.skinContextMenuStrip_table_create_tools = new CCWin.SkinControl.SkinContextMenuStrip();
             this.yII生成模型ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.yii迁移数据ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -68,14 +61,14 @@
             this.转POST参数ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip_table = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.刷新ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.查询ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.导出数据ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.新建表ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.新建数据库ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.skinContextMenuStrip_add_database.SuspendLayout();
             this.skinMenuStrip1.SuspendLayout();
             this.skinContextMenuStrip_treeview.SuspendLayout();
             this.skinTabControl1.SuspendLayout();
-            this.skinTabPage3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_getsql)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.fastColoredTextBox_getsql)).BeginInit();
             this.skinContextMenuStrip_table_create_tools.SuspendLayout();
             this.contextMenuStrip_table.SuspendLayout();
             this.SuspendLayout();
@@ -205,7 +198,7 @@
             // ToolStripMenuItem_close
             // 
             this.ToolStripMenuItem_close.Name = "ToolStripMenuItem_close";
-            this.ToolStripMenuItem_close.Size = new System.Drawing.Size(152, 22);
+            this.ToolStripMenuItem_close.Size = new System.Drawing.Size(100, 22);
             this.ToolStripMenuItem_close.Text = "退出";
             this.ToolStripMenuItem_close.Click += new System.EventHandler(this.ToolStripMenuItem_close_Click);
             // 
@@ -267,15 +260,16 @@
             this.skinContextMenuStrip_treeview.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.打开ToolStripMenuItem,
             this.关闭ToolStripMenuItem,
+            this.新建表ToolStripMenuItem,
+            this.新建数据库ToolStripMenuItem,
             this.查询ToolStripMenuItem,
             this.重命名ToolStripMenuItem,
-            this.删除表ToolStripMenuItem,
             this.删除ToolStripMenuItem,
             this.连接详情ToolStripMenuItem});
             this.skinContextMenuStrip_treeview.ItemSplitter = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(148)))), ((int)(((byte)(212)))));
             this.skinContextMenuStrip_treeview.Name = "skinContextMenuStrip_treeview";
             this.skinContextMenuStrip_treeview.RadiusStyle = CCWin.SkinClass.RoundStyle.All;
-            this.skinContextMenuStrip_treeview.Size = new System.Drawing.Size(137, 158);
+            this.skinContextMenuStrip_treeview.Size = new System.Drawing.Size(153, 202);
             this.skinContextMenuStrip_treeview.SkinAllColor = true;
             this.skinContextMenuStrip_treeview.TitleAnamorphosis = true;
             this.skinContextMenuStrip_treeview.TitleColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(228)))), ((int)(((byte)(236)))));
@@ -286,43 +280,37 @@
             // 打开ToolStripMenuItem
             // 
             this.打开ToolStripMenuItem.Name = "打开ToolStripMenuItem";
-            this.打开ToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.打开ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.打开ToolStripMenuItem.Text = "打开数据库";
             // 
             // 关闭ToolStripMenuItem
             // 
             this.关闭ToolStripMenuItem.Name = "关闭ToolStripMenuItem";
-            this.关闭ToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.关闭ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.关闭ToolStripMenuItem.Text = "关闭";
             // 
             // 查询ToolStripMenuItem
             // 
             this.查询ToolStripMenuItem.Name = "查询ToolStripMenuItem";
-            this.查询ToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.查询ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.查询ToolStripMenuItem.Text = "查询";
             // 
             // 重命名ToolStripMenuItem
             // 
             this.重命名ToolStripMenuItem.Name = "重命名ToolStripMenuItem";
-            this.重命名ToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.重命名ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.重命名ToolStripMenuItem.Text = "重命名";
-            // 
-            // 删除表ToolStripMenuItem
-            // 
-            this.删除表ToolStripMenuItem.Name = "删除表ToolStripMenuItem";
-            this.删除表ToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
-            this.删除表ToolStripMenuItem.Text = "删除表";
             // 
             // 删除ToolStripMenuItem
             // 
             this.删除ToolStripMenuItem.Name = "删除ToolStripMenuItem";
-            this.删除ToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.删除ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.删除ToolStripMenuItem.Text = "删除数据库";
             // 
             // 连接详情ToolStripMenuItem
             // 
             this.连接详情ToolStripMenuItem.Name = "连接详情ToolStripMenuItem";
-            this.连接详情ToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.连接详情ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.连接详情ToolStripMenuItem.Text = "连接详情";
             // 
             // imageList_databse
@@ -354,9 +342,6 @@
             this.skinTabControl1.AnimatorType = CCWin.SkinControl.AnimationType.HorizSlide;
             this.skinTabControl1.CloseRect = new System.Drawing.Rectangle(2, 2, 12, 12);
             this.skinTabControl1.Controls.Add(this.skinTabPage1);
-            this.skinTabControl1.Controls.Add(this.skinTabPage2);
-            this.skinTabControl1.Controls.Add(this.skinTabPage4);
-            this.skinTabControl1.Controls.Add(this.skinTabPage3);
             this.skinTabControl1.HeadBack = null;
             this.skinTabControl1.ImgTxtOffset = new System.Drawing.Point(0, 0);
             this.skinTabControl1.ItemSize = new System.Drawing.Size(70, 36);
@@ -370,7 +355,7 @@
             this.skinTabControl1.PageHover = ((System.Drawing.Image)(resources.GetObject("skinTabControl1.PageHover")));
             this.skinTabControl1.PageImagePosition = CCWin.SkinControl.SkinTabControl.ePageImagePosition.Left;
             this.skinTabControl1.PageNorml = null;
-            this.skinTabControl1.SelectedIndex = 3;
+            this.skinTabControl1.SelectedIndex = 0;
             this.skinTabControl1.Size = new System.Drawing.Size(877, 604);
             this.skinTabControl1.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.skinTabControl1.TabIndex = 0;
@@ -385,96 +370,6 @@
             this.skinTabPage1.TabIndex = 0;
             this.skinTabPage1.TabItemImage = null;
             this.skinTabPage1.Text = "表";
-            // 
-            // skinTabPage2
-            // 
-            this.skinTabPage2.BackColor = System.Drawing.Color.White;
-            this.skinTabPage2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.skinTabPage2.Location = new System.Drawing.Point(0, 36);
-            this.skinTabPage2.Name = "skinTabPage2";
-            this.skinTabPage2.Size = new System.Drawing.Size(877, 568);
-            this.skinTabPage2.TabIndex = 1;
-            this.skinTabPage2.TabItemImage = null;
-            this.skinTabPage2.Text = "数据";
-            // 
-            // skinTabPage4
-            // 
-            this.skinTabPage4.BackColor = System.Drawing.Color.White;
-            this.skinTabPage4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.skinTabPage4.Location = new System.Drawing.Point(0, 36);
-            this.skinTabPage4.Name = "skinTabPage4";
-            this.skinTabPage4.Size = new System.Drawing.Size(877, 568);
-            this.skinTabPage4.TabIndex = 3;
-            this.skinTabPage4.TabItemImage = null;
-            this.skinTabPage4.Text = "结构";
-            // 
-            // skinTabPage3
-            // 
-            this.skinTabPage3.BackColor = System.Drawing.Color.White;
-            this.skinTabPage3.Controls.Add(this.skinButton_run_sql);
-            this.skinTabPage3.Controls.Add(this.dataGridView_getsql);
-            this.skinTabPage3.Controls.Add(this.fastColoredTextBox_getsql);
-            this.skinTabPage3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.skinTabPage3.Location = new System.Drawing.Point(0, 36);
-            this.skinTabPage3.Name = "skinTabPage3";
-            this.skinTabPage3.Size = new System.Drawing.Size(877, 568);
-            this.skinTabPage3.TabIndex = 2;
-            this.skinTabPage3.TabItemImage = null;
-            this.skinTabPage3.Text = "查询";
-            // 
-            // skinButton_run_sql
-            // 
-            this.skinButton_run_sql.BackColor = System.Drawing.Color.Transparent;
-            this.skinButton_run_sql.ControlState = CCWin.SkinClass.ControlState.Normal;
-            this.skinButton_run_sql.DownBack = null;
-            this.skinButton_run_sql.Location = new System.Drawing.Point(17, 8);
-            this.skinButton_run_sql.MouseBack = null;
-            this.skinButton_run_sql.Name = "skinButton_run_sql";
-            this.skinButton_run_sql.NormlBack = null;
-            this.skinButton_run_sql.Size = new System.Drawing.Size(75, 23);
-            this.skinButton_run_sql.TabIndex = 2;
-            this.skinButton_run_sql.Text = "运行";
-            this.skinButton_run_sql.UseVisualStyleBackColor = false;
-            this.skinButton_run_sql.Click += new System.EventHandler(this.skinButton_run_sql_Click);
-            // 
-            // dataGridView_getsql
-            // 
-            this.dataGridView_getsql.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView_getsql.Location = new System.Drawing.Point(0, 244);
-            this.dataGridView_getsql.Name = "dataGridView_getsql";
-            this.dataGridView_getsql.RowTemplate.Height = 23;
-            this.dataGridView_getsql.Size = new System.Drawing.Size(877, 278);
-            this.dataGridView_getsql.TabIndex = 1;
-            // 
-            // fastColoredTextBox_getsql
-            // 
-            this.fastColoredTextBox_getsql.AllowDrop = false;
-            this.fastColoredTextBox_getsql.AutoCompleteBracketsList = new char[] {
-        '(',
-        ')',
-        '{',
-        '}',
-        '[',
-        ']',
-        '\"',
-        '\"',
-        '\'',
-        '\''};
-            this.fastColoredTextBox_getsql.AutoScrollMinSize = new System.Drawing.Size(27, 14);
-            this.fastColoredTextBox_getsql.BackBrush = null;
-            this.fastColoredTextBox_getsql.CharHeight = 14;
-            this.fastColoredTextBox_getsql.CharWidth = 8;
-            this.fastColoredTextBox_getsql.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.fastColoredTextBox_getsql.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
-            this.fastColoredTextBox_getsql.IsReplaceMode = false;
-            this.fastColoredTextBox_getsql.Location = new System.Drawing.Point(0, 46);
-            this.fastColoredTextBox_getsql.Name = "fastColoredTextBox_getsql";
-            this.fastColoredTextBox_getsql.Paddings = new System.Windows.Forms.Padding(0);
-            this.fastColoredTextBox_getsql.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
-            this.fastColoredTextBox_getsql.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("fastColoredTextBox_getsql.ServiceColors")));
-            this.fastColoredTextBox_getsql.Size = new System.Drawing.Size(871, 192);
-            this.fastColoredTextBox_getsql.TabIndex = 0;
-            this.fastColoredTextBox_getsql.Zoom = 100;
             // 
             // skinContextMenuStrip_table_create_tools
             // 
@@ -536,9 +431,10 @@
             // 
             this.contextMenuStrip_table.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.刷新ToolStripMenuItem1,
+            this.查询ToolStripMenuItem1,
             this.导出数据ToolStripMenuItem});
             this.contextMenuStrip_table.Name = "contextMenuStrip_table";
-            this.contextMenuStrip_table.Size = new System.Drawing.Size(125, 48);
+            this.contextMenuStrip_table.Size = new System.Drawing.Size(125, 70);
             this.contextMenuStrip_table.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuStrip_table_ItemClicked);
             // 
             // 刷新ToolStripMenuItem1
@@ -547,11 +443,29 @@
             this.刷新ToolStripMenuItem1.Size = new System.Drawing.Size(124, 22);
             this.刷新ToolStripMenuItem1.Text = "刷新";
             // 
+            // 查询ToolStripMenuItem1
+            // 
+            this.查询ToolStripMenuItem1.Name = "查询ToolStripMenuItem1";
+            this.查询ToolStripMenuItem1.Size = new System.Drawing.Size(124, 22);
+            this.查询ToolStripMenuItem1.Text = "查询";
+            // 
             // 导出数据ToolStripMenuItem
             // 
             this.导出数据ToolStripMenuItem.Name = "导出数据ToolStripMenuItem";
             this.导出数据ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.导出数据ToolStripMenuItem.Text = "导出数据";
+            // 
+            // 新建表ToolStripMenuItem
+            // 
+            this.新建表ToolStripMenuItem.Name = "新建表ToolStripMenuItem";
+            this.新建表ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.新建表ToolStripMenuItem.Text = "新建表";
+            // 
+            // 新建数据库ToolStripMenuItem
+            // 
+            this.新建数据库ToolStripMenuItem.Name = "新建数据库ToolStripMenuItem";
+            this.新建数据库ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.新建数据库ToolStripMenuItem.Text = "新建数据库";
             // 
             // pDataManage
             // 
@@ -576,9 +490,6 @@
             this.skinMenuStrip1.PerformLayout();
             this.skinContextMenuStrip_treeview.ResumeLayout(false);
             this.skinTabControl1.ResumeLayout(false);
-            this.skinTabPage3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_getsql)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.fastColoredTextBox_getsql)).EndInit();
             this.skinContextMenuStrip_table_create_tools.ResumeLayout(false);
             this.contextMenuStrip_table.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -607,10 +518,6 @@
         private System.Windows.Forms.ToolStripMenuItem 删除ToolStripMenuItem;
         private CCWin.SkinControl.SkinTabControl skinTabControl1;
         private CCWin.SkinControl.SkinTabPage skinTabPage1;
-        private System.Windows.Forms.ToolStripMenuItem 删除表ToolStripMenuItem;
-        private CCWin.SkinControl.SkinTabPage skinTabPage4;
-        private CCWin.SkinControl.SkinTabPage skinTabPage2;
-        private CCWin.SkinControl.SkinTabPage skinTabPage3;
         private CCWin.SkinControl.SkinContextMenuStrip skinContextMenuStrip_table_create_tools;
         private System.Windows.Forms.ToolStripMenuItem yII生成模型ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem yii迁移数据ToolStripMenuItem;
@@ -619,12 +526,12 @@
         private System.Windows.Forms.ToolStripMenuItem 重命名ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 连接详情ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 查询ToolStripMenuItem;
-        private System.Windows.Forms.DataGridView dataGridView_getsql;
-        private FastColoredTextBoxNS.FastColoredTextBox fastColoredTextBox_getsql;
-        private CCWin.SkinControl.SkinButton skinButton_run_sql;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip_table;
         private System.Windows.Forms.ToolStripMenuItem 刷新ToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem 导出数据ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 关闭ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 查询ToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem 新建表ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 新建数据库ToolStripMenuItem;
     }
 }

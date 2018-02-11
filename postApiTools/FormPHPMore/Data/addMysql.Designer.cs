@@ -42,6 +42,8 @@
             this.label4 = new System.Windows.Forms.Label();
             this.textBox_password = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.textBox_encoding = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // textBox_name
@@ -65,7 +67,7 @@
             this.skinButton_add.BackColor = System.Drawing.Color.Transparent;
             this.skinButton_add.ControlState = CCWin.SkinClass.ControlState.Normal;
             this.skinButton_add.DownBack = null;
-            this.skinButton_add.Location = new System.Drawing.Point(47, 268);
+            this.skinButton_add.Location = new System.Drawing.Point(44, 273);
             this.skinButton_add.MouseBack = null;
             this.skinButton_add.Name = "skinButton_add";
             this.skinButton_add.NormlBack = null;
@@ -80,7 +82,7 @@
             this.skinButton_close.BackColor = System.Drawing.Color.Transparent;
             this.skinButton_close.ControlState = CCWin.SkinClass.ControlState.Normal;
             this.skinButton_close.DownBack = null;
-            this.skinButton_close.Location = new System.Drawing.Point(212, 268);
+            this.skinButton_close.Location = new System.Drawing.Point(209, 273);
             this.skinButton_close.MouseBack = null;
             this.skinButton_close.Name = "skinButton_close";
             this.skinButton_close.NormlBack = null;
@@ -154,11 +156,30 @@
             this.label5.TabIndex = 1;
             this.label5.Text = "密码";
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(45, 240);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(29, 12);
+            this.label6.TabIndex = 4;
+            this.label6.Text = "编码";
+            // 
+            // textBox_encoding
+            // 
+            this.textBox_encoding.Location = new System.Drawing.Point(89, 237);
+            this.textBox_encoding.Name = "textBox_encoding";
+            this.textBox_encoding.Size = new System.Drawing.Size(161, 21);
+            this.textBox_encoding.TabIndex = 3;
+            this.textBox_encoding.Text = "utf8";
+            // 
             // addMysql
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(320, 321);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.textBox_encoding);
             this.Controls.Add(this.skinButton_close);
             this.Controls.Add(this.skinButton_add);
             this.Controls.Add(this.label5);
@@ -177,7 +198,7 @@
             this.MinimizeBox = false;
             this.Name = "addMysql";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "添加MySQL";
+            this.Text = "con";
             this.Load += new System.EventHandler(this.addMysql_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -198,5 +219,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox textBox_password;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox textBox_encoding;
     }
 }

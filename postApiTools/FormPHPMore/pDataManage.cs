@@ -20,7 +20,7 @@ namespace postApiTools.FormPHPMore
 
     public partial class pDataManage : CCSkinMain
     {
-        public static CCSkinMain f;
+        public static pDataManage f;
         public pDataManage()
         {
             InitializeComponent();
@@ -223,7 +223,7 @@ namespace postApiTools.FormPHPMore
             {
                 return;
             }
-            tv.Invoke(new Action(() =>
+            tv.BeginInvoke(new Action(() =>
             {
                 TreeNode tn = tv.SelectedNode;
                 for (int i = 0; i < list.Count; i++)
@@ -372,6 +372,50 @@ namespace postApiTools.FormPHPMore
                 string name = treeView_database.SelectedNode.Text;
                 createSqlRunTab(hash);//动态创建tab
             }
+            else if (e.ClickedItem.ToString() == "连接详情")
+            {
+                string hash = treeView_database.SelectedNode.Name;
+                Thread th = new System.Threading.Thread((System.Threading.ThreadStart)delegate
+                {
+                    Application.Run(new Data.DataBaseInfo(hash));
+                });
+                th.SetApartmentState(ApartmentState.STA);
+                th.IsBackground = true;
+                th.Start();
+            }
+            else if (e.ClickedItem.ToString() == "新建数据库")//新建数据库
+            {
+                string hash = treeView_database.SelectedNode.Name;
+                Thread th = new System.Threading.Thread((System.Threading.ThreadStart)delegate
+                {
+                    Application.Run(new Data.createDatabase(hash));
+                });
+                th.SetApartmentState(ApartmentState.STA);
+                th.IsBackground = true;
+                th.Start();
+            }
+            else if (e.ClickedItem.ToString() == "新建表")//新建表
+            {
+                string hash = treeView_database.SelectedNode.Name;
+                string[] array = hash.Split('|');
+                Dictionary<string, string> database = new Dictionary<string, string>();
+                if (array.Length == 1)
+                {
+                    Data.pDataManageClass p = new Data.pDataManageClass();
+                    database = p.getDataBaseHash(hash);
+                    if (database["type"] == Data.DataBaseType.Mysql.ToString())
+                    {
+                        return;
+                    }
+                }
+                Thread th = new System.Threading.Thread((System.Threading.ThreadStart)delegate
+                {
+                    Application.Run(new Data.createTable(hash));
+                });
+                th.SetApartmentState(ApartmentState.STA);
+                th.IsBackground = true;
+                th.Start();
+            }
         }
 
         Dictionary<string, Models.RunSqlForm> RunSqlList = new Dictionary<string, Models.RunSqlForm> { };
@@ -382,74 +426,103 @@ namespace postApiTools.FormPHPMore
         /// <param name="hash"></param>
         public void createSqlRunTab(string hash)
         {
-            string[] array = hash.Split('|');
-            string text = "";
-            if (array.Length <= 1)
+            try
             {
-                return;
-            }
-            if (array[2] == Data.DataBaseType.Mysql.ToString())//mysql
-            {
-                if (array.Length > 2)
+                string[] array = hash.Split('|');
+                string text = "";
+                Dictionary<string, string> database = new Dictionary<string, string>();
+                if (array.Length <= 0)
                 {
-                    text = array[3];
+                    return;
+                }
+                if (array.Length == 1)//查询主数据库
+                {
+
+                    Data.pDataManageClass p = new Data.pDataManageClass();
+                    string dataHash = array[0];
+                    database = p.getDataBaseHash(array[0]);
+                    array = new string[4];
+                    array[0] = dataHash;
+                    array[1] = "database";
+                    array[2] = database["type"];
+                }
+                if (array[2] == Data.DataBaseType.Mysql.ToString())//mysql
+                {
+                    if (array.Length > 2)
+                    {
+                        text = array[3];
+                        if (array[1] == "database")
+                        {
+                            text = database["name"];
+                        }
+                    }
+                }
+
+                ContextMenuStrip cms = new ContextMenuStrip();//关闭右键菜单
+                Random rd = new Random();
+                cms.Items.Add("关闭" + text);//添加右键文本
+                string rand = rd.Next(10000, 99999).ToString();
+                string name = text + rand;
+                SkinTabPage page = new SkinTabPage();
+                page.ToolTipText = Text + " 查询";//提示显示完整
+                page.Text = text + " 查询";//tab显示文本
+                page.Name = name;//tab name 唯一
+                page.ContextMenuStrip = cms;
+                cms.Name = "cms" + rand;
+                cms.ItemClicked += closeTabPage;//关联事件
+                this.skinTabControl1.Controls.Add(page);
+
+                Label lab = new Label();
+                lab.Text = text + " 查询";
+                lab.Location = new Point(10, 5);
+                page.Controls.Add(lab);
+
+                SkinButton skbutton = new SkinButton();
+                skbutton.Text = "查询";
+                skbutton.Name = "sqlrun" + rand;
+                skbutton.Click += getRunSql;//点击事件
+                skbutton.Location = new Point(10, 30);
+                page.Controls.Add(skbutton);
+
+                FastColoredTextBox fctb = new FastColoredTextBox();//输入框
+                fctb.Name = "fctb" + rand;
+                fctb.Location = new Point(10, 80);
+                fctb.Language = Language.SQL;//sql
+                fctb.Width = page.Width - 30;//控件宽度
+                fctb.Height = page.Height / 3;//控件高度
+                fctb.ImeMode = ImeMode.On;//开启
+                fctb.KeyDown += RunSqlKeysDown;//键盘事件
+                fctb.BorderStyle = BorderStyle.FixedSingle;//边框
+                page.Controls.Add(fctb);//添加输入框
+
+                skinTabControl1.SelectedTab = page;//指定tabpage显示
+
+                if (array.Length == 5)//打开表查询
+                {
+                    fctb.BeginInvoke(new Action(() =>
+                    {
+                        string table = array[4];
+                        fctb.Text = string.Format("select *from {0}", table);
+                    }));
+                }
+
+                Models.RunSqlForm rsf = new Models.RunSqlForm
+                {
+                    button = skbutton,
+                    fctb = fctb,
+                    stp = page,
+                    selectHash = hash,
+                };
+                if (!RunSqlList.ContainsKey(rand))
+                {
+                    RunSqlList.Add(rand, rsf);//添加列队
+                }
+                else
+                {
+                    RunSqlList[rand] = rsf;
                 }
             }
-
-            ContextMenuStrip cms = new ContextMenuStrip();//关闭右键菜单
-            Random rd = new Random();
-            cms.Items.Add("关闭" + text);//添加右键文本
-            string rand = rd.Next(10000, 99999).ToString();
-            string name = text + rand;
-            SkinTabPage page = new SkinTabPage();
-            page.ToolTipText = Text + " 查询";//提示显示完整
-            page.Text = text + " 查询";//tab显示文本
-            page.Name = name;//tab name 唯一
-            page.ContextMenuStrip = cms;
-            cms.Name = "cms" + rand;
-            cms.ItemClicked += closeTabPage;//关联事件
-            this.skinTabControl1.Controls.Add(page);
-
-            Label lab = new Label();
-            lab.Text = text + " 查询";
-            lab.Location = new Point(10, 5);
-            page.Controls.Add(lab);
-
-            SkinButton skbutton = new SkinButton();
-            skbutton.Text = "查询";
-            skbutton.Name = "sqlrun" + rand;
-            skbutton.Click += getRunSql;//点击事件
-            skbutton.Location = new Point(10, 30);
-            page.Controls.Add(skbutton);
-
-            FastColoredTextBox fctb = new FastColoredTextBox();//输入框
-            fctb.Name = "fctb" + rand;
-            fctb.Location = new Point(10, 80);
-            fctb.Language = Language.SQL;//sql
-            fctb.Width = page.Width - 30;//控件宽度
-            fctb.Height = page.Height / 3;//控件高度
-            fctb.ImeMode = ImeMode.On;//开启
-            fctb.KeyDown += RunSqlKeysDown;//键盘事件
-
-            page.Controls.Add(fctb);//添加输入框
-
-            skinTabControl1.SelectedTab = page;//指定tabpage显示
-
-            Models.RunSqlForm rsf = new Models.RunSqlForm
-            {
-                button = skbutton,
-                fctb = fctb,
-                stp = page,
-                selectHash = hash,
-            };
-            if (!RunSqlList.ContainsKey(rand))
-            {
-                RunSqlList.Add(rand, rsf);//添加列队
-            }
-            else
-            {
-                RunSqlList[rand] = rsf;
-            }
+            catch (Exception ex) { pLogs.logs(ex.ToString()); }
         }
 
         /// <summary>
@@ -498,6 +571,22 @@ namespace postApiTools.FormPHPMore
                 string[] array = hash.Split('|');
                 if (array.Length <= 1)//主要数据库
                 {
+                    string databaseHash = array[0];//数据库hash
+                    Data.pDataManageClass p = new Data.pDataManageClass();
+                    Dictionary<string, string> database = p.getDataBaseHash(databaseHash);
+                    if (database["type"] == Data.DataBaseType.Mysql.ToString())
+                    {
+                        lib.pMysql mysql = new lib.pMysql(database["ip"], database["port"], database["username"], database["password"], "");
+                        Dictionary<int, object> List = mysql.getRows(text);
+                        if (mysql.error.Length <= 0)
+                        {
+                            tabPageDataGridViewShow(rsf.stp, List, rand);//结果显示
+                        }
+                        else
+                        {
+                            tabPageErrorShow(rsf.stp, mysql.error, rand);//错误显示
+                        }
+                    }
                 }
                 if (array.Length >= 4)//表
                 {
@@ -647,6 +736,17 @@ namespace postApiTools.FormPHPMore
                 }
                 // rsf.datagridview.Controls.Clear();
             }
+            if (rsf.datagridview != null)
+            {
+                foreach (Control control in c.Controls)
+                {
+                    if (control.Name == "errorfctb" + rand)
+                    {
+                        c.Controls.Remove(control);
+                    }
+                }
+                // rsf.datagridview.Controls.Clear();
+            }
             rsf.datagridview = dgv;
             RunSqlList[rand] = rsf;
             //}));
@@ -750,6 +850,11 @@ namespace postApiTools.FormPHPMore
                 CreateYiiMigrate model = new CreateYiiMigrate(treeviewSelectHash);
                 model.Show();
             }
+            if (e.ClickedItem.ToString() == "TP迁移数据")
+            {
+                CreateTpMigrate model = new CreateTpMigrate(treeviewSelectHash);
+                model.Show();
+            }
 
             if (e.ClickedItem.ToString() == "转POST参数")
             {
@@ -790,6 +895,12 @@ namespace postApiTools.FormPHPMore
         private void contextMenuStrip_table_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             if (e.ClickedItem == null) { return; }
+            if (e.ClickedItem.ToString() == "查询")
+            {
+                string hash = treeView_database.SelectedNode.Name;
+                string name = treeView_database.SelectedNode.Text;
+                createSqlRunTab(hash);//动态创建查询tab
+            }
         }
         /// <summary>
         /// 添加Oracle
@@ -819,6 +930,11 @@ namespace postApiTools.FormPHPMore
         private void ToolStripMenuItem_close_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        public TreeView getTreeView()
+        {
+            return treeView_database;
         }
     }
 }

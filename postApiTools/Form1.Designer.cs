@@ -397,6 +397,8 @@
             // checkBox_to_rn
             // 
             this.checkBox_to_rn.AutoSize = true;
+            this.checkBox_to_rn.Checked = true;
+            this.checkBox_to_rn.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox_to_rn.Location = new System.Drawing.Point(139, 7);
             this.checkBox_to_rn.Name = "checkBox_to_rn";
             this.checkBox_to_rn.Size = new System.Drawing.Size(72, 16);

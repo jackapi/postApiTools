@@ -237,6 +237,24 @@
     <Compile Include="FormPHPMore\Data\addSqlite.Designer.cs">
       <DependentUpon>addSqlite.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormPHPMore\Data\createDatabase.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPHPMore\Data\createDatabase.Designer.cs">
+      <DependentUpon>createDatabase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormPHPMore\Data\createTable.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPHPMore\Data\createTable.Designer.cs">
+      <DependentUpon>createTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormPHPMore\Data\DataBaseInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPHPMore\Data\DataBaseInfo.Designer.cs">
+      <DependentUpon>DataBaseInfo.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormPHPMore\Data\DataBaseType.cs" />
     <Compile Include="FormPHPMore\Data\pDataManageClass.cs" />
     <Compile Include="FormPHPMore\Data\pRen.cs">
@@ -418,6 +436,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormPHPMore\Data\addSqlite.resx">
       <DependentUpon>addSqlite.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormPHPMore\Data\createDatabase.resx">
+      <DependentUpon>createDatabase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormPHPMore\Data\createTable.resx">
+      <DependentUpon>createTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormPHPMore\Data\DataBaseInfo.resx">
+      <DependentUpon>DataBaseInfo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormPHPMore\Data\pRen.resx">
       <DependentUpon>pRen.cs</DependentUpon>

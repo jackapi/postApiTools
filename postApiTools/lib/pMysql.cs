@@ -77,8 +77,17 @@ namespace postApiTools.lib
         /// <returns></returns>
         public int executeNonQuery(string sql)
         {
-            MySqlCommand myCmd = new MySqlCommand(sql, conn);
-            return myCmd.ExecuteNonQuery();
+            try
+            {
+                MySqlCommand myCmd = new MySqlCommand(sql, conn);
+                return myCmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                error = ex.ToString();
+                pLogs.logs(ex.ToString());
+                return 0;
+            }
         }
 
         /// <summary>

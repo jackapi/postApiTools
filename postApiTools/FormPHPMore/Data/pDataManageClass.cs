@@ -36,7 +36,7 @@ namespace postApiTools.FormPHPMore.Data
         /// </summary>
         public pDataManageClass()
         {
-            sqlite.executeNonQuery("CREATE TABLE IF NOT EXISTS " + dataTable + "(hash varchar(200),name varchar(200),type  varchar(200), path varchar(200), ip varchar(2000),port varchar(200),username varchar(20000),password varchar(200),addtime integer);");//创建详情表
+            sqlite.executeNonQuery("CREATE TABLE IF NOT EXISTS " + dataTable + "(hash varchar(200),name varchar(200),type  varchar(200), path varchar(200), ip varchar(2000),port varchar(200),username varchar(20000),password varchar(200),encoding varchar(200),addtime integer);");//创建详情表
         }
 
         /// <summary>
@@ -61,11 +61,11 @@ namespace postApiTools.FormPHPMore.Data
         /// <param name="name"></param>
         /// <param name="path"></param>
         /// <returns></returns>
-        public bool addMysqlDataBase(string name, string ip, string port, string username, string password)
+        public bool addMysqlDataBase(string name, string ip, string port, string username, string password, string encoding)
         {
             string hash = lib.pBase.getHash();
             this.hash = hash;
-            string sql = string.Format("insert into {0} (hash,name,type,ip,port,username,password,addtime)values('{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}')", dataTable, hash, name, DataBaseType.Mysql, ip, port, username, password, lib.pDate.getTimeStamp());
+            string sql = string.Format("insert into {0} (hash,name,type,ip,port,username,password,encoding,addtime)values('{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}')", dataTable, hash, name, DataBaseType.Mysql, ip, port, username, password, encoding, lib.pDate.getTimeStamp());
             bool b = sqlite.executeNonQuery(sql) > 0 ? true : false;
             error = sqlite.error;
             return b;

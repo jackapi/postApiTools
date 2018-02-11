@@ -205,19 +205,25 @@ namespace postApiTools.FormPHPMore
         public string AttributeLabels(string content)
         {
             string temp = "";
-
-            for (int i = 0; i < CreateTableInfoList.Count; i++)
+            try
             {
-                Dictionary<string, string> d = (Dictionary<string, string>)CreateTableInfoList[i];
-                if (d["content"].Length > 0)
+                for (int i = 0; i < CreateTableInfoList.Count; i++)
                 {
-                    temp += string.Format("\t'{0}' => '{1}',//{2}\r\n", d["name"], d["content"], d["content"]);
-                }
-                else
-                {
-                    temp += string.Format("\t'{0}' => '{1}',//{2}\r\n", d["name"], d["name"], d["name"]);
+                    Dictionary<string, string> d = (Dictionary<string, string>)CreateTableInfoList[i];
+                    if (d.ContainsKey("content"))
+                    {
+                        if (d["content"].Length > 0)
+                        {
+                            temp += string.Format("\t'{0}' => '{1}',//{2}\r\n", d["name"], d["content"], d["content"]);
+                        }
+                        else
+                        {
+                            temp += string.Format("\t'{0}' => '{1}',//{2}\r\n", d["name"], d["name"], d["name"]);
+                        }
+                    }
                 }
             }
+            catch (Exception ex) { pLogs.logs(ex.ToString()); }
             content = content.Replace("{$attributeLabels}", temp);
             return content;
         }
@@ -231,11 +237,18 @@ namespace postApiTools.FormPHPMore
         {
 
             string temp = "";
-            for (int i = 0; i < CreateTableInfoList.Count; i++)
+            try
             {
-                Dictionary<string, string> d = (Dictionary<string, string>)CreateTableInfoList[i];
-                temp += string.Format("\t\t'{0}',//{1} {2}\r\n", d["name"], d["name"], d["content"]);
+                for (int i = 0; i < CreateTableInfoList.Count; i++)
+                {
+                    Dictionary<string, string> d = (Dictionary<string, string>)CreateTableInfoList[i];
+                    if (d.ContainsKey("content"))
+                    {
+                        temp += string.Format("\t\t'{0}',//{1} {2}\r\n", d["name"], d["name"], d["content"]);
+                    }
+                }
             }
+            catch (Exception ex) { pLogs.logs(ex.ToString()); }
             content = content.Replace("{$fields}", temp);
             return content;
         }
@@ -248,19 +261,27 @@ namespace postApiTools.FormPHPMore
         {
             string temp = "";
             List<string> required = new List<string>();//必填
-            for (int i = 0; i < CreateTableInfoList.Count; i++)
+            try
             {
-                Dictionary<string, string> d = (Dictionary<string, string>)CreateTableInfoList[i];
-                if (d["isnull"].ToLower() == "no")
+                for (int i = 0; i < CreateTableInfoList.Count; i++)
                 {
-                    if (d["iskey"].Length > 0) { continue; }
-                    required.Add(d["name"]);//添加必填
+                    Dictionary<string, string> d = (Dictionary<string, string>)CreateTableInfoList[i];
+                    if (d.ContainsKey("isnull"))
+                    {
+
+                        if (d["isnull"].ToLower() == "no")
+                        {
+                            if (d["iskey"].Length > 0) { continue; }
+                            required.Add(d["name"]);//添加必填
+                        }
+                    }
+                }
+                if (required.Count > 0)
+                {
+                    temp += string.Format("\t\t[{0}, 'required'],//{1} \r\n", lib.pJsonData.objectToString(required), "必须有值");
                 }
             }
-            if (required.Count > 0)
-            {
-                temp += string.Format("\t\t[{0}, 'required'],//{1} \r\n", lib.pJsonData.objectToString(required), "必须有值");
-            }
+            catch (Exception ex) { pLogs.logs(ex.ToString()); }
             content = content.Replace("{$rules}", temp);
             return content;
         }

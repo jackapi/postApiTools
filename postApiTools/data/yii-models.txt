@@ -71,9 +71,14 @@ class {$model-name-f} extends ActiveRecord
      */
     public function scenarios()
     {
-        return [
+        $scenarios = parent::scenarios(); 
+        $data =  [
 {$scenarios}
         ];
+        foreach ($data as $key => $value) {
+            $scenarios[$key] = $value;
+        }
+        return $scenarios;
     }
 
 	
