@@ -34,7 +34,7 @@ namespace postApiTools.FormAll
         {
             this.KeyDown += keyDown;
             OutUrlList();//处理数据
-            comboBox_type.Text = "JSON";
+            comboBox_type.SelectedIndex = 0;
         }
 
         /// <summary>
@@ -52,9 +52,13 @@ namespace postApiTools.FormAll
             }
         }
 
+        /// <summary>
+        /// 界面启动加载
+        /// </summary>
         public void OutUrlList()
         {
             DataGridView dgv = Form1.f.GetUrlDataGridViewData();
+            if (dgv == null) { MessageBox.Show("获取数据列表失败！或重新启动软件！"); return; }
             int row = dgv.Rows.Count - 1;
             for (int i = 0; i < row; i++)
             {
@@ -79,6 +83,7 @@ namespace postApiTools.FormAll
         {
 
             if (UrlList.Count <= 0) { return; }
+
             lib.pFormRichTextBox f = new lib.pFormRichTextBox();
             StringBuilder sb = new StringBuilder();
             JObject job = new JObject();
@@ -89,6 +94,10 @@ namespace postApiTools.FormAll
                 {
                     var temp = new Models.NameValue { name = item.name, value = item.value };
                     list.Add(temp);
+                }
+                if (comboBox_type.Text == "JSON-键值对")
+                {
+                    job.Add(item.name, item.value);
                 }
                 if (comboBox_type.Text == "Input")
                 {
@@ -103,6 +112,8 @@ namespace postApiTools.FormAll
                 }
 
             }
+            //循环结束
+
             if (comboBox_type.Text == "JSON")
             {
                 f.textShow(richTextBox_result, lib.pJsonData.objectToString(list));
@@ -110,6 +121,10 @@ namespace postApiTools.FormAll
             if (comboBox_type.Text == "Input")
             {
                 f.textShow(richTextBox_result, sb.ToString());
+            }
+            if (comboBox_type.Text == "JSON-键值对")
+            {
+                f.textShow(richTextBox_result, job.ToString());
             }
         }
     }

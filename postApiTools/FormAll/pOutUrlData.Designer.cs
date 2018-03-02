@@ -44,6 +44,7 @@
             this.comboBox_type.FormattingEnabled = true;
             this.comboBox_type.Items.AddRange(new object[] {
             "JSON",
+            "JSON-键值对",
             "Input"});
             this.comboBox_type.Location = new System.Drawing.Point(202, 50);
             this.comboBox_type.Name = "comboBox_type";

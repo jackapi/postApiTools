@@ -271,6 +271,7 @@
             this.dataGridView_http_data.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_http_data_CellContentClick);
             this.dataGridView_http_data.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_http_data_CellValueChanged);
             this.dataGridView_http_data.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dataGridView_http_data_DataError);
+            this.dataGridView_http_data.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.dataGridView_http_data_RowsAdded);
             // 
             // Column1
             // 

@@ -144,6 +144,90 @@ namespace postApiTools
             {
                 pIe.isIeDownload();//检测浏览器版本 
             }));
+            loadingCloseTab();
+        }
+
+        /// <summary>
+        /// 判断是否自动隐藏
+        /// </summary>
+        public bool loadingCloseTabBool = false;
+
+        /// <summary>
+        /// 加载关闭左侧选项卡
+        /// </summary>
+        public void loadingCloseTab()
+        {
+            ContextMenuStrip cms = new ContextMenuStrip();
+            cms.Items.Add("关闭左侧");
+            cms.ItemClicked += closeTab3;//绑定事件
+            tabControl3.ContextMenuStrip = cms;
+
+            ContextMenuStrip form1Cms = new ContextMenuStrip();
+            form1Cms.Items.Add("显示左侧");
+            form1Cms.ItemClicked += showTab3;//绑定事件
+            this.ContextMenuStrip = form1Cms;
+            string visible = pIni.read("form1", "tab3-visible");
+            if (visible == "yes")
+            {
+                loadingCloseTabBool = true;
+                closeTab3(null, null);
+            }
+        }
+
+        /// <summary>
+        /// 显示左侧控件tab3
+        /// </summary>
+        /// <param name="obj1"></param>
+        /// <param name="obj2"></param>
+        public void showTab3(object obj1, object obj2)
+        {
+            ToolStripItemClickedEventArgs t = (ToolStripItemClickedEventArgs)obj2;
+            if (t.ClickedItem == null) { return; }
+            if (t.ClickedItem.ToString() == "显示左侧")
+            {
+                if (tabControl3.Visible) { return; }//已经显示就不处理
+                int w = tabControl3.Width;
+                tabControl3.Show();//隐藏当前控件
+                Point p = tabControl1.Location;//获取控件位置坐标
+                p.X = w + 10;//指定10
+                tabControl1.Location = p;//重新指定设置
+                tabControl1.Width = tabControl1.Width - w;//重新设置宽度
+            }
+        }
+
+        /// <summary>
+        /// 关闭隐藏tab3控件的事件操作
+        /// </summary>
+        /// <param name="obj1"></param>
+        /// <param name="obj2"></param>
+        public void closeTab3(object obj1, object obj2)
+        {
+            if (loadingCloseTabBool)
+            {
+                closeTab3Fun();
+            }
+            else
+            {
+                ToolStripItemClickedEventArgs t = (ToolStripItemClickedEventArgs)obj2;
+                if (t.ClickedItem == null) { return; }
+                if (t.ClickedItem.ToString() == "关闭左侧")
+                {
+                    closeTab3Fun();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 实现关闭tab3的方法
+        /// </summary>
+        public void closeTab3Fun() {
+            pIni.write("form1", "tab3-visible", "yes");
+            int w = tabControl3.Width;
+            tabControl3.Hide();//隐藏当前控件
+            Point p = tabControl1.Location;//获取控件位置坐标
+            p.X = 10;//指定10
+            tabControl1.Location = p;//重新指定设置
+            tabControl1.Width = tabControl1.Width + w;//重新设置宽度
         }
 
         /// <summary>
@@ -470,7 +554,7 @@ namespace postApiTools
             string url = textBox_url.Text;
             string urlType = comboBox_url_type.Text;
             string[,] urlData = pform1.dataViewToStringArray(dataGridView_http_data);
-            if (pForm1TreeView.isApiHash(editApiHash))
+            if (pForm1TreeView.isApiHash(this.editApiHash))
             {
                 string name = textBox_api_name.Text;
                 string desc = textBox_doc.Text;
@@ -493,7 +577,7 @@ namespace postApiTools
             }
             else
             {
-                editApiHash = "";
+                this.editApiHash = "";
             }
             SavePostApi api = new SavePostApi(urlData, url, urlType, textBox_doc.Text, treeView_save_list);
             api.ShowDialog();
@@ -520,6 +604,10 @@ namespace postApiTools
 
             if (e.RowIndex >= 0 && e.ColumnIndex == 4)
             {
+                if ((dataGridView_http_data.Rows.Count - 1) == e.RowIndex)
+                {
+                    return;
+                }
                 dataGridView_http_data.Rows.Remove(dataGridView_http_data.Rows[e.RowIndex]);//删除单元格
             }
         }
@@ -680,8 +768,7 @@ namespace postApiTools
             string name = treeView_save_list.SelectedNode.Text;
             if (pForm1TreeView.isApiHash(hash))
             {
-                editApiHash = hash;
-                button_new_url_http_Click(null, null);//新建操作
+                this.editApiHash = hash;
             }
             pForm1TreeView.getMarkdown = "";
             pForm1TreeView.openApiDataShow(treeView_save_list, textBox_url, comboBox_url_type, dataGridView_http_data, textBox_api_name, textBox_doc);
@@ -1464,21 +1551,12 @@ namespace postApiTools
         public void outAppendUrlDataView(Dictionary<string, string> d)
         {
             DataGridView dataview = dataGridView_http_data;
-            dataview.Invoke(new Action(() =>
+            dataview.BeginInvoke(new Action(() =>
             {
-                int count = dataview.Rows.Count;
-                if (count < 0) { count = 0; }
-                dataview.Rows.Add((d.Count + count) - 1);
-                int i = count - 1;
-                if (i < 0) { i = 0; }
+                if (d.Count == 0) { return; }
                 foreach (var item in d)
                 {
-                    dataview.Rows[i].Cells[0].Value = item.Key;
-                    dataview.Rows[i].Cells[1].Value = item.Value;
-                    dataview.Rows[i].Cells[2].Value = "";
-                    dataview.Rows[i].Cells[3].Value = "字符串";
-                    dataview.Rows[i].Cells[4].Value = "删除";
-                    i++;
+                    dataview.Rows.Add(item.Key, item.Value, "", "字符串", "删除");//动态添加
                 }
             }));
         }
@@ -1736,6 +1814,24 @@ namespace postApiTools
                 f.TextShowlogs("开始更新栏目:" + name);
                 pUpdateServerWeb.pullProjecrOne(hash);
                 f.TextShowlogs("更新完成:" + name);
+            }
+        }
+
+        /// <summary>
+        /// dataview 添加新行指定参数类型 修复
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dataGridView_http_data_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+        {
+            DataGridView dgv = (DataGridView)sender;
+            if (e != null)
+            {
+                if (e.RowIndex == 0) { return; }
+                dgv.BeginInvoke(new Action(() =>
+                {
+                    dgv.Rows[e.RowIndex - 1].Cells[3].Value = "字符串";
+                }));
             }
         }
     }
