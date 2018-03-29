@@ -160,7 +160,7 @@ namespace postApiTools.lib
         /// </summary>
         public void login()
         {
-            if (Config.userToken == "")
+            if (lib.pApizlHttp.getToken() == "")
             {
                 Form1.f.TextShowlogs("用户登录状态不正确！请重新登录用户！", "error");
                 stop();
@@ -170,7 +170,7 @@ namespace postApiTools.lib
             d.Add("type", "login_websocket");
             d.Add("room_id", "1");
             d.Add("client_name", Config.openServerName);
-            d.Add("token", Config.userToken);
+            d.Add("token", lib.pApizlHttp.getToken());
             socketSend(pJson.objectToJsonStr(d));
         }
         /// <summary>
@@ -187,7 +187,7 @@ namespace postApiTools.lib
                 d.Add("client_name", Config.openServerName);
                 d.Add("server_hash", "sdfsd");
                 d.Add("content", sendList[sendList.Count]);
-                d.Add("token", Config.userToken);
+                d.Add("token", lib.pApizlHttp.getToken());
                 //socket.Send(pJson.objectToJsonStr(d));
                 sendList.Remove(sendList.Count);
             }
@@ -204,7 +204,7 @@ namespace postApiTools.lib
             d.Add("room_id", "1");
             d.Add("client_name", Config.openServerName);
             d.Add("hash", serverHash);
-            d.Add("token", Config.userToken);
+            d.Add("token", lib.pApizlHttp.getToken());
             socketSend(pJson.objectToJsonStr(d));
         }
 
@@ -219,7 +219,7 @@ namespace postApiTools.lib
             d.Add("room_id", "1");
             d.Add("client_name", Config.openServerName);
             d.Add("hash", serverHash);
-            d.Add("token", Config.userToken);
+            d.Add("token", lib.pApizlHttp.getToken());
             socketSend(pJson.objectToJsonStr(d));
         }
 
@@ -235,7 +235,7 @@ namespace postApiTools.lib
             d.Add("client_name", Config.openServerName);
             d.Add("hash", serverHash);
             d.Add("docHash", docServerHash);
-            d.Add("token", Config.userToken);
+            d.Add("token", lib.pApizlHttp.getToken());
             socketSend(pJson.objectToJsonStr(d));
         }
 
@@ -250,7 +250,7 @@ namespace postApiTools.lib
             d.Add("room_id", "1");
             d.Add("client_name", Config.openServerName);
             d.Add("hash", serverHash);
-            d.Add("token", Config.userToken);
+            d.Add("token", lib.pApizlHttp.getToken());
             socketSend(pJson.objectToJsonStr(d));
         }
 
@@ -265,7 +265,7 @@ namespace postApiTools.lib
             d.Add("room_id", "1");
             d.Add("client_name", Config.openServerName);
             d.Add("hash", serverHash);
-            d.Add("token", Config.userToken);
+            d.Add("token", lib.pApizlHttp.getToken());
             socketSend(pJson.objectToJsonStr(d));
         }
 
@@ -280,7 +280,7 @@ namespace postApiTools.lib
             d.Add("room_id", "1");
             d.Add("client_name", Config.openServerName);
             d.Add("hash", serverHash);
-            d.Add("token", Config.userToken);
+            d.Add("token", lib.pApizlHttp.getToken());
             socketSend(pJson.objectToJsonStr(d));
         }
 
@@ -293,7 +293,7 @@ namespace postApiTools.lib
             d.Add("client_name", Config.openServerName);
             d.Add("server_hash", "sdfsd");
             d.Add("content", sendList[sendList.Count]);
-            d.Add("token", Config.userToken);
+            d.Add("token", lib.pApizlHttp.getToken());
             //socket.Send(pJson.objectToJsonStr(d));
             sendList.Remove(sendList.Count);
         }

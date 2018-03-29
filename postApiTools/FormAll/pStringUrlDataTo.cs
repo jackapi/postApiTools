@@ -59,7 +59,7 @@ namespace postApiTools.FormAll
         /// <param name="e"></param>
         private void skinButton_save_Click(object sender, EventArgs e)
         {
-            Form1.f.outUrlDataView(urlData);//输出
+            Form1.f.outUrlDataView(changeDataView());//输出
         }
 
         Dictionary<string, string> urlData = new Dictionary<string, string> { };
@@ -74,11 +74,19 @@ namespace postApiTools.FormAll
             Dictionary<string, string> d = new Dictionary<string, string> { };
             string type = skinComboBox1.Text;
             string content = skinChatRichTextBox_content.Text;
+            if (content == "")
+            {
+                return;
+            }
             contentWrite(content);//写入
             if (type == "JSON")
             {
-                ;
                 JObject job = lib.pJsonData.stringToJobject(content);
+                if (lib.pJsonData.error.Length > 0)//判断是否有转换错误
+                {
+                    MessageBox.Show("转换错误：" + lib.pJsonData.error, "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
                 if (job == null) { return; }
                 foreach (var item in job)
                 {
@@ -89,14 +97,22 @@ namespace postApiTools.FormAll
             }
             if (type == "URLDATA")
             {
-                string[] item = content.Split('&');
-                for (int i = 0; i < item.Length; i++)
+                try
                 {
-                    string[] data = item[i].Split('=');
-                    d.Add(data[0], data[1]);
+                    string[] item = content.Split('&');
+                    for (int i = 0; i < item.Length; i++)
+                    {
+                        string[] data = item[i].Split('=');
+                        d.Add(data[0], data[1]);
+                    }
+                    urlData = d;
+                    outDataView(urlData);//显示
                 }
-                urlData = d;
-                outDataView(urlData);//显示
+                catch
+                {
+                    MessageBox.Show("转换错误 请使用正确的URL", "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
             }
 
         }
@@ -118,6 +134,7 @@ namespace postApiTools.FormAll
                 {
                     dataview.Rows[i].Cells[0].Value = item.Key;
                     dataview.Rows[i].Cells[1].Value = item.Value;
+                    dataview.Rows[i].Cells[2].Value = "删除";
                     i++;
                 }
             }));
@@ -179,13 +196,55 @@ namespace postApiTools.FormAll
         }
 
         /// <summary>
+        /// 修改时候处理数据
+        /// </summary>
+        public Dictionary<string, string> changeDataView()
+        {
+            try
+            {
+                SkinDataGridView dataview = skinDataGridView1;
+                dataview.EndEdit();//编辑完成
+                Dictionary<string, string> newUrlData = new Dictionary<string, string> { };
+                int count = dataview.Rows.Count - 1;
+                for (int i = 0; i < count; i++)
+                {
+                    newUrlData.Add(dataview.Rows[i].Cells[0].Value.ToString(), dataview.Rows[i].Cells[1].Value.ToString());
+                }
+                return newUrlData;
+            }
+            catch (Exception ex)
+            {
+                pLogs.logs(ex.ToString());
+                MessageBox.Show("导入表格错误提示:" + ex.Message, "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+        }
+
+        /// <summary>
         /// 追加
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void skinButton_append_Click(object sender, EventArgs e)
         {
-            Form1.f.outAppendUrlDataView(urlData);//追加输出
+            Form1.f.outAppendUrlDataView(changeDataView());//追加输出
+        }
+
+        /// <summary>
+        /// 删除dataview内容
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void skinDataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex != 2) { return; }
+            SkinDataGridView dataview = skinDataGridView1;
+            if (dataview.Rows[e.RowIndex].Cells[2].Value != "删除") { return; }
+            DataGridViewRow rowsData = dataview.Rows[e.RowIndex];
+            if (rowsData == null) { return; }
+            string key = dataview.Rows[e.RowIndex].Cells[0].Value.ToString();//获取key
+            urlData.Remove(key);//删除list
+            dataview.Rows.Remove(rowsData);
         }
     }
 }

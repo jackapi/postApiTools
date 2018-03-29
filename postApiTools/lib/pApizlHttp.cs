@@ -178,7 +178,7 @@ namespace postApiTools.lib
             urlData[1, 0] = "desc";
             urlData[1, 1] = desc;
             urlData[2, 0] = "token";
-            urlData[2, 1] = token;
+            urlData[2, 1] = getToken();
             string json = phttp.HttpUploadFile(urlStr, urlData);
             if (json.Length <= 0)
             {
@@ -228,7 +228,7 @@ namespace postApiTools.lib
             urlData[3, 0] = "pid";
             urlData[3, 1] = projectHash;
             urlData[4, 0] = "token";
-            urlData[4, 1] = token;
+            urlData[4, 1] = getToken();
             string json = phttp.HttpUploadFile(urlStr, urlData);
             if (json.Length <= 0)
             {
@@ -274,7 +274,7 @@ namespace postApiTools.lib
             urlData[1, 0] = "project_hash";
             urlData[1, 1] = projectHash;
             urlData[2, 0] = "token";
-            urlData[2, 1] = token;
+            urlData[2, 1] = getToken();
             urlData[3, 0] = "desc";
             urlData[3, 1] = desc;
             urlData[4, 0] = "url";
@@ -320,7 +320,7 @@ namespace postApiTools.lib
             string urlStr = Config.openServerUrl + "/index/role/getProjectOneList";
             string[,] urlData = new string[2, 2];
             urlData[0, 0] = "token";
-            urlData[0, 1] = token;
+            urlData[0, 1] = getToken();
             urlData[1, 0] = "hash";
             urlData[1, 1] = serverHash;
             string json = phttp.HttpUploadFile(urlStr, urlData);
@@ -361,7 +361,7 @@ namespace postApiTools.lib
             string urlStr =Config.openServerUrl +"/index/role/getProjectSettingList";
             string[,] urlData = new string[1, 2];
             urlData[0, 0] = "token";
-            urlData[0, 1] = token;
+            urlData[0, 1] = getToken();
             string json = phttp.HttpUploadFile(urlStr, urlData);
             if (json.Length <= 0)
             {
@@ -398,7 +398,7 @@ namespace postApiTools.lib
             string urlStr =Config.openServerUrl +"/index/role/getProjectSettingList";
             string[,] urlData = new string[2, 2];
             urlData[0, 0] = "token";
-            urlData[0, 1] = token;
+            urlData[0, 1] = getToken();
             urlData[1, 0] = "pid";
             urlData[1, 1] = hash;
             string json = phttp.HttpUploadFile(urlStr, urlData);
@@ -438,7 +438,7 @@ namespace postApiTools.lib
             string urlStr =Config.openServerUrl +"/index/role/getProjectList";
             string[,] urlData = new string[2, 2];
             urlData[0, 0] = "token";
-            urlData[0, 1] = token;
+            urlData[0, 1] = getToken();
             urlData[1, 0] = "hash";
             urlData[1, 1] = hash;
             string json = phttp.HttpUploadFile(urlStr, urlData);
@@ -500,7 +500,7 @@ namespace postApiTools.lib
         {
             string[,] urlData = new string[2, 2];
             urlData[0, 0] = "token";
-            urlData[0, 1] = token;
+            urlData[0, 1] = getToken();
             urlData[1, 0] = "hash";
             urlData[1, 1] = hash;
             string urlStr =Config.openServerUrl +"/index/role/getProjectList";
@@ -516,7 +516,7 @@ namespace postApiTools.lib
         {
             string[,] urlData = new string[2, 2];
             urlData[0, 0] = "token";
-            urlData[0, 1] = token;
+            urlData[0, 1] = getToken();
             urlData[1, 0] = "hash";
             urlData[1, 1] = hash;
             string urlStr =Config.openServerUrl +"/index/Document/deleteProject";
@@ -532,7 +532,7 @@ namespace postApiTools.lib
         {
             string[,] urlData = new string[2, 2];
             urlData[0, 0] = "token";
-            urlData[0, 1] = token;
+            urlData[0, 1] = getToken();
             urlData[1, 0] = "hash";
             urlData[1, 1] = hash;
             string urlStr =Config.openServerUrl +"/index/Document/deleteDocument";
@@ -548,7 +548,7 @@ namespace postApiTools.lib
         {
             string[,] urlData = new string[2, 2];
             urlData[0, 0] = "token";
-            urlData[0, 1] = token;
+            urlData[0, 1] = getToken();
             urlData[1, 0] = "hash";
             urlData[1, 1] = hash;
             string urlStr =Config.openServerUrl +"/index/Document/getProjectPidList";
@@ -564,7 +564,7 @@ namespace postApiTools.lib
         {
             string[,] urlData = new string[2, 2];
             urlData[0, 0] = "token";
-            urlData[0, 1] = token;
+            urlData[0, 1] = getToken();
             urlData[1, 0] = "hash";
             urlData[1, 1] = hash;
             string urlStr =Config.openServerUrl +"/index/Document/getDocumentList";
@@ -579,7 +579,7 @@ namespace postApiTools.lib
         public static JObject editDocument(string serverHash, string name, string desc, string url, string urldata, string method)
         {
             Dictionary<string, string> d = new Dictionary<string, string> { };
-            d.Add("token", token);
+            d.Add("token", getToken());
             d.Add("hash", serverHash);
             d.Add("name", name);
             d.Add("desc", desc);
@@ -621,7 +621,7 @@ namespace postApiTools.lib
         public static JObject getDocument(string serverHash)
         {
             Dictionary<string, string> d = new Dictionary<string, string> { };
-            d.Add("token", token);
+            d.Add("token", getToken());
             d.Add("hash", serverHash);
             string urlStr =Config.openServerUrl +"/index/Document/getDocumentInfo";
             return getHttpData(urlStr, dicToStringArray(d));
@@ -635,7 +635,7 @@ namespace postApiTools.lib
         public static JObject getProjectInfo(string serverHash)
         {
             Dictionary<string, string> d = new Dictionary<string, string> { };
-            d.Add("token", token);
+            d.Add("token", getToken());
             d.Add("hash", serverHash);
             string urlStr =Config.openServerUrl +"/index/Document/getProjectInfo";
             return getHttpData(urlStr, dicToStringArray(d));
@@ -649,7 +649,7 @@ namespace postApiTools.lib
         public static JObject editProjectInfo(string serverHash, string name, string desc, string sort)
         {
             Dictionary<string, string> d = new Dictionary<string, string> { };
-            d.Add("token", token);
+            d.Add("token", getToken());
             d.Add("hash", serverHash);
             d.Add("name", name);
             d.Add("desc", desc);
@@ -666,7 +666,7 @@ namespace postApiTools.lib
         public static JObject getMarkdown(string content)
         {
             Dictionary<string, string> d = new Dictionary<string, string> { };
-            d.Add("token", token);
+            d.Add("token", getToken());
             d.Add("content", content);
             string urlStr =Config.openServerUrl +"/index/Document/getMarkdown";
             return getHttpData(urlStr, dicToStringArray(d));

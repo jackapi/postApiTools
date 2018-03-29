@@ -39,8 +39,6 @@
             this.ToolStripMenuItem_paste = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItem_empty = new System.Windows.Forms.ToolStripMenuItem();
             this.skinDataGridView1 = new CCWin.SkinControl.SkinDataGridView();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.skinButton_save = new CCWin.SkinControl.SkinButton();
             this.skinButton_close = new CCWin.SkinControl.SkinButton();
             this.skinLabel1 = new CCWin.SkinControl.SkinLabel();
@@ -48,6 +46,9 @@
             this.skinComboBox1 = new CCWin.SkinControl.SkinComboBox();
             this.skinButton_create = new CCWin.SkinControl.SkinButton();
             this.skinButton_append = new CCWin.SkinControl.SkinButton();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewButtonColumn();
             this.skinContextMenuStrip_text.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.skinDataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -125,7 +126,8 @@
             this.skinDataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.skinDataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1,
-            this.Column2});
+            this.Column2,
+            this.Column3});
             this.skinDataGridView1.ColumnSelectForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
@@ -154,18 +156,7 @@
             this.skinDataGridView1.TitleBack = null;
             this.skinDataGridView1.TitleBackColorBegin = System.Drawing.Color.White;
             this.skinDataGridView1.TitleBackColorEnd = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(196)))), ((int)(((byte)(242)))));
-            // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "参数";
-            this.Column1.Name = "Column1";
-            this.Column1.Width = 220;
-            // 
-            // Column2
-            // 
-            this.Column2.HeaderText = "值";
-            this.Column2.Name = "Column2";
-            this.Column2.Width = 220;
+            this.skinDataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.skinDataGridView1_CellContentClick);
             // 
             // skinButton_save
             // 
@@ -265,6 +256,23 @@
             this.skinButton_append.UseVisualStyleBackColor = false;
             this.skinButton_append.Click += new System.EventHandler(this.skinButton_append_Click);
             // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "参数";
+            this.Column1.Name = "Column1";
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "值";
+            this.Column2.Name = "Column2";
+            this.Column2.Width = 220;
+            // 
+            // Column3
+            // 
+            this.Column3.HeaderText = "操作";
+            this.Column3.Name = "Column3";
+            this.Column3.Text = "删除";
+            // 
             // pStringUrlDataTo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -309,8 +317,9 @@
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItem_empty;
         private CCWin.SkinControl.SkinComboBox skinComboBox1;
         private CCWin.SkinControl.SkinButton skinButton_create;
+        private CCWin.SkinControl.SkinButton skinButton_append;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
-        private CCWin.SkinControl.SkinButton skinButton_append;
+        private System.Windows.Forms.DataGridViewButtonColumn Column3;
     }
 }

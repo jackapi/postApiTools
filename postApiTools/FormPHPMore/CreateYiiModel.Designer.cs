@@ -114,13 +114,13 @@
         '\"',
         '\'',
         '\''};
-            this.fastColoredTextBox_result.AutoScrollMinSize = new System.Drawing.Size(29, 18);
+            this.fastColoredTextBox_result.AutoScrollMinSize = new System.Drawing.Size(0, 18);
             this.fastColoredTextBox_result.BackBrush = null;
             this.fastColoredTextBox_result.CharHeight = 18;
             this.fastColoredTextBox_result.CharWidth = 9;
             this.fastColoredTextBox_result.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.fastColoredTextBox_result.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
-            this.fastColoredTextBox_result.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.fastColoredTextBox_result.Font = new System.Drawing.Font("Consolas", 12F);
             this.fastColoredTextBox_result.ImeMode = System.Windows.Forms.ImeMode.On;
             this.fastColoredTextBox_result.IsReplaceMode = false;
             this.fastColoredTextBox_result.Location = new System.Drawing.Point(351, 62);
@@ -130,6 +130,7 @@
             this.fastColoredTextBox_result.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("fastColoredTextBox_result.ServiceColors")));
             this.fastColoredTextBox_result.Size = new System.Drawing.Size(576, 464);
             this.fastColoredTextBox_result.TabIndex = 5;
+            this.fastColoredTextBox_result.WordWrap = true;
             this.fastColoredTextBox_result.Zoom = 100;
             // 
             // CreateYiiModel

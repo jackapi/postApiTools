@@ -163,11 +163,23 @@
     <Compile Include="FormAll\getDocumentContent.Designer.cs">
       <DependentUpon>getDocumentContent.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormAll\GetHistory.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormAll\GetHistory.Designer.cs">
+      <DependentUpon>GetHistory.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormAll\getProjectContent.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormAll\getProjectContent.Designer.cs">
       <DependentUpon>getProjectContent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormAll\JsonFormatting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormAll\JsonFormatting.Designer.cs">
+      <DependentUpon>JsonFormatting.cs</DependentUpon>
     </Compile>
     <Compile Include="FormAll\markdownEdit.cs">
       <SubType>Form</SubType>
@@ -401,8 +413,14 @@
     <EmbeddedResource Include="FormAll\getDocumentContent.resx">
       <DependentUpon>getDocumentContent.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormAll\GetHistory.resx">
+      <DependentUpon>GetHistory.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormAll\getProjectContent.resx">
       <DependentUpon>getProjectContent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormAll\JsonFormatting.resx">
+      <DependentUpon>JsonFormatting.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormAll\markdownEdit.resx">
       <DependentUpon>markdownEdit.cs</DependentUpon>

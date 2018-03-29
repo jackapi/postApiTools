@@ -16,6 +16,23 @@ namespace postApiTools
         public static string error = "";
 
         /// <summary>
+        /// json转JArray
+        /// </summary>
+        /// <param name="jsonString"></param>
+        /// <returns></returns>
+        public static JArray jsonToJArray(string jsonString)
+        {
+            try
+            {
+                return (JArray)JsonConvert.DeserializeObject(jsonString);
+            }
+            catch (Exception ex)
+            {
+                pLogs.logs("json:" + jsonString + " " + ex.ToString());
+                return null;
+            }
+        }
+        /// <summary>
         /// json转jobject
         /// </summary>
         /// <param name="jsonString"></param>
@@ -31,7 +48,6 @@ namespace postApiTools
                 pLogs.logs("json:" + jsonString + " " + ex.ToString());
                 return null;
             }
-
         }
         /// <summary>
         /// JSON转对象
@@ -167,6 +183,10 @@ namespace postApiTools
         public static string[,] jsonStrToObjectArrayString(string str, int line = 3)
         {
             string[,] obj = null;
+            if (str == "")
+            {
+                return obj;
+            }
             JArray jarray = (JArray)JsonConvert.DeserializeObject(str);
             obj = new string[jarray.Count, line];
             for (int i = 0; i < jarray.Count; i++)

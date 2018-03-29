@@ -235,7 +235,10 @@ namespace postApiTools
                 //sql = string.Format(sql, hash, mainHash, 0, name, "", lib.pApizlHttp.project_hash, lib.pDate.getTimeStamp(), lib.pDate.getTimeStamp());
                 //sqlite.executeNonQuery(sql);
             }
-            t.SelectedNode.Nodes.Add(hash, name);
+            t.BeginInvoke(new Action(() =>
+            {
+                t.SelectedNode.Nodes.Add(hash, name);
+            }));
         }
 
 
@@ -623,8 +626,17 @@ namespace postApiTools
             sql = string.Format(sql, table, name, desc, url, urldata, urlType, hash);
             if (sqlite.executeNonQuery(sql) > 0)
             {
-                lib.pApizlHttp.editDocument(d["server_hash"], name, desc, url, urldata, urlType);//编辑线上
+                JObject job = lib.pApizlHttp.editDocument(d["server_hash"], name, desc, url, urldata, urlType);//编辑线上
+                if (job == null)
+                {
+                    Form1.f.TextShowlogs(lib.pApizlHttp.error, "error");//更新线上出错提示
+                }
+                else
+                {
+                    Form1.f.TextShowlogs("更新线上文档成功");//
+                }
                 Config.websocket.sendServerHashUpdate(d["server_hash"]);//发送更新推送
+                Form1.f.TextShowlogs("已推送更新消息");//更新线上出错
                 return true;
             }
             error = sqlite.error;

@@ -32,9 +32,21 @@ namespace postApiTools.FormAll
         /// <param name="e"></param>
         private void pOutUrlData_Load(object sender, EventArgs e)
         {
+            string selectIndex = lib.pIni.read("out-url-data", "selectindex");
+            if (selectIndex != "")
+            {
+                try
+                {
+                    comboBox_type.SelectedIndex = Int32.Parse(selectIndex);
+                }
+                catch { comboBox_type.SelectedIndex = 0; }
+            }
+            else
+            {
+                comboBox_type.SelectedIndex = 0;
+            }
             this.KeyDown += keyDown;
             OutUrlList();//处理数据
-            comboBox_type.SelectedIndex = 0;
         }
 
         /// <summary>
@@ -57,21 +69,24 @@ namespace postApiTools.FormAll
         /// </summary>
         public void OutUrlList()
         {
-            DataGridView dgv = Form1.f.GetUrlDataGridViewData();
-            if (dgv == null) { MessageBox.Show("获取数据列表失败！或重新启动软件！"); return; }
-            int row = dgv.Rows.Count - 1;
-            for (int i = 0; i < row; i++)
+            try
             {
-                var temp = new Models.UrlDataView
+                DataGridView dgv = Form1.f.GetUrlDataGridViewData();
+                if (dgv == null) { MessageBox.Show("获取数据列表失败！或重新启动软件！"); return; }
+                int row = dgv.Rows.Count - 1;
+                for (int i = 0; i < row; i++)
                 {
-                    name = dgv.Rows[i].Cells[0].Value.ToString(),
-                    value = dgv.Rows[i].Cells[1].Value.ToString(),
-                    desc = dgv.Rows[i].Cells[2].Value.ToString(),
-                    type = dgv.Rows[i].Cells[3].Value.ToString(),
-                };
-                UrlList.Add(temp);
+                    var temp = new Models.UrlDataView
+                    {
+                        name = dgv.Rows[i].Cells[0].Value.ToString(),
+                        value = dgv.Rows[i].Cells[1].Value.ToString(),
+                        desc = dgv.Rows[i].Cells[2].Value.ToString(),
+                        type = dgv.Rows[i].Cells[3].Value.ToString(),
+                    };
+                    UrlList.Add(temp);
+                }
             }
-
+            catch (Exception ex) { pLogs.logs(ex.ToString()); }
         }
 
         /// <summary>
@@ -83,7 +98,8 @@ namespace postApiTools.FormAll
         {
 
             if (UrlList.Count <= 0) { return; }
-
+            int selectIndex = comboBox_type.SelectedIndex;//获取selectindex
+            lib.pIni.write("out-url-data", "selectindex", selectIndex.ToString());//设置
             lib.pFormRichTextBox f = new lib.pFormRichTextBox();
             StringBuilder sb = new StringBuilder();
             JObject job = new JObject();

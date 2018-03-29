@@ -369,6 +369,71 @@ namespace postApiTools.lib
             }
         }
 
+        /// <summary>
+        /// postjson提交
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="postData"></param>
+        /// <param name="encodingString"></param>
+        /// <returns></returns>
+        public static string postJson(string url, string postData, string encodingString = "utf-8")
+        {
+            string result = "";
+
+            try
+            {
+                HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
+
+                req.Method = "POST";
+
+                req.Timeout = Timeout;//设置请求超时时间，单位为毫秒
+
+                req.ContentType = "application/json";
+
+                byte[] data = Encoding.UTF8.GetBytes(postData);
+
+                req.ContentLength = data.Length;
+
+                using (Stream reqStream = req.GetRequestStream())
+                {
+                    reqStream.Write(data, 0, data.Length);
+
+                    reqStream.Close();
+                }
+
+                HttpWebResponse resp = (HttpWebResponse)req.GetResponse();
+                Stream stream = resp.GetResponseStream();
+                HttpCustom_Response_Headers_Object = resp.Headers;//写入数据到WebHeaderCollection
+                HttpCustom_code = lib.pBase.enumToValueInt(typeof(pHttpCode.HttpStatusCode), resp.StatusCode.ToString()).ToString();//赋值状态码
+                //获取响应内容
+                using (StreamReader reader = new StreamReader(stream, Encoding.GetEncoding(encodingString)))
+                {
+                    result = reader.ReadToEnd();
+                }
+            }
+            catch (WebException ex)
+            {
+                if (ex.Message == "操作超时")
+                {
+                    return ex.Message + " " + errorDataShow;
+                }
+                HttpWebResponse response = (HttpWebResponse)ex.Response;
+                if (response == null)
+                {
+                    return errorDataShow;
+                }
+                HttpCustom_Response_Headers_Object = response.Headers;//写入数据到WebHeaderCollection
+                HttpCustom_code = lib.pBase.enumToValueInt(typeof(pHttpCode.HttpStatusCode), response.StatusCode.ToString()).ToString();//赋值状态码
+                StreamReader sr = new StreamReader(response.GetResponseStream(), Encoding.GetEncoding(encodingString));//读取流
+                pLogs.logs(ex.ToString());//写入日志
+                string content = sr.ReadToEnd();
+
+                response.Close();
+                sr.Close();
+                return content;
+            }
+            return result;
+        }
 
         /// <summary>
         /// 自动转编码 获取网页源码

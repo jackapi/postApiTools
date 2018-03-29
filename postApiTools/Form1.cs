@@ -24,6 +24,7 @@ namespace postApiTools
     using Newtonsoft.Json.Linq;
     using WebKit;
     using FastColoredTextBoxNS;
+    using System.IO;
 
     public partial class Form1 : CCSkinMain
     {
@@ -124,16 +125,16 @@ namespace postApiTools
             this.Width = size[0];
             this.Height = size[1];
             //this.StartPosition = FormStartPosition.WindowsDefaultLocation;
-            comboBox_bm.Text = "UTF-8";
-            pform1.textBoxUrlRead(textBox_url);//url读取
+            comboBox_bm.SelectedIndex = 0;
+            //pform1.textBoxUrlRead(textBox_url);//url读取
             pform1.httpHtmlTypeDataRead(comboBox_html_show_type);//httpHTML源码类型
-            pform1.httpTypeWriteRead(comboBox_url_type);//http类型
-            pform1.dataviewUrlDataRead(dataGridView_http_data);//请求参数列表
+            //pform1.httpTypeWriteRead(comboBox_url_type);//http类型
+            //pform1.dataviewUrlDataRead(dataGridView_http_data);//请求参数列表
             pHistory.dataViewRefresh(dataGridView_history);//刷新历史记录
             pSetting.refreshTemplateList(comboBox_template);//刷新模板列表
             fTextBox.TextBoxAutoComplete(textBox_url, pHistory.urlHistoryList);//自动textbox填充
             pForm1TreeView.showMainData(treeView_save_list, imageList_treeview);//显示项目列表树
-            pform1.toRnShow(checkBox_to_rn);//自动转换选中显示
+            //pform1.toRnShow(checkBox_to_rn);//自动转换选中显示
             Config.websocket.start();//启动websocket
             message();//启动消息检测
             loadInt = 0;
@@ -145,8 +146,47 @@ namespace postApiTools
                 pIe.isIeDownload();//检测浏览器版本 
             }));
             loadingCloseTab();
+            updateUpdataExe();//更新update程序
+            if (postJsonText != null)
+            {
+                postJsonText.Text = pform1.postJsonUrlDataGet();//postjson read
+            }
         }
 
+        /// <summary>
+        /// 更新update程序
+        /// </summary>
+        public void updateUpdataExe()
+        {
+            if (!Directory.Exists(Config.exePath + "tools"))//创建目录
+            {
+                Directory.CreateDirectory(Config.exePath + "tools");
+            }
+            string file = Config.exePath + "postApiToolsUpdate.exe";
+            string newFile = Config.exePath + "postApiToolsUpdate.exe.update";
+            try
+            {
+                if (File.Exists(newFile))
+                {
+                    File.Delete(file);
+                    File.Copy(newFile, file);
+                    File.Delete(newFile);
+                }
+            }
+            catch (Exception ex)
+            {
+                pLogs.logs(ex.ToString());
+            }
+        }
+        /// <summary>
+        /// 当界面加载完成
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Form1_Shown(object sender, EventArgs e)
+        {
+            pHistory.fillDataNoTh(dataGridView_http_data, pHistory.NewDataHash(), comboBox_url_type, textBox_url, fastColoredTextBox_html);//填充数据
+        }
         /// <summary>
         /// 判断是否自动隐藏
         /// </summary>
@@ -162,10 +202,6 @@ namespace postApiTools
             cms.ItemClicked += closeTab3;//绑定事件
             tabControl3.ContextMenuStrip = cms;
 
-            ContextMenuStrip form1Cms = new ContextMenuStrip();
-            form1Cms.Items.Add("显示左侧");
-            form1Cms.ItemClicked += showTab3;//绑定事件
-            this.ContextMenuStrip = form1Cms;
             string visible = pIni.read("form1", "tab3-visible");
             if (visible == "yes")
             {
@@ -185,6 +221,8 @@ namespace postApiTools
             if (t.ClickedItem == null) { return; }
             if (t.ClickedItem.ToString() == "显示左侧")
             {
+                this.ContextMenuStrip = null;//取消右键菜单
+                pIni.write("form1", "tab3-visible", "no");
                 if (tabControl3.Visible) { return; }//已经显示就不处理
                 int w = tabControl3.Width;
                 tabControl3.Show();//隐藏当前控件
@@ -220,7 +258,14 @@ namespace postApiTools
         /// <summary>
         /// 实现关闭tab3的方法
         /// </summary>
-        public void closeTab3Fun() {
+        public void closeTab3Fun()
+        {
+            //设置右键菜单
+            ContextMenuStrip form1Cms = new ContextMenuStrip();
+            form1Cms.Items.Add("显示左侧");
+            form1Cms.ItemClicked += showTab3;//绑定事件
+            this.ContextMenuStrip = form1Cms;
+
             pIni.write("form1", "tab3-visible", "yes");
             int w = tabControl3.Width;
             tabControl3.Hide();//隐藏当前控件
@@ -315,9 +360,9 @@ namespace postApiTools
                 MessageBox.Show("url不能为空", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            lib.pRunTimeNumber.start();
             string html = "";
             string urldata = pform1.objectArrayToUrlData(pform1.dataViewToObjectArray(dataGridView_http_data));
+            lib.pRunTimeNumber.start();
             if (comboBox_url_type.Text == "GET")
             {
                 html = lib.phttp.HttpGetCustom(url, urldata, encoding);//get请求获取
@@ -326,10 +371,15 @@ namespace postApiTools
             {
                 html = pform1.postFile(url, dataGridView_http_data, dataGridView_header, encoding);//post文件
             }
+            else if (comboBox_url_type.Text == "POSTJSON")
+            {
+                urldata = postJsonText.Text;
+                html = lib.phttp.postJson(url, urldata);//get请求获取
+            }
+            lib.pRunTimeNumber.end();
             pform1.dataViewResponseShow(dataGridView_Response);//显示返回报文头
             pform1.webViewShow(html);//浏览器显示
             this.testHtml = html;
-            lib.pRunTimeNumber.end();
             pform1.labelShowStatusRunTime(label_code, label_runtime, lib.phttp.HttpCustom_code, lib.pRunTimeNumber.result());//显示运行时间和状态
             html = pform1.toRn(checkBox_to_rn, pform1.htmlToFormatting(this.testHtml, comboBox_html_show_type, tabControl2, fastColoredTextBox_html));//格式化输出源码结果
             showHtml(html);//显示
@@ -338,7 +388,15 @@ namespace postApiTools
             pform1.httpHtmlTypeDataWrite(comboBox_html_show_type);//写入HTML类型
             pform1.httpTypeWrite(comboBox_url_type);
             pform1.dataviewUrlDataWrite(dataGridView_http_data);//写入dataurl配置
-            pHistory.dataViewShow(dataGridView_history, dataGridView_http_data, textBox_url.Text, comboBox_url_type.Text);//刷新历史数据
+            pform1.postJsonUrlDataWrite(postJsonText.Text);//写入postjson配置
+            if (comboBox_url_type.Text == "POSTJSON")
+            {
+                pHistory.postJsonShow(dataGridView_history, postJsonText.Text, textBox_url.Text, comboBox_url_type.Text, getHtml());//刷新历史数据
+            }
+            else
+            {
+                pHistory.dataViewShow(dataGridView_history, dataGridView_http_data, textBox_url.Text, comboBox_url_type.Text, getHtml());//刷新历史数据
+            }
         }
 
         /// <summary>
@@ -352,20 +410,6 @@ namespace postApiTools
             showHtml(pform1.htmlToFormatting(this.testHtml, comboBox_html_show_type, tabControl2, fastColoredTextBox_html));
         }
 
-
-        /// <summary>
-        /// 设置可以全选
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void textBox_html_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (e.KeyChar == '\x1')
-            {
-                ((TextBox)sender).SelectAll();
-                e.Handled = true;
-            }
-        }
 
 
 
@@ -494,6 +538,11 @@ namespace postApiTools
             {
                 return;
             }
+            if (w < 1280)
+            {
+                MessageBox.Show("缩小1280后会导致显示不正常！");
+                return;
+            }
             //if (w < 1138)
             //{
             //    this.Size = new Size(1138, this.Size.Height);
@@ -520,20 +569,6 @@ namespace postApiTools
             }
         }
 
-        /// <summary>
-        /// 历史记录单元格单击事件
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void dataGridView_history_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex >= 0)
-            {
-                button_new_url_http_Click(null, null);//先清理在添加数据
-                string hash = dataGridView_history.Rows[e.RowIndex].Cells[0].ToolTipText;
-                pHistory.fillData(dataGridView_http_data, hash, comboBox_url_type, textBox_url, fastColoredTextBox_html);//填充数据
-            }
-        }
         Thread buttonSaveApiTh;
         /// <summary>
         /// api接口保存
@@ -689,17 +724,24 @@ namespace postApiTools
             }
             if (e.ClickedItem.Text == "添加")
             {
-                AddPid pid = new AddPid();
-                pid.ShowDialog();
-                string name = pid.name;
-                pid.Close();
-                if (name == "") { return; }
-                pForm1TreeView.insertPid(treeView_save_list, name);
-                if (pForm1TreeView.error != "")
+                Thread th = new System.Threading.Thread((System.Threading.ThreadStart)delegate
                 {
-                    MessageBox.Show(pForm1TreeView.error, "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
+                    AddPid pid = new AddPid();
+                    pid.ShowDialog();
+                    string name = pid.name;
+                    pid.Close();
+                    if (name == "") { return; }
+                    pForm1TreeView.insertPid(treeView_save_list, name);
+                    if (pForm1TreeView.error != "")
+                    {
+                        MessageBox.Show(pForm1TreeView.error, "提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                });
+                th.SetApartmentState(ApartmentState.STA);
+                th.IsBackground = true;
+                th.Start();
+                return;
             }
             if (e.ClickedItem.Text == "删除")
             {
@@ -727,15 +769,17 @@ namespace postApiTools
                 string text = treeView_save_list.SelectedNode.Text;//text
                 if (pForm1TreeView.isApiHash(hash))
                 {
-                    getDocumentContent document = new getDocumentContent(hash, text);
-                    document.Show();
+                    Thread th = new System.Threading.Thread((System.Threading.ThreadStart)delegate
+                    {
+                        Application.Run(new getDocumentContent(hash, text));
+                    });
+                    th.SetApartmentState(ApartmentState.STA);
+                    th.IsBackground = true;
+                    th.Start();
+                    //getDocumentContent document = new getDocumentContent(hash, text);
+                    //document.Show();
                 }
-                else
-                {
-                    getProjectContent project = new getProjectContent(hash, text);
-                    project.Show();
-                }
-
+                return;
             }
         }
         /// <summary>
@@ -766,12 +810,18 @@ namespace postApiTools
             if (treeView_save_list.SelectedNode.Name == null) { return; }
             string hash = treeView_save_list.SelectedNode.Name;
             string name = treeView_save_list.SelectedNode.Text;
-            if (pForm1TreeView.isApiHash(hash))
+            if (pForm1TreeView.isApiHash(hash))//判断是否为文档
             {
                 this.editApiHash = hash;
             }
             pForm1TreeView.getMarkdown = "";
-            pForm1TreeView.openApiDataShow(treeView_save_list, textBox_url, comboBox_url_type, dataGridView_http_data, textBox_api_name, textBox_doc);
+            Thread th = new System.Threading.Thread((System.Threading.ThreadStart)delegate
+            {
+                pForm1TreeView.openApiDataShow(treeView_save_list, textBox_url, comboBox_url_type, dataGridView_http_data, textBox_api_name, textBox_doc);
+            });
+            th.SetApartmentState(ApartmentState.STA);
+            th.IsBackground = true;
+            th.Start();
             //Thread th = new Thread(treeView_save_list_DoubleClickFun);
             //th.Start();
         }
@@ -880,7 +930,8 @@ namespace postApiTools
         /// <param name="e"></param>
         private void button_delete_history_Click(object sender, EventArgs e)
         {
-            int rows = pHistory.historyAllDelete();
+            int rows = dataGridView_history.Rows.Count - 1;
+            pHistory.historyAllDelete();
             pHistory.dataViewRefresh(dataGridView_history);//刷新历史
             MessageBox.Show(string.Format("成功清理历史{0}个！", rows), "提示", MessageBoxButtons.OK, MessageBoxIcon.None);
 
@@ -1502,8 +1553,13 @@ namespace postApiTools
         /// <param name="e"></param>
         private void ToolStripMenuItem_stringToUrlData_Click(object sender, EventArgs e)
         {
-            FormAll.pStringUrlDataTo p = new pStringUrlDataTo();
-            p.Show();
+            Thread th = new System.Threading.Thread((System.Threading.ThreadStart)delegate
+            {
+                Application.Run(new pStringUrlDataTo());
+            });
+            th.SetApartmentState(ApartmentState.STA);
+            th.IsBackground = true;
+            th.Start();
         }
 
         /// <summary>
@@ -1513,8 +1569,13 @@ namespace postApiTools
         /// <param name="e"></param>
         private void ToolStripMenuItem_out_urldata_Click(object sender, EventArgs e)
         {
-            FormAll.pOutUrlData p = new pOutUrlData();
-            p.Show();
+            Thread th = new System.Threading.Thread((System.Threading.ThreadStart)delegate
+            {
+                Application.Run(new pOutUrlData());
+            });
+            th.SetApartmentState(ApartmentState.STA);
+            th.IsBackground = true;
+            th.Start();
         }
 
 
@@ -1550,15 +1611,23 @@ namespace postApiTools
         /// <param name="d"></param>
         public void outAppendUrlDataView(Dictionary<string, string> d)
         {
-            DataGridView dataview = dataGridView_http_data;
-            dataview.BeginInvoke(new Action(() =>
+            try
             {
-                if (d.Count == 0) { return; }
-                foreach (var item in d)
+                DataGridView dataview = dataGridView_http_data;
+                dataview.BeginInvoke(new Action(() =>
                 {
-                    dataview.Rows.Add(item.Key, item.Value, "", "字符串", "删除");//动态添加
-                }
-            }));
+                    dataGridView_header.EndEdit();//完成处理
+                    if (d.Count == 0) { return; }
+                    foreach (var item in d)
+                    {
+                        dataview.Rows.Add(item.Key, item.Value, "", "字符串", "删除");//动态添加
+                    }
+                }));
+            }
+            catch (Exception ex)
+            {
+                pLogs.logs(ex.ToString());
+            }
         }
 
         /// <summary>
@@ -1720,7 +1789,12 @@ namespace postApiTools
         /// <returns></returns>
         public DataGridView GetUrlDataGridViewData()
         {
-            return dataGridView_http_data;
+            try
+            {
+                dataGridView_http_data.EndEdit();
+                return dataGridView_http_data;
+            }
+            catch (Exception ex) { pLogs.logs(ex.ToString()); return null; }
         }
 
         /// <summary>
@@ -1832,6 +1906,99 @@ namespace postApiTools
                 {
                     dgv.Rows[e.RowIndex - 1].Cells[3].Value = "字符串";
                 }));
+            }
+        }
+
+        /// <summary>
+        /// 打开工具箱
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ToolStripMenuItem_tools_show_Click(object sender, EventArgs e)
+        {
+            Process pr = new Process();//声明一个进程类对象
+            pr.StartInfo.FileName = Config.exePath + "postApiToolsBox.exe";
+            pr.Start();
+        }
+
+        /// <summary>
+        /// 双击历史记录dataview
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dataGridView_history_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            DataGridViewSelectedRowCollection rowsData = dataGridView_history.SelectedRows;
+            if (rowsData == null)
+            {
+                return;
+            }
+            if (rowsData.Count <= 0)
+            {
+                return;
+            }
+            button_new_url_http_Click(null, null);//先清理在添加数据
+            string hash = rowsData[0].Cells[0].ToolTipText;
+            pHistory.fillData(dataGridView_http_data, hash, comboBox_url_type, textBox_url, fastColoredTextBox_html);//填充数据
+        }
+
+        /// <summary>
+        /// 不是dataview 活动窗体发生
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dataGridView_http_data_Leave(object sender, EventArgs e)
+        {
+            try
+            {
+                dataGridView_http_data.EndEdit();
+            }
+            catch (Exception ex) { pLogs.logs(ex.ToString()); }
+        }
+
+        public FastColoredTextBox postJsonText;
+
+        /// <summary>
+        ///更改为postjson时候发生
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void comboBox_url_type_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string type = comboBox_url_type.Text;
+            DataGridView dgv = dataGridView_http_data;
+            if (type == "POSTJSON")
+            {
+                try
+                {
+
+                    postJsonText.Show();
+                    dgv.Hide();
+                    return;
+                }
+                catch { }
+                postJsonText = new FastColoredTextBox();
+                postJsonText.Name = "postjson_f";
+                postJsonText.WordWrap = true;
+                postJsonText.ImeMode = ImeMode.On;
+                postJsonText.Font = new Font("微软雅黑", 15);
+                int w = dgv.Width;
+                int h = dgv.Height;
+                postJsonText.Width = w;
+                postJsonText.Height = h;
+                Point p = dgv.Location;
+                postJsonText.Location = p;
+                postJsonText.Dock = DockStyle.Fill;
+                //f.Text = "asdkasdfgdfgdfg5656565656dklaskdlas";
+                postJsonText.Language = Language.JS;
+                dgv.Hide();
+                postJsonText.Show();
+                this.tabControl1.TabPages[0].Controls.Add(postJsonText);
+            }
+            else
+            {
+                dgv.Show();
+                postJsonText.Hide();
             }
         }
     }

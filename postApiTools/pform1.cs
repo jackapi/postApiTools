@@ -560,7 +560,7 @@ namespace postApiTools
         /// <param name="urldata"></param>
         /// <param name="html"></param>
         /// <param name="url"></param>
-        public static void createTemplateString( TextBox textDoc, ComboBox combobox, string name, string method, string[,] urldata, string html, string url)
+        public static void createTemplateString(TextBox textDoc, ComboBox combobox, string name, string method, string[,] urldata, string html, string url)
         {
 
             if (combobox.Text == "默认模板")
@@ -676,6 +676,29 @@ namespace postApiTools
             str = lib.pBase64.stringToBase64(str);
             lib.pIni ini = new lib.pIni(Config.configIni);
             ini.IniWriteValue("form1", "dataviewUrlDataWrite", str);
+        }
+
+        /// <summary>
+        /// postJson写入历史配置
+        /// </summary>
+        /// <param name="dd"></param>
+        public static void postJsonUrlDataWrite(string text)
+        {
+            string str = lib.pBase64.stringToBase64(text);
+            lib.pIni ini = new lib.pIni(Config.configIni);
+            ini.IniWriteValue("form1", "postJsonUrlDataWrite", str);
+        }
+
+        /// <summary>
+        /// 获取配置中postjson
+        /// </summary>
+        /// <returns></returns>
+        public static string postJsonUrlDataGet()
+        {
+            lib.pIni ini = new lib.pIni(Config.configIni);
+            string str = ini.IniReadValue("form1", "postJsonUrlDataWrite");
+            str = lib.pBase64.base64ToString(str);
+            return str;
         }
         //----------------------------------------------------dataurlview-end---------------------------------------------------
 

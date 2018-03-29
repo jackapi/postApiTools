@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.button_test = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.textBox_url = new System.Windows.Forms.TextBox();
@@ -119,6 +120,7 @@
             this.ToolStripMenuItem_dataManage = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItem_websocket_tools = new System.Windows.Forms.ToolStripMenuItem();
             this.agencyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItem_tools_show = new System.Windows.Forms.ToolStripMenuItem();
             this.pHP相关ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItem_yii = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItem_tp = new System.Windows.Forms.ToolStripMenuItem();
@@ -146,6 +148,7 @@
             this.显示ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.关于ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.退出ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.label_email = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_http_data)).BeginInit();
@@ -213,11 +216,13 @@
             this.comboBox_url_type.ItemHeight = 16;
             this.comboBox_url_type.Items.AddRange(new object[] {
             "GET",
-            "POST"});
+            "POST",
+            "POSTJSON"});
             this.comboBox_url_type.Location = new System.Drawing.Point(46, 56);
             this.comboBox_url_type.Name = "comboBox_url_type";
             this.comboBox_url_type.Size = new System.Drawing.Size(121, 24);
             this.comboBox_url_type.TabIndex = 3;
+            this.comboBox_url_type.SelectedIndexChanged += new System.EventHandler(this.comboBox_url_type_SelectedIndexChanged);
             // 
             // tabControl1
             // 
@@ -272,6 +277,7 @@
             this.dataGridView_http_data.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_http_data_CellValueChanged);
             this.dataGridView_http_data.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dataGridView_http_data_DataError);
             this.dataGridView_http_data.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.dataGridView_http_data_RowsAdded);
+            this.dataGridView_http_data.Leave += new System.EventHandler(this.dataGridView_http_data_Leave);
             // 
             // Column1
             // 
@@ -377,22 +383,30 @@
         '\"',
         '\'',
         '\''};
-            this.fastColoredTextBox_html.AutoScrollMinSize = new System.Drawing.Size(29, 18);
+            this.fastColoredTextBox_html.AutoIndentCharsPatterns = "";
+            this.fastColoredTextBox_html.AutoScrollMinSize = new System.Drawing.Size(0, 22);
             this.fastColoredTextBox_html.BackBrush = null;
-            this.fastColoredTextBox_html.CharHeight = 18;
-            this.fastColoredTextBox_html.CharWidth = 9;
+            this.fastColoredTextBox_html.CharHeight = 22;
+            this.fastColoredTextBox_html.CharWidth = 12;
+            this.fastColoredTextBox_html.CommentPrefix = null;
             this.fastColoredTextBox_html.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.fastColoredTextBox_html.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
-            this.fastColoredTextBox_html.Font = new System.Drawing.Font("Consolas", 12F);
+            this.fastColoredTextBox_html.Font = new System.Drawing.Font("Courier New", 15F);
             this.fastColoredTextBox_html.ImeMode = System.Windows.Forms.ImeMode.On;
             this.fastColoredTextBox_html.IsReplaceMode = false;
+            this.fastColoredTextBox_html.Language = FastColoredTextBoxNS.Language.HTML;
+            this.fastColoredTextBox_html.LeftBracket = '<';
+            this.fastColoredTextBox_html.LeftBracket2 = '(';
             this.fastColoredTextBox_html.Location = new System.Drawing.Point(6, 30);
             this.fastColoredTextBox_html.Name = "fastColoredTextBox_html";
             this.fastColoredTextBox_html.Paddings = new System.Windows.Forms.Padding(0);
+            this.fastColoredTextBox_html.RightBracket = '>';
+            this.fastColoredTextBox_html.RightBracket2 = ')';
             this.fastColoredTextBox_html.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
             this.fastColoredTextBox_html.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("fastColoredTextBox_html.ServiceColors")));
             this.fastColoredTextBox_html.Size = new System.Drawing.Size(971, 344);
             this.fastColoredTextBox_html.TabIndex = 4;
+            this.fastColoredTextBox_html.WordWrap = true;
             this.fastColoredTextBox_html.Zoom = 100;
             // 
             // checkBox_to_rn
@@ -517,7 +531,7 @@
             this.dataGridView_Response.Name = "dataGridView_Response";
             this.dataGridView_Response.RowHeadersVisible = false;
             this.dataGridView_Response.RowTemplate.Height = 23;
-            this.dataGridView_Response.Size = new System.Drawing.Size(982, 527);
+            this.dataGridView_Response.Size = new System.Drawing.Size(982, 567);
             this.dataGridView_Response.TabIndex = 0;
             // 
             // Column7
@@ -590,10 +604,19 @@
             this.dataGridView_history.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridView_history.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCellsExceptHeaders;
             this.dataGridView_history.ColumnHeadersHeight = 30;
             this.dataGridView_history.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column10,
             this.Column11});
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView_history.DefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridView_history.Location = new System.Drawing.Point(3, 27);
             this.dataGridView_history.Name = "dataGridView_history";
             this.dataGridView_history.RowHeadersVisible = false;
@@ -601,15 +624,15 @@
             this.dataGridView_history.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView_history.Size = new System.Drawing.Size(243, 568);
             this.dataGridView_history.TabIndex = 0;
-            this.dataGridView_history.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_history_CellClick);
             this.dataGridView_history.Scroll += new System.Windows.Forms.ScrollEventHandler(this.dataGridView_history_Scroll);
+            this.dataGridView_history.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.dataGridView_history_MouseDoubleClick);
             // 
             // Column10
             // 
             this.Column10.HeaderText = "类型";
             this.Column10.Name = "Column10";
             this.Column10.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Column10.Width = 55;
+            this.Column10.Width = 120;
             // 
             // Column11
             // 
@@ -617,7 +640,7 @@
             this.Column11.Name = "Column11";
             this.Column11.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.Column11.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Column11.Width = 200;
+            this.Column11.Width = 120;
             // 
             // button_creation_doc
             // 
@@ -1055,6 +1078,7 @@
             this.skinMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.操作ToolStripMenuItem,
             this.ToolStripMenuItem_tools,
+            this.ToolStripMenuItem_tools_show,
             this.pHP相关ToolStripMenuItem,
             this.项目管理ToolStripMenuItem,
             this.用户管理ToolStripMenuItem,
@@ -1125,6 +1149,13 @@
             this.agencyToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
             this.agencyToolStripMenuItem.Text = "Agency";
             this.agencyToolStripMenuItem.Click += new System.EventHandler(this.agencyToolStripMenuItem_Click);
+            // 
+            // ToolStripMenuItem_tools_show
+            // 
+            this.ToolStripMenuItem_tools_show.Name = "ToolStripMenuItem_tools_show";
+            this.ToolStripMenuItem_tools_show.Size = new System.Drawing.Size(56, 21);
+            this.ToolStripMenuItem_tools_show.Text = "工具箱";
+            this.ToolStripMenuItem_tools_show.Click += new System.EventHandler(this.ToolStripMenuItem_tools_show_Click);
             // 
             // pHP相关ToolStripMenuItem
             // 
@@ -1361,11 +1392,22 @@
             this.退出ToolStripMenuItem1.Size = new System.Drawing.Size(100, 22);
             this.退出ToolStripMenuItem1.Text = "退出";
             // 
+            // label_email
+            // 
+            this.label_email.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.label_email.AutoSize = true;
+            this.label_email.Location = new System.Drawing.Point(986, 741);
+            this.label_email.Name = "label_email";
+            this.label_email.Size = new System.Drawing.Size(149, 12);
+            this.label_email.TabIndex = 27;
+            this.label_email.Text = "反馈:apiziliao@gmail.com";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1280, 760);
+            this.Controls.Add(this.label_email);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label_version);
             this.Controls.Add(this.label_update);
@@ -1403,6 +1445,7 @@
             this.Text = "PostApiTools";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.Shown += new System.EventHandler(this.Form1_Shown);
             this.Click += new System.EventHandler(this.Form1_Click);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.Resize += new System.EventHandler(this.Form1_Resize);
@@ -1555,6 +1598,8 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem_markdown_text_webedit;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem_markdown_edit_clear;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItem_update_data;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItem_tools_show;
+        private System.Windows.Forms.Label label_email;
     }
 }
 
